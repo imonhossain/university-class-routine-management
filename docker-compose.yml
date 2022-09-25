@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+  auth-service-database:
+    container_name: auth-service-database
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'auth-service'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - '3008:3306'
+    volumes:
+      - ./init-script.sql:/docker-entrypoint-initdb.d/init-script.sql
+# Names our volume
+volumes:
+  auth-service-db-data:
+    driver: local
