@@ -1,3 +1,4 @@
+import { CreateCourseDto } from '@/dto/CreateCourseDto';
 import { Course } from '@/entities/Course';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,5 +13,9 @@ export class CourseService {
 
   async getCourses(): Promise<Course[]> {
     return this.courseRepository.find();
+  }
+
+  async createCourse(createCourseDto: CreateCourseDto): Promise<Course> {
+    return this.courseRepository.create(createCourseDto).save();
   }
 }
