@@ -12,25 +12,27 @@ export class CreateCourseDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  @Max(50)
   code: string;
 
   @IsNumber()
   @IsInt()
   @Min(1)
   @Max(4)
+  @ApiProperty()
   credit: number;
 
   @IsEnum(Department)
   @ApiProperty({ enum: Department })
   department: Department;
 
+  @ApiProperty()
   @IsNumber()
   @IsInt()
   @Min(1)
   @Max(12)
   semester: number;
 
+  @ApiProperty()
   @IsBoolean()
   isAutoAssign: boolean;
 }

@@ -1,17 +1,20 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
+import { Course } from '@/entities/Course';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateCoursePayload } from '@test/dummy-payload/dummy-create-course-payload';
+import { dummyUpdateCoursePayload } from '@test/dummy-payload/dummy-update-course-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
-import { removeCourses } from '@test/util/course-util';
+import { createCourse, removeCourse } from '@test/util/course-util';
 import * as request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
-describe('/v1/course (POST)', () => {
+describe('/v1/course/:id (PATCH)', () => {
   let app: INestApplication;
   let apiEndPont: string;
+  let course: Course;
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -19,25 +22,28 @@ describe('/v1/course (POST)', () => {
     app = moduleFixture.createNestApplication();
     const configService = app.get(ConfigService);
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
-    apiEndPont = `${serviceApiPrefix}/course`;
+    apiEndPont = `${serviceApiPrefix}/course/`;
     await configApp(app);
     await app.init();
+    course = await createCourse(dummyCreateCoursePayload());
+    apiEndPont = apiEndPont + course.id;
   });
   afterAll(async () => {
+    await removeCourse(course.id);
     await app.close();
   });
   describe('INVALID REQUEST', () => {
     it('SHOULD return 401 UNAUTHORIZED WHEN there is no Authorization header set', async () => {
-      await request(app.getHttpServer()).post(apiEndPont).expect(401);
+      await request(app.getHttpServer()).patch(apiEndPont).expect(401);
     });
 
     it('SHOULD return 401 UNAUTHORIZED WHEN Authorization header set with wrong format bearer', async () => {
-      await request(app.getHttpServer()).post(apiEndPont).set('Authorization', 'MyBearer token').expect(401);
+      await request(app.getHttpServer()).patch(apiEndPont).set('Authorization', 'MyBearer token').expect(401);
     });
 
     it('SHOULD return 401 UNAUTHORIZED WHEN Authorization header set with invalid token.', async () => {
       await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9')
         .expect(401);
     });
@@ -54,7 +60,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload();
       delete payload.name;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -65,7 +71,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.name = 123;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -76,7 +82,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload();
       delete payload.code;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -87,7 +93,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.code = 123;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -98,7 +104,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload();
       delete payload.department;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -109,7 +115,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.department = 123;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -120,7 +126,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload();
       delete payload.credit;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -131,7 +137,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.credit = '123';
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -142,7 +148,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.credit = 0;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -153,7 +159,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.credit = 100;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -164,7 +170,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload();
       delete payload.semester;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -175,7 +181,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.semester = '123';
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -186,7 +192,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.semester = 0;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -197,7 +203,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.semester = 100;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -208,7 +214,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload();
       delete payload.isAutoAssign;
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -219,7 +225,7 @@ describe('/v1/course (POST)', () => {
       const payload = dummyCreateCoursePayload() as ObjectLiteral;
       payload.isAutoAssign = '123';
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(400);
@@ -230,21 +236,17 @@ describe('/v1/course (POST)', () => {
   describe('VALID PAYLOAD', () => {
     let signInResponse: SignInUserDto;
     const email = 'admin@gmail.com';
-    const courseIds: string[] = [];
     beforeAll(async () => {
       signInResponse = await getUserSignInResponse(email);
     });
-    afterAll(async () => {
-      await removeCourses(courseIds);
-    });
-    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
-      const payload = dummyCreateCoursePayload();
+
+    it('SHOULD return 200 SUCCESS WHEN valid payload', async () => {
+      const payload = dummyUpdateCoursePayload();
       const result = await request(app.getHttpServer())
-        .post(apiEndPont)
+        .patch(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
-        .expect(201);
-      courseIds.push(result.body.id);
+        .expect(200);
       expect(result.body.code).toEqual(payload.code);
       expect(result.body.name).toEqual(payload.name);
       expect(result.body.department).toEqual(payload.department);
