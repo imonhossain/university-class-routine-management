@@ -36,12 +36,13 @@ export class CourseController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('token')
-  @ApiOperation({ summary: 'update an Course' })
-  @ApiResponse({ status: 201, description: 'Return an Course' })
+  @ApiOperation({ summary: 'Update an Course' })
+  @ApiResponse({ status: 200, description: 'Return an Course' })
   @ApiResponse({ status: 400, description: 'BAD REQUEST' })
   @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
   @ApiResponse({ status: 403, description: 'FORBIDDEN' })
   updateCourse(@Param('id') id: string, @Body() createCourseDto: CreateCourseDto): Promise<Course> {
+    console.log('createCourseDto-----', createCourseDto);
     return this.courseService.updateCourse(id, createCourseDto);
   }
 }
