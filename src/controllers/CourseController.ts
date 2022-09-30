@@ -2,7 +2,7 @@ import { JwtAuthGuard } from '@/auth/JwtAuthGuard';
 import { CreateCourseDto } from '@/dto/CreateCourseDto';
 import { Course } from '@/entities/Course';
 import { CourseService } from '@/services/CourseService';
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('course')
@@ -29,7 +29,19 @@ export class CourseController {
   @ApiResponse({ status: 400, description: 'BAD REQUEST' })
   @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
   @ApiResponse({ status: 403, description: 'FORBIDDEN' })
-  createOrganization(@Body() createCourseDto: CreateCourseDto): Promise<Course> {
+  createCourse(@Body() createCourseDto: CreateCourseDto): Promise<Course> {
     return this.courseService.createCourse(createCourseDto);
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('token')
+  @ApiOperation({ summary: 'update an Course' })
+  @ApiResponse({ status: 201, description: 'Return an Course' })
+  @ApiResponse({ status: 400, description: 'BAD REQUEST' })
+  @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
+  @ApiResponse({ status: 403, description: 'FORBIDDEN' })
+  updateCourse(@Param('id') id: string, @Body() createCourseDto: CreateCourseDto): Promise<Course> {
+    return this.courseService.updateCourse(id, createCourseDto);
   }
 }
