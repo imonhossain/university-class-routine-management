@@ -12,6 +12,7 @@ export class CreateCourseDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
+  @Max(50)
   code: string;
 
   @IsNumber()
