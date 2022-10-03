@@ -28,4 +28,8 @@ export class CourseService {
     await this.courseRepository.update(id, payload);
     return this.getCourse(id);
   }
+
+  async deleteCourse(id: string): Promise<void> {
+    await this.courseRepository.delete(id);
+  }
 }
