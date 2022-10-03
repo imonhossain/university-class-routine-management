@@ -11,7 +11,7 @@ export class CourseController {
   constructor(private courseService: CourseService) {}
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('token')
   @ApiOperation({ summary: 'Fetch all course' })
   @ApiResponse({ status: 200, description: 'Return all course' })

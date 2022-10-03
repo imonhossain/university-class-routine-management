@@ -10,7 +10,6 @@ import { AuthService } from './services/AuthService';
 import { JwtStrategy } from './auth/JwtStrategy';
 import TypeOrmConfig from './configs/TypeOrmConfig';
 import { User } from './entities/User';
-import { Course } from './entities/Course';
 import { CourseModule } from './modules/course/course.module';
 
 @Module({
