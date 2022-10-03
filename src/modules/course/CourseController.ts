@@ -1,7 +1,7 @@
 import { JwtAuthGuard } from '@/auth/JwtAuthGuard';
 import { CreateCourseDto } from '@/dto/CreateCourseDto';
 import { Course } from '@/entities/Course';
-import { CourseService } from '@/services/CourseService';
+import { CourseService } from '@/modules/course/CourseService';
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -11,7 +11,7 @@ export class CourseController {
   constructor(private courseService: CourseService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('token')
   @ApiOperation({ summary: 'Fetch all course' })
   @ApiResponse({ status: 200, description: 'Return all course' })
