@@ -3,7 +3,7 @@ import { SignInUserDto } from '@/dto/SignInUserDto';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { dummyCreateCoursePayload } from '@test/dummy-payload/dummy-create-course-payload';
+import { dummyCreateCoursePayload } from '@test/dummy-payload/course/dummy-create-course-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createCourse, removeCourses } from '@test/util/course-util';
 import * as request from 'supertest';

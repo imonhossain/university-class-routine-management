@@ -11,6 +11,7 @@ import { JwtStrategy } from './auth/JwtStrategy';
 import TypeOrmConfig from './configs/TypeOrmConfig';
 import { User } from './entities/User';
 import { CourseModule } from './modules/course/course.module';
+import { RoomModule } from './modules/room/room.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CourseModule } from './modules/course/course.module';
       signOptions: { expiresIn },
     }),
     CourseModule,
+    RoomModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

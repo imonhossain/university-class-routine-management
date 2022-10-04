@@ -1,18 +1,18 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
-import { Course } from '@/entities/Course';
+import { RoomEntity } from '@/modules/room/room.entity';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { dummyCreateCoursePayload } from '@test/dummy-payload/course/dummy-create-course-payload';
+import { dummyCreateRoomPayload } from '@test/dummy-payload/room/dummy-create-room-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
-import { createCourse } from '@test/util/course-util';
+import { createRoom } from '@test/util/room-util';
 import * as request from 'supertest';
 
-describe('/v1/course/:id (DELETE)', () => {
+describe('/v1/room/:id (DELETE)', () => {
   let app: INestApplication;
   let apiEndPont: string;
-  let course: Course;
+  let room: RoomEntity;
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -20,9 +20,9 @@ describe('/v1/course/:id (DELETE)', () => {
     app = moduleFixture.createNestApplication();
     const configService = app.get(ConfigService);
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
-    course = await createCourse(dummyCreateCoursePayload());
-    apiEndPont = `${serviceApiPrefix}/course/`;
-    apiEndPont = apiEndPont + course.id;
+    room = await createRoom(dummyCreateRoomPayload());
+    apiEndPont = `${serviceApiPrefix}/room/`;
+    apiEndPont = apiEndPont + room.id;
     await configApp(app);
     await app.init();
   });
