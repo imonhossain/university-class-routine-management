@@ -10,22 +10,21 @@ import { AuthService } from './services/AuthService';
 import { JwtStrategy } from './auth/JwtStrategy';
 import TypeOrmConfig from './configs/TypeOrmConfig';
 import { User } from './entities/User';
-import { CourseController } from './controllers/CourseController';
-import { Course } from './entities/Course';
-import { CourseService } from './services/CourseService';
+import { CourseModule } from './modules/course/course.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({ useFactory: () => TypeOrmConfig }),
-    TypeOrmModule.forFeature([User, Course]),
+    TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
       secret: process.env.SECRET_KEY,
       signOptions: { expiresIn },
     }),
+    CourseModule,
   ],
-  controllers: [AuthController, CourseController],
-  providers: [AuthService, JwtStrategy, CourseService],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
 })
 export class AppModule {}
