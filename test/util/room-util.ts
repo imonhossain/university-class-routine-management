@@ -12,3 +12,7 @@ export async function removeRooms(ids: string[]): Promise<void> {
 export async function createRoom(room: CreateRoomDto): Promise<RoomEntity> {
   return getRepository(RoomEntity).create(room).save();
 }
+
+export async function createRooms(rooms: CreateRoomDto[]): Promise<RoomEntity[]> {
+  return getRepository(RoomEntity).save(rooms);
+}

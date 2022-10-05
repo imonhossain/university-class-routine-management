@@ -12,3 +12,7 @@ export async function removeTeachers(ids: string[]): Promise<void> {
 export async function createTeacher(teacher: CreateTeacherDto): Promise<TeacherEntity> {
   return getRepository(TeacherEntity).create(teacher).save();
 }
+
+export async function createTeachers(teachers: CreateTeacherDto[]): Promise<TeacherEntity[]> {
+  return getRepository(TeacherEntity).save(teachers);
+}
