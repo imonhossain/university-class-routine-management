@@ -1,11 +1,14 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
+import { Course } from '@/entities/Course';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateBookingPayload } from '@test/dummy-payload/booking/dummy-create-booking-payload';
+import { dummyCourseList } from '@test/dummy-payload/course/course-list';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { removeBookings } from '@test/util/booking-util';
+import { createCourses, removeCourses } from '@test/util/course-util';
 import * as request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
@@ -247,6 +250,21 @@ describe('/v1/booking (POST)', () => {
       expect(result.body.teacherId).toEqual(payload.teacherId);
       expect(result.body.roomId).toEqual(payload.roomId);
       expect(result.body.timeSlotId).toEqual(payload.timeSlotId);
+    });
+  });
+  describe('Implement booking business logic', () => {
+    let signInResponse: SignInUserDto;
+    const email = 'admin@gmail.com';
+    let coursesIds = [];
+    beforeAll(async () => {
+      signInResponse = await getUserSignInResponse(email);
+      const courses = await createCourses(dummyCourseList);
+      coursesIds = courses.map((item: Course) => item.id);
+      console.log('courses', courses);
+    });
+    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {});
+    afterAll(async () => {
+      removeCourses(coursesIds);
     });
   });
 });

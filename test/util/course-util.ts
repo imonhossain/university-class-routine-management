@@ -12,3 +12,7 @@ export async function removeCourses(ids: string[]): Promise<void> {
 export async function createCourse(course: CreateCourseDto): Promise<Course> {
   return getRepository(Course).create(course).save();
 }
+
+export async function createCourses(courses: CreateCourseDto[]): Promise<Course[]> {
+  return getRepository(Course).save(courses);
+}
