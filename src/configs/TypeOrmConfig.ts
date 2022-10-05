@@ -4,6 +4,7 @@
 require('dotenv').config();
 import { Course } from '@/entities/Course';
 import { User } from '@/entities/User';
+import { BookingEntity } from '@/modules/booking/booking.entity';
 import { RoomEntity } from '@/modules/room/room.entity';
 import { TeacherEntity } from '@/modules/teacher/teacher.entity';
 import { ConnectionOptions } from 'typeorm';
@@ -15,7 +16,7 @@ const TypeOrmConfig: ConnectionOptions = {
   username: process.env.TYPEORM_USERNAME,
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
-  entities: [User, Course, RoomEntity, TeacherEntity],
+  entities: [User, Course, RoomEntity, TeacherEntity, BookingEntity],
   debug: true,
   synchronize: false,
   migrations: process.env.typeorm === 'true' ? ['migrations/*.ts'] : [],

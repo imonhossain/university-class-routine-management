@@ -1,5 +1,5 @@
 export interface ITimeSlot {
-  id: number;
+  id: string;
   startTime: string;
   endTime: string;
   dayGroup: number;
