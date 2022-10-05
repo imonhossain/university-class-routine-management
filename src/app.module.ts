@@ -13,6 +13,7 @@ import { User } from './entities/User';
 import { CourseModule } from './modules/course/course.module';
 import { RoomModule } from './modules/room/room.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
+import { BookingModule } from './modules/booking/booking.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { TeacherModule } from './modules/teacher/teacher.module';
     CourseModule,
     RoomModule,
     TeacherModule,
+    BookingModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
