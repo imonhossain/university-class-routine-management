@@ -6,7 +6,7 @@ import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-v
 export class CreateBookingDto {
   @IsEnum(Section)
   @ApiProperty({ enum: Section })
-  department: Section;
+  section: Section;
 
   @ApiProperty()
   @IsNumber()
