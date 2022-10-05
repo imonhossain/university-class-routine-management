@@ -12,6 +12,7 @@ import TypeOrmConfig from './configs/TypeOrmConfig';
 import { User } from './entities/User';
 import { CourseModule } from './modules/course/course.module';
 import { RoomModule } from './modules/room/room.module';
+import { TeacherModule } from './modules/teacher/teacher.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RoomModule } from './modules/room/room.module';
     }),
     CourseModule,
     RoomModule,
+    TeacherModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
