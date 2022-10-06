@@ -1,11 +1,20 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
+import { Course } from '@/entities/Course';
+import { RoomEntity } from '@/modules/room/room.entity';
+import { TeacherEntity } from '@/modules/teacher/teacher.entity';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateBookingPayload } from '@test/dummy-payload/booking/dummy-create-booking-payload';
+import { dummyCourseList } from '@test/dummy-payload/course/course-list';
+import { dummyRoomList } from '@test/dummy-payload/room/room-list';
+import { dummyTeacherList } from '@test/dummy-payload/teacher/teacher-list';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { removeBookings } from '@test/util/booking-util';
+import { createCourses, removeCourses } from '@test/util/course-util';
+import { createRooms, removeRooms } from '@test/util/room-util';
+import { createTeachers, removeTeachers } from '@test/util/teacher-util';
 import * as request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
@@ -247,6 +256,31 @@ describe('/v1/booking (POST)', () => {
       expect(result.body.teacherId).toEqual(payload.teacherId);
       expect(result.body.roomId).toEqual(payload.roomId);
       expect(result.body.timeSlotId).toEqual(payload.timeSlotId);
+    });
+  });
+  describe('Implement booking business logic', () => {
+    let signInResponse: SignInUserDto;
+    const email = 'admin@gmail.com';
+    // let coursesIds: string[] = [];
+    // let teacherIds: string[] = [];
+    // let roomIds: string[] = [];
+    beforeAll(async () => {
+      signInResponse = await getUserSignInResponse(email);
+      // const courses = await createCourses(dummyCourseList);
+      // const teachers = await createTeachers(dummyTeacherList);
+      // const rooms = await createRooms(dummyRoomList);
+
+      // coursesIds = courses.map((item: Course) => item.id);
+      // teacherIds = teachers.map((item: TeacherEntity) => item.id);
+      // roomIds = rooms.map((item: RoomEntity) => item.id);
+    });
+    // afterAll(async () => {
+    //   removeCourses(coursesIds);
+    //   // removeTeachers(teacherIds);
+    //   // removeRooms(roomIds);
+    // });
+    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
+      expect(true).toEqual(true);
     });
   });
 });
