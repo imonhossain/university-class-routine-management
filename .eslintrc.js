@@ -103,6 +103,7 @@ module.exports = {
     'import/order': 'off',
     "import/no-relative-parent-imports": "off",
     "import/no-extraneous-dependencies": "off",
+    "no-magic-numbers": "off",
   },
   overrides: [
     {
