@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import Section from '@/enums/Section';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class CreateBookingDto {
   @IsEnum(Section)
@@ -31,11 +31,13 @@ export class CreateBookingDto {
   @ApiProperty()
   teacherId: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   roomId: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   @ApiProperty()

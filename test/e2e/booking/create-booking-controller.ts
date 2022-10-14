@@ -187,16 +187,16 @@ describe('/v1/booking (POST)', () => {
         .expect(400);
       expect(JSON.stringify(result.error).includes('teacherId must be a string')).toBe(true);
     });
-    it('SHOULD return 400 BAD REQUEST WHEN roomId is empty', async () => {
-      const payload = dummyCreateBookingPayload();
-      delete payload.roomId;
-      const result = await request(app.getHttpServer())
-        .post(apiEndPont)
-        .send(payload)
-        .set('Authorization', `Bearer ${signInResponse.token}`)
-        .expect(400);
-      expect(JSON.stringify(result.error).includes('roomId must be a string')).toBe(true);
-    });
+    // it('SHOULD return 400 BAD REQUEST WHEN roomId is empty', async () => {
+    //   const payload = dummyCreateBookingPayload();
+    //   delete payload.roomId;
+    //   const result = await request(app.getHttpServer())
+    //     .post(apiEndPont)
+    //     .send(payload)
+    //     .set('Authorization', `Bearer ${signInResponse.token}`)
+    //     .expect(400);
+    //   expect(JSON.stringify(result.error).includes('roomId must be a string')).toBe(true);
+    // });
 
     it('SHOULD return 400 BAD REQUEST WHEN roomId is not string', async () => {
       const payload = dummyCreateBookingPayload() as ObjectLiteral;
@@ -208,16 +208,16 @@ describe('/v1/booking (POST)', () => {
         .expect(400);
       expect(JSON.stringify(result.error).includes('roomId must be a string')).toBe(true);
     });
-    it('SHOULD return 400 BAD REQUEST WHEN timeSlotId is empty', async () => {
-      const payload = dummyCreateBookingPayload();
-      delete payload.timeSlotId;
-      const result = await request(app.getHttpServer())
-        .post(apiEndPont)
-        .send(payload)
-        .set('Authorization', `Bearer ${signInResponse.token}`)
-        .expect(400);
-      expect(JSON.stringify(result.error).includes('timeSlotId must be a string')).toBe(true);
-    });
+    // it('SHOULD return 400 BAD REQUEST WHEN timeSlotId is empty', async () => {
+    //   const payload = dummyCreateBookingPayload();
+    //   delete payload.timeSlotId;
+    //   const result = await request(app.getHttpServer())
+    //     .post(apiEndPont)
+    //     .send(payload)
+    //     .set('Authorization', `Bearer ${signInResponse.token}`)
+    //     .expect(400);
+    //   expect(JSON.stringify(result.error).includes('timeSlotId must be a string')).toBe(true);
+    // });
 
     it('SHOULD return 400 BAD REQUEST WHEN timeSlotId is not string', async () => {
       const payload = dummyCreateBookingPayload() as ObjectLiteral;
