@@ -1,6 +1,6 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
-import { Course } from '@/entities/Course';
+import { CourseEntity } from '@/modules/course/CourseEntity';
 import { RoomEntity } from '@/modules/room/room.entity';
 import { TeacherEntity } from '@/modules/teacher/teacher.entity';
 import { INestApplication } from '@nestjs/common';

@@ -5,7 +5,7 @@ import { IsInt, IsNumber, Max, Min } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
 @Entity({ name: 'Course' })
-export class Course extends BaseEntity {
+export class CourseEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   code;
 
