@@ -1,6 +1,6 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
-import { Course } from '@/entities/Course';
+import { CourseEntity } from '@/modules/course/CourseEntity';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -14,7 +14,7 @@ import { ObjectLiteral } from 'typeorm';
 describe('/v1/course/:id (PATCH)', () => {
   let app: INestApplication;
   let apiEndPont: string;
-  let course: Course;
+  let course: CourseEntity;
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
