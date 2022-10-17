@@ -2,5 +2,9 @@
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
   "editor.glyphMargin": true,
-  "editor.formatOnPaste": false
+  "editor.formatOnPaste": false,
+  "cSpell.words": [
+    "timeslot",
+    "Timeslots"
+  ]
 }

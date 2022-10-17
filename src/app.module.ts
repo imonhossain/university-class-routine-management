@@ -14,6 +14,7 @@ import { CourseModule } from './modules/course/course.module';
 import { RoomModule } from './modules/room/room.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { BookingModule } from './modules/booking/booking.module';
+import { TimeslotModule } from './modules/timeslot/timeslot.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { BookingModule } from './modules/booking/booking.module';
     CourseModule,
     RoomModule,
     TeacherModule,
+    TimeslotModule,
     BookingModule,
   ],
   controllers: [AuthController],
