@@ -8,7 +8,7 @@ import { ObjectLiteral, Repository } from 'typeorm';
 export class CourseService {
   constructor(
     @InjectRepository(CourseEntity)
-    private courseRepository: Repository<CourseEntity>,
+    private readonly courseRepository: Repository<CourseEntity>,
   ) {}
 
   async getCourses(): Promise<CourseEntity[]> {

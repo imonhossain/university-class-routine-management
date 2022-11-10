@@ -10,11 +10,13 @@ import { dummyCreateBookingPayload } from '@test/dummy-payload/booking/dummy-cre
 import { dummyCourseList } from '@test/dummy-payload/course/course-list';
 import { dummyRoomList } from '@test/dummy-payload/room/room-list';
 import { dummyTeacherList } from '@test/dummy-payload/teacher/teacher-list';
+import { dummyTimeslotList } from '@test/dummy-payload/timeslot/timeslot-list';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { removeBookings } from '@test/util/booking-util';
 import { createCourses, removeCourses } from '@test/util/course-util';
 import { createRooms, removeRooms } from '@test/util/room-util';
 import { createTeachers, removeTeachers } from '@test/util/teacher-util';
+import { createTimeslots } from '@test/util/timeslot-util';
 import * as request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
@@ -241,21 +243,22 @@ describe('/v1/booking (POST)', () => {
     afterAll(async () => {
       await removeBookings(bookingIds);
     });
-    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
+    it.only('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
       const payload = dummyCreateBookingPayload();
       const result = await request(app.getHttpServer())
         .post(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(201);
-      bookingIds.push(result.body.id);
-      expect(result.body.registerStudent).toEqual(payload.registerStudent);
-      expect(result.body.semester).toEqual(payload.semester);
-      expect(result.body.section).toEqual(payload.section);
-      expect(result.body.courseId).toEqual(payload.courseId);
-      expect(result.body.teacherId).toEqual(payload.teacherId);
-      expect(result.body.roomId).toEqual(payload.roomId);
-      expect(result.body.timeSlotId).toEqual(payload.timeSlotId);
+      console.log('result', result);
+      // bookingIds.push(result.body.id);
+      // expect(result.body.registerStudent).toEqual(payload.registerStudent);
+      // expect(result.body.semester).toEqual(payload.semester);
+      // expect(result.body.section).toEqual(payload.section);
+      // expect(result.body.courseId).toEqual(payload.courseId);
+      // expect(result.body.teacherId).toEqual(payload.teacherId);
+      // expect(result.body.roomId).toEqual(payload.roomId);
+      // expect(result.body.timeSlotId).toEqual(payload.timeSlotId);
     });
   });
   describe('Implement booking business logic', () => {
@@ -268,6 +271,7 @@ describe('/v1/booking (POST)', () => {
       signInResponse = await getUserSignInResponse(email);
       // const courses = await createCourses(dummyCourseList);
       // const teachers = await createTeachers(dummyTeacherList);
+      // const timeSloats = await createTimeslots(dummyTimeslotList);
       // const rooms = await createRooms(dummyRoomList);
 
       // coursesIds = courses.map((item: Course) => item.id);

@@ -1,7 +1,7 @@
 import { CreateRoomDto } from '@/dto/CreateRoomDto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ObjectLiteral, Repository } from 'typeorm';
+import { MoreThanOrEqual, ObjectLiteral, Repository } from 'typeorm';
 import { RoomEntity } from './room.entity';
 
 @Injectable()
@@ -31,5 +31,16 @@ export class RoomService {
 
   async deleteRoom(id: string): Promise<void> {
     await this.roomRepository.delete(id);
+  }
+
+  async getAvailableRooms(capacity: number): Promise<RoomEntity[]> {
+    return this.roomRepository.find({
+      where: {
+        capacity: MoreThanOrEqual(capacity),
+      },
+      order: {
+        capacity: 'ASC',
+      },
+    });
   }
 }
