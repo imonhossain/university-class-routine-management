@@ -243,14 +243,15 @@ describe('/v1/booking (POST)', () => {
     afterAll(async () => {
       await removeBookings(bookingIds);
     });
-    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
+    it.only('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
       const payload = dummyCreateBookingPayload();
       const result = await request(app.getHttpServer())
         .post(apiEndPont)
         .send(payload)
         .set('Authorization', `Bearer ${signInResponse.token}`)
         .expect(201);
-      bookingIds.push(result.body.id);
+      console.log('result', result);
+      // bookingIds.push(result.body.id);
       // expect(result.body.registerStudent).toEqual(payload.registerStudent);
       // expect(result.body.semester).toEqual(payload.semester);
       // expect(result.body.section).toEqual(payload.section);
