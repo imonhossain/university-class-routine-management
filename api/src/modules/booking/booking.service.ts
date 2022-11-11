@@ -1,6 +1,8 @@
 /* eslint-disable complexity */
 /* eslint-disable curly */
+import { TimeSlotConstant } from '@/constants/TimeSlotConstant';
 import { CreateBookingDto } from '@/dto/CreateBookingDto';
+import { ITimeSlot } from '@/interfaces/TimeSlot';
 import { CourseEntity } from '@/modules/course/CourseEntity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -38,44 +40,80 @@ export class BookingService {
 
   async createBooking(createBookingDto: CreateBookingDto): Promise<BookingEntity> {
     const course: CourseEntity = await this.courseService.getCourse(createBookingDto.courseId);
-    const teacher: TeacherEntity = await this.teacherService.getTeacher(createBookingDto.teacherId);
+    // const teacher: TeacherEntity = await this.teacherService.getTeacher(createBookingDto.teacherId);
     const allRooms: RoomEntity[] = await this.roomService.getAvailableRooms(createBookingDto.registerStudent);
     const allBookings: BookingEntity[] = await this.getBookings();
-    const timeSlots: TimeslotEntity[] = await this.timeslotService.getTimeslots();
-
-    // let iteration = 0;
     let isFound = false;
     if (course.isAutoAssign) {
       for (const room of allRooms) {
         if (isFound) break;
-        for (const timeSlot of timeSlots) {
-          const found = allBookings.find(
-            (booking: BookingEntity) => booking.timeSlotId === timeSlot.id || booking.roomId === room.id,
-          );
-          if (found) continue;
-
-          const teacherFreeFound = allBookings.find(
-            (booking: BookingEntity) => booking.timeSlotId === timeSlot.id && booking.teacherId === teacher.id,
-          );
-          if (teacherFreeFound) continue;
-
-          const semesterFreeFound = allBookings.find(
-            (booking: BookingEntity) =>
-              booking.timeSlotId === timeSlot.id && booking.semester === createBookingDto.semester,
-          );
-
-          if (!found && !teacherFreeFound && !semesterFreeFound) {
-            createBookingDto.roomId = room.id;
-            createBookingDto.timeSlotId = timeSlot.id;
-            isFound = true;
-            break;
-          }
+        const roomSlot: ITimeSlot[] = this.freeTimeSlotForRoom(room.id, allBookings);
+        if (roomSlot.length === 0) continue;
+        const roomSlotId = this.setTimeSlotId(course.credit, roomSlot);
+        if (roomSlotId) {
+          createBookingDto.timeSlotId = roomSlotId;
+          createBookingDto.roomId = room.id;
+        } else {
+          continue;
         }
+
+        const teacherSlot: ITimeSlot[] = this.freeTimeSlotForTeacher(createBookingDto.teacherId, allBookings);
+        if (teacherSlot.length === 0) continue;
+        const teacherSlotId = this.setTimeSlotId(course.credit, teacherSlot);
+        if (teacherSlotId) {
+          // createBookingDto.timeSlotId = timeSlotId;
+        } else {
+          continue;
+        }
+
+        const semesterFreeSlot: ITimeSlot[] = this.freeTimeSlotForSemester(createBookingDto.semester, allBookings);
+        if (semesterFreeSlot.length === 0) continue;
+        const semesterFreeSlotId = this.setTimeSlotId(course.credit, semesterFreeSlot);
+        if (semesterFreeSlotId) {
+          // createBookingDto.timeSlotId = timeSlotId;
+        } else {
+          continue;
+        }
+        if (!roomSlotId || !teacherSlotId || !semesterFreeSlotId) {
+          continue;
+        } else {
+          isFound = true;
+          break;
+        }
+
+        // for (const timeSlot of roomSlot) {
+        //   const found = allBookings.filter(
+        //     (booking: BookingEntity) =>
+        //       booking.timeSlotId.split(',').includes(timeSlot.id) || booking.roomId === room.id,
+        //   );
+        //   if (found) continue;
+
+        //   const teacherFreeFound = allBookings.find(
+        //     (booking: BookingEntity) =>
+        //       booking.timeSlotId === timeSlot.id && booking.teacherId === createBookingDto.teacherId,
+        //   );
+        //   if (teacherFreeFound) continue;
+
+        //   const semesterFreeFound = allBookings.find(
+        //     (booking: BookingEntity) =>
+        //       booking.timeSlotId === timeSlot.id && booking.semester === createBookingDto.semester,
+        //   );
+
+        //   if (!found && !teacherFreeFound && !semesterFreeFound) {
+        //     if (course.credit > 2) {
+        //       continue;
+        //     }
+        //     createBookingDto.roomId = room.id;
+        //     createBookingDto.timeSlotId = timeSlot.id;
+        //     isFound = true;
+        //     break;
+        //   }
+        // }
       }
-      return this.bookingRepository.create(createBookingDto).save();
+      // return this.bookingRepository.create(createBookingDto).save();
     }
     if (isFound) {
-      // return this.bookingRepository.create(createBookingDto).save();
+      return this.bookingRepository.create(createBookingDto).save();
     } else {
     }
     // allRooms.forEach((room: RoomEntity) => {
@@ -104,7 +142,58 @@ export class BookingService {
 
     // hours = course.credit > 2 ? 2 : 1;
 
-    // return {} as BookingEntity;
+    return {} as BookingEntity;
+  }
+
+  setTimeSlotId(courseCredit: number, roomSlot: ITimeSlot[]): string {
+    let timeSlotId = '';
+    if (courseCredit > 2) {
+      for (let i = 1; i < roomSlot.length; i++) {
+        if (
+          roomSlot[i].dayGroup === roomSlot[i - 1].dayGroup &&
+          Number(roomSlot[i].id) - Number(roomSlot[i - 1].id) === 1
+        ) {
+          timeSlotId = `${roomSlot[i - 1].id},${roomSlot[i].id}`;
+          break;
+        }
+      }
+    } else {
+      timeSlotId = roomSlot[0].id;
+    }
+    return timeSlotId;
+  }
+
+  freeTimeSlotForRoom(roomId: string, allBookings: BookingEntity[]): ITimeSlot[] {
+    const bookingRooms = allBookings.filter((booking) => booking.roomId === roomId);
+    return this.getSlotList(bookingRooms);
+  }
+
+  freeTimeSlotForTeacher(teacherId: string, allBookings: BookingEntity[]): ITimeSlot[] {
+    const bookingTeachers = allBookings.filter((booking) => booking.teacherId === teacherId);
+    return this.getSlotList(bookingTeachers);
+  }
+
+  freeTimeSlotForSemester(semester: number, allBookings: BookingEntity[]): ITimeSlot[] {
+    const bookingSemester = allBookings.filter((booking) => booking.semester === semester);
+    return this.getSlotList(bookingSemester);
+  }
+
+  getSlotList(bookingList: BookingEntity[]): ITimeSlot[] {
+    const timeSlots: ITimeSlot[] = TimeSlotConstant;
+    const list = [];
+    const bookingIds = [];
+    for (const booking of bookingList) {
+      const slotList = booking.timeSlotId.split(',');
+      for (const slot of slotList) {
+        bookingIds.push(slot);
+      }
+    }
+    for (const timeSlot of timeSlots) {
+      if (!bookingIds.includes(timeSlot.id)) {
+        list.push(timeSlot);
+      }
+    }
+    return list;
   }
 
   async getBooking(id: string): Promise<BookingEntity> {
