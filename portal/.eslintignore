@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+stories
+.env
+__test__
+src/assets/*

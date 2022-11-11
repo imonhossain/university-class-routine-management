@@ -1,0 +1,6 @@
+export default {
+  SIGN_IN: 'SIGN_IN',
+  SIGN_OUT: 'SIGN_OUT',
+  CACHE_COURSES: 'CACHE_COURSES',
+  ADD_COURSE: 'ADD_COURSE',
+};
