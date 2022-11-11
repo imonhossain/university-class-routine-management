@@ -3,6 +3,9 @@
 /node_modules
 /api/dist
 /api/node_modules
+/portal/dist
+/portal/node_modules
+/portal-backup
 
 # Logs
 logs
