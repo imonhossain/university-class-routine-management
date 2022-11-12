@@ -1,4 +1,6 @@
 @import url('react-toastify/dist/ReactToastify.css');
+@import url('../src/assets/css/main.css');
+
 
 @tailwind base;
 @tailwind components;

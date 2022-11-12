@@ -13,10 +13,8 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
     password: '',
   });
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const event = e as unknown as any;
-    // const newValue = e.currentTarget.value;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
     setForm({ ...form, [event.target.name]: event.target.value });
   };
   const onClickLogin = () => {
