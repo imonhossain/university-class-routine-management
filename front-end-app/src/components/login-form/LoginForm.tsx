@@ -13,13 +13,13 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
     password: '',
   });
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const event = e as unknown as any;
     setForm({ ...form, [event.target.name]: event.target.value });
   };
   const onClickLogin = () => {
     onClickSubmit(form);
   };
+  const isValidForm = form.email && form.password;
   return (
     <Card className="w-96 ml-auto mr-auto mt-24">
       <h1 className="text-center">Login Form</h1>
@@ -43,7 +43,12 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
         />
         <div className="mb-3" />
         <div className="text-center">
-          <Button size="sm" type="button" onClick={onClickLogin}>
+          <Button
+            size="sm"
+            type="button"
+            onClick={onClickLogin}
+            disabled={!isValidForm || isLoading}
+          >
             Login
           </Button>
         </div>
