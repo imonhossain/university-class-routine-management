@@ -20,41 +20,41 @@ module.exports = withMT({
       danger: '#bb002f',
     },
     fontFamily: {
-    
+
     },
     borderRadius: {
-      
+
     },
     fontSize: {
-      
+
     },
     extend: {
       padding: {
-       
+
       },
       margin: {
-       
+
       },
       backgroundImage: {
-        
+
       },
       width: {
-       
+
       },
       height: {
-       
+
       },
       minHeight: {
-        
+
       },
       minWidth: {
-       
+
       },
       maxWidth: {
-        
+
       },
       borderWidth: {
-        
+
       },
     },
   },

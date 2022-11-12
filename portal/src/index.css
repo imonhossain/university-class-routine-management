@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('react-toastify/dist/ReactToastify.css');
-@import url('../src/assets/css/main.css');
+/* @import url('../src/assets/css/main.css'); */
 @layer base{
   body{
     @apply bg-mute;

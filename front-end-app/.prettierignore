@@ -1,0 +1,6 @@
+.cache
+.next
+node-modules
+package.json
+package-lock.json
+public

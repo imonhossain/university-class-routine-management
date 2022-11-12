@@ -1,22 +1,20 @@
 import 'App.css';
 import AppRoutes from 'routes/AppRoutes';
-import { getToken } from 'services/AuthenticationService';
 import setAxiosConfig from 'services/AxiosConfig';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
-
+import { useGetToken } from 'services/AuthenticationService';
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  if (getToken()) {
-    setAxiosConfig(getToken());
+  const token = useGetToken();
+  if (token) {
+    setAxiosConfig(token);
   }
   return (
     <QueryClientProvider client={queryClient}>
       <AppRoutes />
     </QueryClientProvider>
-
   );
 };
 

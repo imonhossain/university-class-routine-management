@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.tabSize": 2,
+  "cSpell.words": ["flarie", "INGO", "testid"],
+  "eslint.validate": ["javascript", "typescript"]
+}
