@@ -1,15 +1,18 @@
 import { Button } from '@material-tailwind/react';
-import { getCourses } from 'actions/CourseAction';
+import { createCourse, getCourses } from 'actions/CourseAction';
 import DataFetching from 'components/common/data-fetching/DataFetching';
 import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
 import CourseForm from 'components/course/CourseForm';
 import CourseList from 'components/course/CourseList';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
+import EntityName from 'enums/EntityName';
 import ICourse from 'interfaces/Course';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import { toastError, toastSuccess } from 'services/ToasterServices';
+import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultCourse } from './CourseDefaultValue';
 
 const CoursePage = () => {
@@ -18,6 +21,7 @@ const CoursePage = () => {
     'get-courses',
     getCourses,
     {
+      refetchOnWindowFocus: false,
       onSuccess(courses) {
         console.log('courses', courses);
         appContext.dispatch({
@@ -29,9 +33,26 @@ const CoursePage = () => {
   );
 
   const [course, setCourse] = useState<ICourse>(defaultCourse);
-  const addCourse = () => {
-    console.log(course);
-  };
+
+  const { isLoading: isSaving, mutate: addCourse } = useMutation(
+    async () => {
+      course.credit = Number(course.credit);
+      return createCourse(course);
+    },
+    {
+      onSuccess: (response) => {
+        setCourse(defaultCourse);
+        toastSuccess('Save Successfully');
+        appContext.dispatch({
+          type: actionTypes.ADD_COURSE,
+          payload: response.data,
+        });
+      },
+      onError: (err) => {
+        httpErrorDisplay(err, EntityName.Course);
+      },
+    },
+  );
   return (
     <div className="max-w-screen-2xl mx-auto">
       <div className="grid grid-cols-3 gap-4 mt-12">
@@ -45,6 +66,7 @@ const CoursePage = () => {
             course={course}
             setCourse={setCourse}
             onSubmitForm={addCourse}
+            isLoading={isSaving}
           />
         </div>
       </div>

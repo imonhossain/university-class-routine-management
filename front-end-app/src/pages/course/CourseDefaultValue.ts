@@ -5,6 +5,7 @@ export const defaultCourse: ICourse = {
   name: '',
   code: '',
   credit: 0,
+  semester: 1,
   department: Department.CSE,
   isAutoAssign: true,
 };
