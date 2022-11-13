@@ -10,9 +10,7 @@ import { ObjectLiteral, Repository } from 'typeorm';
 import { CourseService } from '../course/CourseService';
 import { RoomEntity } from '../room/room.entity';
 import { RoomService } from '../room/room.service';
-import { TeacherEntity } from '../teacher/teacher.entity';
 import { TeacherService } from '../teacher/teacher.service';
-import { TimeslotEntity } from '../timeslot/timeslot.entity';
 import { TimeslotService } from '../timeslot/timeslot.service';
 import { BookingEntity } from './booking.entity';
 
@@ -27,20 +25,19 @@ export class BookingService {
     private readonly timeslotService: TimeslotService,
   ) {}
 
-  // @InjectRepository(CourseEntity)
-  //   private courseRepository: Repository<CourseEntity>,
-  //   @InjectRepository(RoomEntity)
-  //   private roomRepository: Repository<RoomEntity>,
-  //   @InjectRepository(TeacherEntity)
-  //   private teacherRepository: Repository<TeacherEntity>,
-
   async getBookings(): Promise<BookingEntity[]> {
-    return this.bookingRepository.find();
+    const sql = `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, teacherId, roomId, courseId, Course.name courseName, Room.number roomNumber, Teacher.name teacherName FROM Booking
+    INNER JOIN Course
+    ON Booking.courseId = Course.id
+    INNER JOIN Room
+    ON Booking.roomId = Room.id
+    INNER JOIN Teacher
+    on Booking.teacherId = Teacher.id`;
+    return this.bookingRepository.query(sql);
   }
 
   async createBooking(createBookingDto: CreateBookingDto): Promise<BookingEntity> {
     const course: CourseEntity = await this.courseService.getCourse(createBookingDto.courseId);
-    // const teacher: TeacherEntity = await this.teacherService.getTeacher(createBookingDto.teacherId);
     const allRooms: RoomEntity[] = await this.roomService.getAvailableRooms(createBookingDto.registerStudent);
     const allBookings: BookingEntity[] = await this.getBookings();
     let isFound = false;
@@ -208,12 +205,5 @@ export class BookingService {
 
   async deleteBooking(id: string): Promise<void> {
     await this.bookingRepository.delete(id);
-  }
-
-  async getAvailableSlot(): Promise<void> {
-    // let slot1 = [];
-    // let slot2 = [];
-    // let slot3 = [];
-    // this.bookingRepository.query('')
   }
 }

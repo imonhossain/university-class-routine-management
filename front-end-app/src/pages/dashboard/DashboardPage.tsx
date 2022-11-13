@@ -1,5 +1,7 @@
+import ClassRoutine from 'components/class-routine/ClassRoutine';
+
 const DashboardPage = () => {
-  return <>this is dashboard</>;
+  return <ClassRoutine />;
 };
 
 export default DashboardPage;

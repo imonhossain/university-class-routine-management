@@ -2,10 +2,16 @@ import reducers from 'context/reducers';
 import { coursesInitialState } from 'context/reducers/CourseReducer';
 import { userInitialState } from 'context/reducers/userReducer';
 import React, { FC, useContext, useReducer } from 'react';
+import { bookingsInitialState } from './reducers/BookingReducer';
+import { roomsInitialState } from './reducers/RoomReducer';
+import { teachersInitialState } from './reducers/TeacherReducer';
 
 export const initialState = {
   ...userInitialState,
   ...coursesInitialState,
+  ...roomsInitialState,
+  ...bookingsInitialState,
+  ...teachersInitialState,
 };
 
 interface Props {

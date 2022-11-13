@@ -25,8 +25,8 @@ const AppRoutes = () => {
             </Route>
             <Route element={<RedirectDashboard />}>
               <Route path={RoutingPath.LOGIN} element={<LoginPage />} />
-              <Route path={RoutingPath.HOME} element={<DashboardPage />} />
             </Route>
+            <Route path={RoutingPath.HOME} element={<DashboardPage />} />
           </Routes>
         </Suspense>
       </UserContainer>

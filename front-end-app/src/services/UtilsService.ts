@@ -1,6 +1,11 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { AxiosError } from 'axios';
+import { TimeSlotConstant } from 'constants/TimeSlotConstant';
 import EntityName from 'enums/EntityName';
+import IBooking from 'interfaces/Booking';
+import IRoutine from 'interfaces/Routine';
+import { ITimeSlot } from 'interfaces/TimeSlot';
 import { toastError } from 'services/ToasterServices';
 
 export const errorMessage = (statusCode: number, type?: EntityName): string => {
@@ -30,4 +35,63 @@ export const httpErrorDisplay = (error: any, type?: EntityName): void => {
     const statusCode: number = err.response?.status as number;
     toastError(errorMessage(statusCode, type));
   }
+};
+export const getTimePeriodById = (timeSlotId: string): ITimeSlot => {
+  const found = TimeSlotConstant.find((timeSlot) => timeSlot.id === timeSlotId);
+  if (found) {
+    return found;
+  }
+  toastError('Time Slot id invalid');
+  return {} as ITimeSlot;
+};
+
+export const convertBookingToRoutine = (bookings: IBooking): IRoutine => {
+  const timeSlotList = bookings.timeSlotId.split(',');
+  const timeSlot: ITimeSlot = getTimePeriodById(timeSlotList[0]);
+  const routine: IRoutine = {
+    ...bookings,
+    startTime: timeSlot.startTime,
+    endTime: getTimePeriodById(timeSlotList[timeSlotList.length - 1]).endTime,
+    dayGroup: timeSlot.dayGroup,
+    hour: timeSlotList.length,
+    startId: Number(timeSlot.id),
+  };
+  return routine;
+};
+
+export const convertBookingToRoutines = (bookings: IBooking[]): IRoutine[] => {
+  const hasMap = {};
+  for (const booking of bookings) {
+    const routine = convertBookingToRoutine(booking);
+    if (hasMap[booking.roomId]) {
+      hasMap[booking.roomId].push(routine);
+    } else {
+      hasMap[booking.roomId] = [];
+      hasMap[booking.roomId].push(routine);
+    }
+  }
+  const list: IRoutine[] = [];
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  for (const [key, value] of Object.entries(hasMap)) {
+    const temp = value as IRoutine[];
+    const sortedList = temp.sort((a, b) => a.startId - b.startId);
+    const finalList = [];
+    let index = 1;
+    let childIndex = 0;
+    while (index < 11) {
+      const item = sortedList[childIndex];
+      if (item?.timeSlotId.split(',').includes(index.toString())) {
+        finalList.push(item);
+        childIndex += 1;
+        index += item.hour;
+        // sortedList.push()
+      } else {
+        finalList.push([] as unknown as IRoutine);
+        index += 1;
+      }
+    }
+    list.push(finalList as unknown as IRoutine);
+  }
+  return list;
 };
