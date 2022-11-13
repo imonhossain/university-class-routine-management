@@ -40,6 +40,7 @@ const CourseList: FC<Props> = ({ data }) => {
     if (courseId) {
       deleteMutate();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId]);
   const columns = useMemo(
     () => [
@@ -75,6 +76,7 @@ const CourseList: FC<Props> = ({ data }) => {
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 

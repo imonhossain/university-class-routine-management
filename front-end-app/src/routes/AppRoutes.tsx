@@ -3,7 +3,7 @@ import RoutingPath from 'enums/RoutingPath';
 import CoursePage from 'pages/course/CoursePage';
 import DashboardPage from 'pages/dashboard/DashboardPage';
 import LoginPage from 'pages/login/Login';
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import RedirectDashboard from 'routes/RedirectDashboard';

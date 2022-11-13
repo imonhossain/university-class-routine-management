@@ -1,4 +1,3 @@
-import { Button } from '@material-tailwind/react';
 import { createCourse, getCourses } from 'actions/CourseAction';
 import DataFetching from 'components/common/data-fetching/DataFetching';
 import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
@@ -10,8 +9,7 @@ import EntityName from 'enums/EntityName';
 import ICourse from 'interfaces/Course';
 import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
-import { toastError, toastSuccess } from 'services/ToasterServices';
+import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultCourse } from './CourseDefaultValue';
 
@@ -23,7 +21,6 @@ const CoursePage = () => {
     {
       refetchOnWindowFocus: false,
       onSuccess(courses) {
-        console.log('courses', courses);
         appContext.dispatch({
           type: actionTypes.CACHE_COURSES,
           payload: courses.data,
