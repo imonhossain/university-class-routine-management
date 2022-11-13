@@ -1,51 +1,48 @@
-import { createTeacher, getTeachers } from 'actions/TeacherAction';
+import { createRoom, getRooms } from 'actions/RoomAction';
 import DataFetching from 'components/common/data-fetching/DataFetching';
 import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
-import TeacherForm from 'components/teacher/TeacherForm';
-import TeacherList from 'components/teacher/TeacherList';
+import { defaultRoom } from 'components/room/RoomDefaultValue';
+import RoomForm from 'components/room/RoomForm';
+import RoomList from 'components/room/RoomList';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
-import ITeacher from 'interfaces/Teacher';
+import IRoom from 'interfaces/Room';
 import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
-import { defaultTeacher } from '../../components/teacher/TeacherDefaultValue';
 
-const TeacherPage = () => {
+const RoomPage = () => {
   const appContext = useAppContext() as any;
-  const { isLoading, isError, isSuccess } = useQuery(
-    'get-teachers',
-    getTeachers,
-    {
-      refetchOnWindowFocus: false,
-      onSuccess(teachers) {
-        appContext.dispatch({
-          type: actionTypes.CACHE_TEACHERS,
-          payload: teachers.data,
-        });
-      },
+  const { isLoading, isError, isSuccess } = useQuery('get-rooms', getRooms, {
+    refetchOnWindowFocus: false,
+    onSuccess(rooms) {
+      appContext.dispatch({
+        type: actionTypes.CACHE_ROOMS,
+        payload: rooms.data,
+      });
     },
-  );
+  });
 
-  const [teacher, setTeacher] = useState<ITeacher>(defaultTeacher);
+  const [room, setRoom] = useState<IRoom>(defaultRoom);
 
-  const { isLoading: isSaving, mutate: addTeacher } = useMutation(
+  const { isLoading: isSaving, mutate: addRoom } = useMutation(
     async () => {
-      return createTeacher(teacher);
+      room.capacity = Number(room.capacity);
+      return createRoom(room);
     },
     {
       onSuccess: (response) => {
-        setTeacher(defaultTeacher);
+        setRoom(defaultRoom);
         toastSuccess('Save Successfully');
         appContext.dispatch({
-          type: actionTypes.ADD_TEACHER,
+          type: actionTypes.ADD_ROOM,
           payload: response.data,
         });
       },
       onError: (err) => {
-        httpErrorDisplay(err, EntityName.Teacher);
+        httpErrorDisplay(err, EntityName.Room);
       },
     },
   );
@@ -55,13 +52,13 @@ const TeacherPage = () => {
         <div className="col-span-2 ">
           {isError && <ErrorDisplay />}
           {isLoading && <DataFetching />}
-          {isSuccess && <TeacherList data={appContext?.teachers} />}
+          {isSuccess && <RoomList data={appContext?.rooms} />}
         </div>
         <div className="col-span-1">
-          <TeacherForm
-            teacher={teacher}
-            setTeacher={setTeacher}
-            onSubmitForm={addTeacher}
+          <RoomForm
+            room={room}
+            setRoom={setRoom}
+            onSubmitForm={addRoom}
             isLoading={isSaving}
           />
         </div>
@@ -70,4 +67,4 @@ const TeacherPage = () => {
   );
 };
 
-export default TeacherPage;
+export default RoomPage;
