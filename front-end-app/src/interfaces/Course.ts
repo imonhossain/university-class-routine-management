@@ -6,6 +6,6 @@ interface ICourse {
   credit: number;
   department: Department;
   semester?: number;
-  isAutoAssign?: boolean;
+  isAutoAssign: boolean;
 }
 export default ICourse;

@@ -3,6 +3,7 @@ import RoutingPath from 'enums/RoutingPath';
 import CoursePage from 'pages/course/CoursePage';
 import DashboardPage from 'pages/dashboard/DashboardPage';
 import LoginPage from 'pages/login/Login';
+import TeacherPage from 'pages/teacher/TeacherPage';
 import { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -18,6 +19,7 @@ const AppRoutes = () => {
           <Routes>
             <Route element={<RequireAuth />}>
               <Route path={RoutingPath.COURSE} element={<CoursePage />} />
+              <Route path={RoutingPath.TEACHER} element={<TeacherPage />} />
             </Route>
             <Route element={<RedirectDashboard />}>
               <Route path={RoutingPath.LOGIN} element={<LoginPage />} />
