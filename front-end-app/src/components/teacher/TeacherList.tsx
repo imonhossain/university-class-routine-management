@@ -1,47 +1,47 @@
 import { Card, CardBody, IconButton } from '@material-tailwind/react';
-import { deleteCourse } from 'actions/CourseAction';
+import { deleteTeacher } from 'actions/TeacherAction';
 import NubTable from 'components/common/table/NubTable';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
-import ICourse from 'interfaces/Course';
+import ITeacher from 'interfaces/Teacher';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useMutation } from 'react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 
 interface Props {
-  data: ICourse[];
+  data: ITeacher[];
 }
 
-const CourseList: FC<Props> = ({ data }) => {
+const TeacherList: FC<Props> = ({ data }) => {
   const appContext = useAppContext() as any;
-  const [courseId, setCourseId] = useState<string>('');
+  const [teacherId, setTeacherId] = useState<string>('');
   const { mutate: deleteMutate } = useMutation(
     async () => {
-      return deleteCourse(courseId);
+      return deleteTeacher(teacherId);
     },
     {
       onSuccess: () => {
         toastSuccess('Delete Successfully');
         appContext.dispatch({
-          type: actionTypes.DELETE_COURSE,
-          payload: courseId,
+          type: actionTypes.DELETE_TEACHER,
+          payload: teacherId,
         });
-        setCourseId('');
+        setTeacherId('');
       },
       onError: (err) => {
-        httpErrorDisplay(err, EntityName.Course);
-        setCourseId('');
+        httpErrorDisplay(err, EntityName.Teacher);
+        setTeacherId('');
       },
     },
   );
   useEffect(() => {
-    if (courseId) {
+    if (teacherId) {
       deleteMutate();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courseId]);
+  }, [teacherId]);
   const columns = useMemo(
     () => [
       {
@@ -49,17 +49,12 @@ const CourseList: FC<Props> = ({ data }) => {
         dataIndex: 'name',
       },
       {
-        title: 'Credit',
-        dataIndex: 'credit',
+        title: 'Email',
+        dataIndex: 'email',
       },
       {
-        title: 'Course Code',
-        dataIndex: 'code',
-      },
-      {
-        title: 'Auto Assign',
-        dataIndex: 'isAutoAssign',
-        render: (isAutoAssign: boolean) => (isAutoAssign ? 'Yes' : 'No'),
+        title: 'Phone',
+        dataIndex: 'phone',
       },
       {
         title: 'Delete',
@@ -68,8 +63,8 @@ const CourseList: FC<Props> = ({ data }) => {
           <IconButton
             size="sm"
             color="red"
-            onClick={() => setCourseId(id)}
-            disabled={id === courseId}
+            onClick={() => setTeacherId(id)}
+            disabled={id === teacherId}
           >
             <i className="fas fa-times" />
           </IconButton>
@@ -83,10 +78,10 @@ const CourseList: FC<Props> = ({ data }) => {
   return (
     <Card className="container">
       <CardBody>
-        <h1 className="text-left">Course list</h1>
+        <h1 className="text-left">Teacher list</h1>
         <NubTable data={data} columns={columns} />
       </CardBody>
     </Card>
   );
 };
-export default CourseList;
+export default TeacherList;

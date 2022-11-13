@@ -1,68 +1,67 @@
-import { createCourse, getCourses } from 'actions/CourseAction';
+import { createTeacher, getTeachers } from 'actions/TeacherAction';
 import DataFetching from 'components/common/data-fetching/DataFetching';
 import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
-import CourseForm from 'components/course/CourseForm';
-import CourseList from 'components/course/CourseList';
+import TeacherForm from 'components/teacher/TeacherForm';
+import TeacherList from 'components/teacher/TeacherList';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
-import ICourse from 'interfaces/Course';
+import ITeacher from 'interfaces/Teacher';
 import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
-import { defaultCourse } from './CourseDefaultValue';
+import { defaultTeacher } from './TeacherDefaultValue';
 
-const CoursePage = () => {
+const TeacherPage = () => {
   const appContext = useAppContext() as any;
   const { isLoading, isError, isSuccess } = useQuery(
-    'get-courses',
-    getCourses,
+    'get-teachers',
+    getTeachers,
     {
       refetchOnWindowFocus: false,
-      onSuccess(courses) {
+      onSuccess(teachers) {
         appContext.dispatch({
-          type: actionTypes.CACHE_COURSES,
-          payload: courses.data,
+          type: actionTypes.CACHE_TEACHERS,
+          payload: teachers.data,
         });
       },
     },
   );
 
-  const [course, setCourse] = useState<ICourse>(defaultCourse);
+  const [teacher, setTeacher] = useState<ITeacher>(defaultTeacher);
 
-  const { isLoading: isSaving, mutate: addCourse } = useMutation(
+  const { isLoading: isSaving, mutate: addTeacher } = useMutation(
     async () => {
-      course.credit = Number(course.credit);
-      return createCourse(course);
+      return createTeacher(teacher);
     },
     {
       onSuccess: (response) => {
-        setCourse(defaultCourse);
+        setTeacher(defaultTeacher);
         toastSuccess('Save Successfully');
         appContext.dispatch({
-          type: actionTypes.ADD_COURSE,
+          type: actionTypes.ADD_TEACHER,
           payload: response.data,
         });
       },
       onError: (err) => {
-        httpErrorDisplay(err, EntityName.Course);
+        httpErrorDisplay(err, EntityName.Teacher);
       },
     },
   );
   return (
     <div className="max-w-screen-2xl mx-auto">
-      <div className="grid grid-cols-3 gap-4 mt-12">
+      <div className="grid grid-cols-3 gap-4 mt-4">
         <div className="col-span-2 ">
           {isError && <ErrorDisplay />}
           {isLoading && <DataFetching />}
-          {isSuccess && <CourseList data={appContext?.courses} />}
+          {isSuccess && <TeacherList data={appContext?.teachers} />}
         </div>
         <div className="col-span-1">
-          <CourseForm
-            course={course}
-            setCourse={setCourse}
-            onSubmitForm={addCourse}
+          <TeacherForm
+            teacher={teacher}
+            setTeacher={setTeacher}
+            onSubmitForm={addTeacher}
             isLoading={isSaving}
           />
         </div>
@@ -71,4 +70,4 @@ const CoursePage = () => {
   );
 };
 
-export default CoursePage;
+export default TeacherPage;

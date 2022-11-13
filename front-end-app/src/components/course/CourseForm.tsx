@@ -4,8 +4,6 @@ import {
   Card,
   CardBody,
   Input,
-  Option,
-  Select,
   Switch,
 } from '@material-tailwind/react';
 import CommonSelect from 'components/common/select/CommonSelect';
