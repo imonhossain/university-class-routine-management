@@ -12,3 +12,13 @@
   padding: 5px 16px !important;
   overflow-wrap: break-word;
 }
+
+.nub-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+}
+.nub-table thead tr th, .nub-table tbody tr td{
+  border: 1px solid #212121;
+}

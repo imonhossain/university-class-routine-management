@@ -2,6 +2,7 @@ import actionTypes from 'context/actionTypes';
 /* eslint-disable import/no-mutable-exports */
 export const bookingsInitialState: any = {
   bookings: [],
+  routines: [],
 };
 
 export const bookingReducer = (
@@ -13,6 +14,12 @@ export const bookingReducer = (
       return {
         ...state,
         bookings: action.payload,
+      };
+    }
+    case actionTypes.CACHE_ROUTINE: {
+      return {
+        ...state,
+        routines: action.payload,
       };
     }
     case actionTypes.ADD_BOOKING: {

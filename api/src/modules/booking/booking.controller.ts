@@ -11,8 +11,6 @@ export class BookingController {
   constructor(private bookingService: BookingService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('token')
   @ApiOperation({ summary: 'Fetch all booking' })
   @ApiResponse({ status: 200, description: 'Return all booking' })
   @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })
