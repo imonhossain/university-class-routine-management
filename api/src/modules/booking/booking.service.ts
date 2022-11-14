@@ -28,17 +28,7 @@ export class BookingService {
   ) {}
 
   async getBookings(): Promise<BookingEntity[]> {
-    const sql = `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, 
-    teacherId, roomId, courseId, Course.code courseCode, Course.credit courseCredit, 
-    Course.name courseName, Room.number roomNumber, 
-    Teacher.name teacherName FROM Booking
-    INNER JOIN Course
-    ON Booking.courseId = Course.id
-    INNER JOIN Room
-    ON Booking.roomId = Room.id
-    INNER JOIN Teacher
-    on Booking.teacherId = Teacher.id`;
-    return this.bookingRepository.query(sql);
+    return this.bookingRepository.query(this.getBookingSql());
   }
 
   async createBooking(createBookingDto: CreateBookingDto): Promise<BookingEntity> {
@@ -56,7 +46,9 @@ export class BookingService {
       if (finalTimeSlotId) {
         createBookingDto.timeSlotId = finalTimeSlotId;
         createBookingDto.roomId = room.id;
-        return this.bookingRepository.create(createBookingDto).save();
+        const result = await this.bookingRepository.create(createBookingDto).save();
+        const output = await this.getBooking(result.id);
+        return output[0];
       }
     }
     const error =
@@ -141,7 +133,12 @@ export class BookingService {
   }
 
   async getBooking(id: string): Promise<BookingEntity> {
-    return this.bookingRepository.findOne({ where: { id: id } });
+    const sql = `${this.getBookingSql()} AND Booking.id = '${id}'`;
+    try {
+      return await this.bookingRepository.query(sql);
+    } catch (error) {
+      console.log('error', error);
+    }
   }
 
   async updateBooking(id: string, updateBookingDto: CreateBookingDto): Promise<BookingEntity> {
@@ -152,5 +149,18 @@ export class BookingService {
 
   async deleteBooking(id: string): Promise<void> {
     await this.bookingRepository.delete(id);
+  }
+
+  getBookingSql(): string {
+    return `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, 
+    teacherId, roomId, courseId, Course.code courseCode, Course.credit courseCredit, 
+    Course.name courseName, Room.number roomNumber, 
+    Teacher.name teacherName FROM Booking
+    INNER JOIN Course
+    ON Booking.courseId = Course.id
+    INNER JOIN Room
+    ON Booking.roomId = Room.id
+    INNER JOIN Teacher
+    on Booking.teacherId = Teacher.id`;
   }
 }
