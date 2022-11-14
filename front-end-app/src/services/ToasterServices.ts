@@ -43,3 +43,17 @@ export const toastWarning = (message: any = '') => {
     },
   );
 };
+export const toastInfo = (message: any = '') => {
+  return toast.info(
+    typeof message === 'string' ? message : JSON.stringify(message),
+    {
+      position: 'bottom-right',
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    },
+  );
+};
