@@ -7,6 +7,7 @@ import {
   getFridayBooking,
   getSaturDayBooking,
 } from 'services/UtilsService';
+import FilterClassRoutine from './filter-class-routine/FilterClassRoutine';
 import FridayRoutine from './FridayRoutine';
 import SaturdayRoutine from './SaturdayRoutine';
 
@@ -16,7 +17,9 @@ const ClassRoutine: FC = () => {
   const [routinesSaturday, setRoutinesSaturday] = useState<any>([]);
 
   useEffect(() => {
-    const bookings: IBooking[] = appContext?.bookings;
+    const bookings: IBooking[] = JSON.parse(
+      JSON.stringify(appContext?.bookings),
+    );
     if (bookings) {
       setRoutinesFriday(
         convertBookingToRoutines(getFridayBooking(bookings), DayType.FRIDAY),
@@ -28,9 +31,14 @@ const ClassRoutine: FC = () => {
         ),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appContext?.bookings?.length]);
   return (
     <div className="mt-8 pl-2 pr-2">
+      <FilterClassRoutine
+        setRoutinesFriday={setRoutinesFriday}
+        setRoutinesSaturday={setRoutinesSaturday}
+      />
       <FridayRoutine routines={routinesFriday} />
       <SaturdayRoutine routines={routinesSaturday} />
     </div>

@@ -1,8 +1,8 @@
 import 'App.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import AppRoutes from 'routes/AppRoutes';
-import setAxiosConfig from 'services/AxiosConfig';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 import { useGetToken } from 'services/AuthenticationService';
+import setAxiosConfig from 'services/AxiosConfig';
 
 const queryClient = new QueryClient();
 

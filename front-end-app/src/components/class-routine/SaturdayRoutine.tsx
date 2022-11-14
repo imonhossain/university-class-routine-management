@@ -8,7 +8,7 @@ interface Props {
 const SaturdayRoutine: FC<Props> = ({ routines }) => {
   return (
     <>
-      <h1>Friday Routine</h1>
+      <h1>Saturday Routine</h1>
       <div className="mb-8">
         <table className="nub-table">
           <thead>
