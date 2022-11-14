@@ -10,6 +10,7 @@ import IBooking from 'interfaces/Booking';
 import IRoutine from 'interfaces/Routine';
 import ISemesterReport from 'interfaces/SemesterReport';
 import ITeacherReport from 'interfaces/TeacherReport';
+import ITeacherReportGraph from 'interfaces/TeacherReportGraph';
 import { ITimeSlot } from 'interfaces/TimeSlot';
 import { toastError } from 'services/ToasterServices';
 
@@ -194,4 +195,31 @@ export const getTeacherWiseData = (
       };
       return obj;
     });
+};
+
+export const teacherReportGraph = (
+  bookings: IBooking[],
+): ITeacherReportGraph[] => {
+  const hasMap = {};
+  for (const item of bookings) {
+    if (hasMap[item.teacherId]) {
+      hasMap[item.teacherId] += item.courseCredit;
+    } else {
+      hasMap[item.teacherId] = item.courseCredit;
+    }
+  }
+  const list: ITeacherReportGraph[] = [];
+  for (const [key, value] of Object.entries(hasMap)) {
+    const found: IBooking | undefined = bookings.find(
+      (item: IBooking) => item.teacherId === key,
+    );
+    if (found) {
+      const obj: ITeacherReportGraph = {
+        name: found.teacherName as string,
+        credit: value as number,
+      };
+      list.push(obj);
+    }
+  }
+  return list;
 };

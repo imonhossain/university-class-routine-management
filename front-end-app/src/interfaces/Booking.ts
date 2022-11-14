@@ -4,6 +4,7 @@ interface IBooking {
   id: string;
   registerStudent: number;
   semester: number;
+  courseCredit?: number;
   section?: Section;
   courseId: string;
   teacherId: string;
