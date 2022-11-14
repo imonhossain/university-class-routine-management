@@ -7,6 +7,7 @@ import {
   Switch,
 } from '@material-tailwind/react';
 import { getCourses } from 'actions/CourseAction';
+import { getRooms } from 'actions/RoomAction';
 import { getTeachers } from 'actions/TeacherAction';
 import CommonSelect from 'components/common/select/CommonSelect';
 import { SemesterConstant } from 'constants/SemesterConstant';
@@ -33,6 +34,9 @@ const BookingForm: FC<Props> = ({
   const { data: teacherList } = useQuery('get-teachers', getTeachers, {
     refetchOnWindowFocus: false,
   });
+  const { data: roomList } = useQuery('get-rooms', getRooms, {
+    refetchOnWindowFocus: false,
+  });
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const event = e as unknown as any;
@@ -55,11 +59,10 @@ const BookingForm: FC<Props> = ({
       <h1 className="text-center">Booking Form</h1>
       <CardBody className="flex w-full flex-col gap-3">
         <CommonSelect
-          label="Select Course"
+          label="Select a course"
           onChange={(e: any) => handelChangeSelect('courseId', e.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
-          data-testid="type"
           value={
             courseList?.data.find(
               (item) => item.id === booking.courseId,
@@ -69,11 +72,10 @@ const BookingForm: FC<Props> = ({
           options={courseList?.data || []}
         />
         <CommonSelect
-          label="Select Teacher"
+          label="Select a teacher"
           onChange={(e: any) => handelChangeSelect('teacherId', e.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
-          data-testid="type"
           value={
             teacherList?.data.find(
               (item) => item.id === booking.teacherId,
@@ -91,11 +93,10 @@ const BookingForm: FC<Props> = ({
           required
         />
         <CommonSelect
-          label="Select Semester"
+          label="Select a semester"
           onChange={(e: any) => handelChangeSelect('semester', e.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
-          data-testid="type"
           value={
             SemesterConstant.find(
               (item) => item.id === booking.semester,
@@ -104,11 +105,18 @@ const BookingForm: FC<Props> = ({
           }
           options={SemesterConstant}
         />
-        <Switch
-          label="Auto assign"
-          defaultChecked={!!booking.isAutoAssign}
-          name="isAutoAssign"
-          onChange={(e) => onChangeSwitch(e)}
+        <CommonSelect
+          label="Select a room (optional)"
+          onChange={(e: any) => handelChangeSelect('roomId', e.id)}
+          getOptionLabel={(option: any) => option.number}
+          getOptionValue={(option: any) => option.id}
+          value={
+            roomList?.data.find(
+              (item) => item.id === booking.roomId,
+              // eslint-disable-next-line @typescript-eslint/ban-types
+            ) as Object
+          }
+          options={roomList?.data || []}
         />
         <div className="text-center">
           <Button

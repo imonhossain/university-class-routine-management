@@ -71,7 +71,6 @@ const CourseForm: FC<Props> = ({
           onChange={(e: any) => handelChangeSelect(e.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
-          data-testid="type"
           value={
             SemesterConstant.find(
               (item) => item.id === course.semester,

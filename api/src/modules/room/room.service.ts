@@ -37,6 +37,7 @@ export class RoomService {
     return this.roomRepository.find({
       where: {
         capacity: MoreThanOrEqual(capacity),
+        isAutoAssign: true,
       },
       order: {
         capacity: 'ASC',

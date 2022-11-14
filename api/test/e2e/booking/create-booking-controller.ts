@@ -248,7 +248,8 @@ describe('/v1/booking (POST)', () => {
       const payload = dummyCreateBookingPayload();
       payload.courseId = '3e706e91-5b01-4420-838f-eb8424a5580c';
       payload.teacherId = '06094548-82ca-4f17-a03e-11436faa4f9d';
-      payload.registerStudent = 60;
+      payload.roomId = 'eb9fc62b-5f59-4c10-8b26-976debb79198';
+      payload.registerStudent = 10;
       payload.section = Section.A;
       const result = await request(app.getHttpServer())
         .post(apiEndPont)
