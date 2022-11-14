@@ -33,13 +33,11 @@ export class CreateBookingDto {
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   roomId: string;
 
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   @ApiProperty()
   timeSlotId: string;
 }

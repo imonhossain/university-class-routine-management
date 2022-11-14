@@ -1,5 +1,6 @@
 import UserContainer from 'components/layout/UserContainer';
 import RoutingPath from 'enums/RoutingPath';
+import BookingPage from 'pages/booking/BookingPage';
 import CoursePage from 'pages/course/CoursePage';
 import DashboardPage from 'pages/dashboard/DashboardPage';
 import LoginPage from 'pages/login/Login';
@@ -22,6 +23,7 @@ const AppRoutes = () => {
               <Route path={RoutingPath.COURSE} element={<CoursePage />} />
               <Route path={RoutingPath.TEACHER} element={<TeacherPage />} />
               <Route path={RoutingPath.ROOM} element={<RoomPage />} />
+              <Route path={RoutingPath.BOOKING} element={<BookingPage />} />
             </Route>
             <Route element={<RedirectDashboard />}>
               <Route path={RoutingPath.LOGIN} element={<LoginPage />} />

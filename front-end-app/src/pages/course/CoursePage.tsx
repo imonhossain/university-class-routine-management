@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
-import { defaultCourse } from './CourseDefaultValue';
+import { defaultCourse } from '../../components/course/CourseDefaultValue';
 
 const CoursePage = () => {
   const appContext = useAppContext() as any;

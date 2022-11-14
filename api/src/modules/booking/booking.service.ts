@@ -45,66 +45,50 @@ export class BookingService {
       for (const room of allRooms) {
         if (isFound) break;
         const roomSlot: ITimeSlot[] = this.freeTimeSlotForRoom(room.id, allBookings);
-        if (roomSlot.length === 0) continue;
-        const roomSlotId = this.setTimeSlotId(course.credit, roomSlot);
-        if (roomSlotId) {
-          createBookingDto.timeSlotId = roomSlotId;
-          createBookingDto.roomId = room.id;
-        } else {
-          continue;
-        }
-
         const teacherSlot: ITimeSlot[] = this.freeTimeSlotForTeacher(createBookingDto.teacherId, allBookings);
-        if (teacherSlot.length === 0) continue;
-        const teacherSlotId = this.setTimeSlotId(course.credit, teacherSlot);
-        if (teacherSlotId) {
-          // createBookingDto.timeSlotId = timeSlotId;
-        } else {
-          continue;
-        }
-
-        const semesterFreeSlot: ITimeSlot[] = this.freeTimeSlotForSemester(createBookingDto.semester, allBookings);
-        if (semesterFreeSlot.length === 0) continue;
-        const semesterFreeSlotId = this.setTimeSlotId(course.credit, semesterFreeSlot);
-        if (semesterFreeSlotId) {
-          // createBookingDto.timeSlotId = timeSlotId;
-        } else {
-          continue;
-        }
-        if (!roomSlotId || !teacherSlotId || !semesterFreeSlotId) {
-          continue;
-        } else {
+        const semesterSlot: ITimeSlot[] = this.freeTimeSlotForSemester(createBookingDto.semester, allBookings);
+        const commonTimeSlot = this.getCommonTimeSlot(roomSlot, teacherSlot, semesterSlot);
+        const finalTimeSlotId = this.setTimeSlotId(course.credit, commonTimeSlot);
+        if (finalTimeSlotId) {
+          createBookingDto.timeSlotId = finalTimeSlotId;
+          createBookingDto.roomId = room.id;
           isFound = true;
           break;
+        } else {
+          continue;
         }
 
-        // for (const timeSlot of roomSlot) {
-        //   const found = allBookings.filter(
-        //     (booking: BookingEntity) =>
-        //       booking.timeSlotId.split(',').includes(timeSlot.id) || booking.roomId === room.id,
-        //   );
-        //   if (found) continue;
+        // console.log('commonTimeSlot', commonTimeSlot);
 
-        //   const teacherFreeFound = allBookings.find(
-        //     (booking: BookingEntity) =>
-        //       booking.timeSlotId === timeSlot.id && booking.teacherId === createBookingDto.teacherId,
-        //   );
-        //   if (teacherFreeFound) continue;
+        // if (roomSlot.length === 0) continue;
+        // const roomSlotId = this.setTimeSlotId(course.credit, roomSlot);
+        // if (roomSlotId) {
+        //   createBookingDto.timeSlotId = roomSlotId;
+        //   createBookingDto.roomId = room.id;
+        // } else {
+        //   continue;
+        // }
 
-        //   const semesterFreeFound = allBookings.find(
-        //     (booking: BookingEntity) =>
-        //       booking.timeSlotId === timeSlot.id && booking.semester === createBookingDto.semester,
-        //   );
+        // if (teacherSlot.length === 0) continue;
+        // const teacherSlotId = this.setTimeSlotId(course.credit, teacherSlot);
+        // if (teacherSlotId) {
+        // } else {
+        //   continue;
+        // }
 
-        //   if (!found && !teacherFreeFound && !semesterFreeFound) {
-        //     if (course.credit > 2) {
-        //       continue;
-        //     }
-        //     createBookingDto.roomId = room.id;
-        //     createBookingDto.timeSlotId = timeSlot.id;
-        //     isFound = true;
-        //     break;
-        //   }
+        // if (semesterFreeSlot.length === 0) continue;
+        // const semesterFreeSlotId = this.setTimeSlotId(course.credit, semesterFreeSlot);
+        // if (semesterFreeSlotId) {
+        // } else {
+        //   continue;
+        // }
+        // todo: common time slot id check korte hobe
+
+        // if (roomSlotId && roomSlotId === teacherSlotId) {
+        // isFound = true;
+        //   break;
+        // } else {
+        //   continue;
         // }
       }
       // return this.bookingRepository.create(createBookingDto).save();
@@ -113,33 +97,31 @@ export class BookingService {
       return this.bookingRepository.create(createBookingDto).save();
     } else {
     }
-    // allRooms.forEach((room: RoomEntity) => {
-    //   timeSlots.forEach((timeSlot: TimeslotEntity) => {
-    //     // allBookings.
-    //   });
-    // });
-
-    // while (allRooms.length > iteration) {
-    //   iteration += 1;
-    // }
-    // const timeSloats = TimeSlotConstant;
-
-    // const all = await this.courseRepository.find();
-    // createBookingDto.timeSlotId = '2a03d233-180d-48ba-b140-9620ae08e322';
-    // console.log('course', course);
-    // let hours = 0;
-
-    // const course = await this.courseRepository.findOne({ where: { id: createBookingDto.courseId } });
-    // // const room = await this.roomRepository.findOne({ where: { id: createBookingDto.roomId } });
-    // const teacher = await this.teacherRepository.findOne({ where: { id: createBookingDto.teacherId } });
-    // const matchRoomList = this.roomRepository.find({
-    //   where: { capacity: MoreThanOrEqual(createBookingDto.registerStudent) },
-    // });
-    // console.log('matchRoomList', matchRoomList);
-
-    // hours = course.credit > 2 ? 2 : 1;
 
     return {} as BookingEntity;
+  }
+
+  getCommonTimeSlot(
+    roomTimeSlot: ITimeSlot[],
+    teacherTimeSlot: ITimeSlot[],
+    semesterTimeSlot: ITimeSlot[],
+  ): ITimeSlot[] {
+    const list = [...roomTimeSlot, ...teacherTimeSlot, ...semesterTimeSlot];
+    const hasMap = {};
+    for (const item of list) {
+      if (hasMap[item.id]) {
+        hasMap[item.id] += 1;
+      } else {
+        hasMap[item.id] = 1;
+      }
+    }
+    const commonTimeSlot: ITimeSlot[] = [];
+    for (const [key, value] of Object.entries(hasMap)) {
+      if (Number(value) === 3) {
+        commonTimeSlot.push(TimeSlotConstant.find((item) => item.id === key));
+      }
+    }
+    return commonTimeSlot;
   }
 
   setTimeSlotId(courseCredit: number, roomSlot: ITimeSlot[]): string {
