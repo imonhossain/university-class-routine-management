@@ -5,6 +5,7 @@ import CoursePage from 'pages/course/CoursePage';
 import DashboardPage from 'pages/dashboard/DashboardPage';
 import LoginPage from 'pages/login/Login';
 import RoomPage from 'pages/room/RoomPage';
+import TeacherReportPage from 'pages/teacher-report/TeacherReportPage';
 import TeacherPage from 'pages/teacher/TeacherPage';
 import { Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -29,6 +30,10 @@ const AppRoutes = () => {
               <Route path={RoutingPath.LOGIN} element={<LoginPage />} />
             </Route>
             <Route path={RoutingPath.HOME} element={<DashboardPage />} />
+            <Route
+              path={RoutingPath.TEACHER_REPORT}
+              element={<TeacherReportPage />}
+            />
           </Routes>
         </Suspense>
       </UserContainer>

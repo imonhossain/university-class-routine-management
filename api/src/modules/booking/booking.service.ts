@@ -26,7 +26,10 @@ export class BookingService {
   ) {}
 
   async getBookings(): Promise<BookingEntity[]> {
-    const sql = `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, teacherId, roomId, courseId, Course.code courseCode, Course.name courseName, Room.number roomNumber, Teacher.name teacherName FROM Booking
+    const sql = `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, 
+    teacherId, roomId, courseId, Course.code courseCode, Course.credit courseCredit, 
+    Course.name courseName, Room.number roomNumber, 
+    Teacher.name teacherName FROM Booking
     INNER JOIN Course
     ON Booking.courseId = Course.id
     INNER JOIN Room

@@ -83,7 +83,7 @@ const BookingForm: FC<Props> = ({
           options={teacherList?.data || []}
         />
         <Input
-          label="Course Name"
+          label="Register Student"
           type="text"
           value={booking.registerStudent}
           name="registerStudent"
