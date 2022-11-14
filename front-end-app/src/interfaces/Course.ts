@@ -1,6 +1,7 @@
 import Department from 'enums/Department';
 
 interface ICourse {
+  id: string;
   name: string;
   code: string;
   credit: number;

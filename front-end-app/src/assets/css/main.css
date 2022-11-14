@@ -21,4 +21,9 @@
 }
 .nub-table thead tr th, .nub-table tbody tr td{
   border: 1px solid #212121;
+  font-size: 12px;
+  padding:2px;
+}
+.flarie__menu{
+  z-index: 99 !important;
 }
