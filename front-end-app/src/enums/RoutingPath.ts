@@ -5,5 +5,6 @@ enum RoutingPath {
   ROOM = '/room',
   TEACHER = '/teacher',
   BOOKING = '/booking',
+  TEACHER_REPORT = '/teacher_report',
 }
 export default RoutingPath;

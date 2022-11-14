@@ -18,6 +18,16 @@ const PublicHeader: FC = () => {
           Home
         </Link>
       </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
+        <Link to={RoutingPath.TEACHER_REPORT} className="flex items-center">
+          Teacher Report
+        </Link>
+      </Typography>
     </ul>
   );
   const onClickLogout = () => {
