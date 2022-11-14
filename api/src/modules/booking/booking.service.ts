@@ -26,7 +26,7 @@ export class BookingService {
   ) {}
 
   async getBookings(): Promise<BookingEntity[]> {
-    const sql = `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, teacherId, roomId, courseId, Course.name courseName, Room.number roomNumber, Teacher.name teacherName FROM Booking
+    const sql = `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, teacherId, roomId, courseId, Course.code courseCode, Course.name courseName, Room.number roomNumber, Teacher.name teacherName FROM Booking
     INNER JOIN Course
     ON Booking.courseId = Course.id
     INNER JOIN Room
@@ -57,41 +57,7 @@ export class BookingService {
         } else {
           continue;
         }
-
-        // console.log('commonTimeSlot', commonTimeSlot);
-
-        // if (roomSlot.length === 0) continue;
-        // const roomSlotId = this.setTimeSlotId(course.credit, roomSlot);
-        // if (roomSlotId) {
-        //   createBookingDto.timeSlotId = roomSlotId;
-        //   createBookingDto.roomId = room.id;
-        // } else {
-        //   continue;
-        // }
-
-        // if (teacherSlot.length === 0) continue;
-        // const teacherSlotId = this.setTimeSlotId(course.credit, teacherSlot);
-        // if (teacherSlotId) {
-        // } else {
-        //   continue;
-        // }
-
-        // if (semesterFreeSlot.length === 0) continue;
-        // const semesterFreeSlotId = this.setTimeSlotId(course.credit, semesterFreeSlot);
-        // if (semesterFreeSlotId) {
-        // } else {
-        //   continue;
-        // }
-        // todo: common time slot id check korte hobe
-
-        // if (roomSlotId && roomSlotId === teacherSlotId) {
-        // isFound = true;
-        //   break;
-        // } else {
-        //   continue;
-        // }
       }
-      // return this.bookingRepository.create(createBookingDto).save();
     }
     if (isFound) {
       return this.bookingRepository.create(createBookingDto).save();

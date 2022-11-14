@@ -8,6 +8,8 @@ import DayType from 'enums/DayType';
 import EntityName from 'enums/EntityName';
 import IBooking from 'interfaces/Booking';
 import IRoutine from 'interfaces/Routine';
+import ISemesterReport from 'interfaces/SemesterReport';
+import ITeacherReport from 'interfaces/TeacherReport';
 import { ITimeSlot } from 'interfaces/TimeSlot';
 import { toastError } from 'services/ToasterServices';
 
@@ -142,4 +144,54 @@ export const getRoomNumber = (routine: IRoutine[]): string => {
     if (item?.roomNumber) return item?.roomNumber;
   }
   return 'no room';
+};
+
+export const getSemesterWiseData = (
+  semester: number,
+  bookings: IBooking[],
+): ISemesterReport[] => {
+  return bookings
+    .filter((item: IBooking) => item.semester === semester)
+    .map((booking: IBooking) => {
+      const timeSlotsIds = booking.timeSlotId.split(',');
+      const timeSlot: ITimeSlot = getTimePeriodById(timeSlotsIds[0]);
+      const timeSlotEnd: ITimeSlot = getTimePeriodById(
+        timeSlotsIds[timeSlotsIds.length - 1],
+      );
+      const obj: ISemesterReport = {
+        day: timeSlot.dayGroup === 3 ? DayType.SATURDAY : DayType.FRIDAY,
+        courseName: booking.courseName as string,
+        startTime: timeSlot.startTime,
+        endTime: timeSlotEnd.endTime,
+        roomNumber: booking.roomNumber as string,
+        courseCode: booking.courseCode as string,
+        teacherName: booking.teacherName as string,
+      };
+      return obj;
+    });
+};
+export const getTeacherWiseData = (
+  teacherId: string,
+  bookings: IBooking[],
+): ITeacherReport[] => {
+  return bookings
+    .filter((item: IBooking) => item.teacherId === teacherId)
+    .map((booking: IBooking) => {
+      const timeSlotsIds = booking.timeSlotId.split(',');
+      const timeSlot: ITimeSlot = getTimePeriodById(timeSlotsIds[0]);
+      const timeSlotEnd: ITimeSlot = getTimePeriodById(
+        timeSlotsIds[timeSlotsIds.length - 1],
+      );
+      const obj: ITeacherReport = {
+        day: timeSlot.dayGroup === 3 ? DayType.SATURDAY : DayType.FRIDAY,
+        courseName: booking.courseName as string,
+        startTime: timeSlot.startTime,
+        endTime: timeSlotEnd.endTime,
+        roomNumber: booking.roomNumber as string,
+        courseCode: booking.courseCode as string,
+        teacherName: booking.teacherName as string,
+        semester: booking.semester,
+      };
+      return obj;
+    });
 };

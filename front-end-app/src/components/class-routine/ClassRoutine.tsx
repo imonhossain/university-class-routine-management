@@ -17,7 +17,6 @@ const ClassRoutine: FC = () => {
   const [routinesSaturday, setRoutinesSaturday] = useState<any>([]);
 
   useEffect(() => {
-    console.log('call');
     const bookings: IBooking[] = JSON.parse(
       JSON.stringify(appContext?.bookings),
     );
@@ -32,6 +31,7 @@ const ClassRoutine: FC = () => {
         ),
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appContext?.bookings?.length]);
   return (
     <div className="mt-8 pl-2 pr-2">
