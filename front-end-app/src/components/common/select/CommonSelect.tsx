@@ -15,6 +15,7 @@ interface Props {
   className?: string;
   label?: string;
   isDisabled?: boolean;
+  isClearable?: boolean;
 }
 const CommonSelect: FC<Props> = ({
   options,
@@ -26,6 +27,7 @@ const CommonSelect: FC<Props> = ({
   className = '',
   label = '',
   isDisabled = false,
+  isClearable = false,
 }) => {
   return (
     <div className="relative">
@@ -42,6 +44,7 @@ const CommonSelect: FC<Props> = ({
         getOptionValue={getOptionValue}
         menuPlacement={menuPlacement}
         isDisabled={isDisabled}
+        isClearable={isClearable}
       />
     </div>
   );
