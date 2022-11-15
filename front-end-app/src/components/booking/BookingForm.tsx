@@ -111,7 +111,7 @@ const BookingForm: FC<Props> = ({
       <CardBody className="flex w-full flex-col gap-3">
         <CommonSelect
           label="Select a course"
-          onChange={(e: any) => handelChangeSelect('courseId', e.id)}
+          onChange={(e: any) => handelChangeSelect('courseId', e?.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
           value={
@@ -124,7 +124,7 @@ const BookingForm: FC<Props> = ({
         />
         <CommonSelect
           label="Select a teacher"
-          onChange={(e: any) => handelChangeSelect('teacherId', e.id)}
+          onChange={(e: any) => handelChangeSelect('teacherId', e?.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
           value={
@@ -145,7 +145,7 @@ const BookingForm: FC<Props> = ({
         />
         <CommonSelect
           label="Select a semester"
-          onChange={(e: any) => handelChangeSelect('semester', e.id)}
+          onChange={(e: any) => handelChangeSelect('semester', e?.id)}
           getOptionLabel={(option: any) => option.name}
           getOptionValue={(option: any) => option.id}
           value={

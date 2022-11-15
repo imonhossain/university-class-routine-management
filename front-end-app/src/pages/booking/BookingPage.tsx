@@ -26,7 +26,7 @@ const BookingPage = () => {
     },
     {
       onSuccess: (response) => {
-        setBooking(defaultBooking);
+        // setBooking(defaultBooking);
         toastSuccess('Save Successfully');
         appContext.dispatch({
           type: actionTypes.ADD_BOOKING,
