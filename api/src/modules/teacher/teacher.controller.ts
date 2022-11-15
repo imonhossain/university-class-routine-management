@@ -11,8 +11,6 @@ export class TeacherController {
   constructor(private teacherService: TeacherService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('token')
   @ApiOperation({ summary: 'Fetch all teacher' })
   @ApiResponse({ status: 200, description: 'Return all teacher' })
   @ApiResponse({ status: 401, description: 'UNAUTHORIZED' })

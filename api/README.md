@@ -1,73 +1,62 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Class routine backend service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Service for handling Course, Teacher, Room, TimeSlot And booking.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Before start please give some time to these reading material
 
-## Description
+- [NestJS](https://nestjs.com/)
+- [TypeORM migration](https://typeorm.io/#/migrations)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+###### Prerequisites
 
-## Installation
+- Install Node 14 LTS
 
-```bash
-$ npm install
-```
+- Install [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/)
 
-## Running the app
+### Database
 
-```bash
-# development
-$ npm run start
+- mysql 5.7
 
-# watch mode
-$ npm run start:dev
+### Developer instructions
 
-# production mode
-$ npm run start:prod
-```
+- Install NestJS globally with `npm i -g @nestjs/cli`.
+- Clone repo and run command `npm i`
+- Install typeorm globally with `npm i -g typeorm`. You can also chose to use `npx typeorm <params>` for each command if you prefer not having to install it.
+- Run command `npm run create:env` to copy .env.sample to .env
+- Docker compose run `docker-compose up -d`
+- After latest pull schema migration required
+  `npm run build`
+  `npm run typeorm migration:run`
+- Preferred commands for developers
+  `npm run start:dev`
+- When developer add a new entity and fields then developer have to follow the migration process
+  `npm run typeorm migration:generate -- -n <name of changes>`
+  `npm run build`
+  `npm run typeorm migration:run`
+  it'll generate new table and alter column changes
+- Developer must need to build his code before push.
+  `npm run build`
 
-## Test
+###### Run the tests ########
 
-```bash
-# unit tests
-$ npm run test
+- `npm run test`
 
-# e2e tests
-$ npm run test:e2e
+###### Start the development environment
 
-# test coverage
-$ npm run test:cov
-```
+- `npm run start:dev`
 
-## Support
+###### Bird's eye view of the existing APIs using the SwaggerUI
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- Browse <http://localhost:7010/rest/api-service/swagger/>
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Access
 
-## License
+| Email | Password | Role |
+| ------ | ------ | ------ |
+| admin@flarie.com | admin | ADMIN |
 
-Nest is [MIT licensed](LICENSE).
+
+## Change Log
+
+- `0.0.1`: Project scaffolding.

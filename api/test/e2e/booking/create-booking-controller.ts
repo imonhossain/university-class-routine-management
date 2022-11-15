@@ -247,9 +247,11 @@ describe('/v1/booking (POST)', () => {
     it.only('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
       const payload = dummyCreateBookingPayload();
       payload.courseId = '3e706e91-5b01-4420-838f-eb8424a5580c';
-      payload.teacherId = '06094548-82ca-4f17-a03e-11436faa4f9d';
-      payload.registerStudent = 60;
+      payload.teacherId = '4c203021-1864-4d4e-af74-2e447314ddfd';
+      payload.roomId = '';
+      payload.registerStudent = 10;
       payload.section = Section.A;
+      payload.semester = 5;
       const result = await request(app.getHttpServer())
         .post(apiEndPont)
         .send(payload)

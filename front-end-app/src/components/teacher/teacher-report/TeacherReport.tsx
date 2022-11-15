@@ -27,7 +27,7 @@ interface Props {
 
 const TeacherReport: FC<Props> = ({ teacherData }) => {
   const options = {
-    responsive: true,
+    responsive: false,
     plugins: {
       legend: {
         position: 'top' as const,
@@ -54,7 +54,13 @@ const TeacherReport: FC<Props> = ({ teacherData }) => {
     <Card className="container">
       <CardBody>
         <h1 className="text-left">Teacher Graph</h1>
-        <Bar options={options} data={data} />
+        <Bar
+          options={options}
+          data={data}
+          height={500}
+          width={700}
+          className="w-full ml-auto mr-auto"
+        />
       </CardBody>
     </Card>
   );
