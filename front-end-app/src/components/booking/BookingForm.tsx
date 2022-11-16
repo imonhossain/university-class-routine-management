@@ -59,6 +59,7 @@ const BookingForm: FC<Props> = ({
     if (found && !found.isAutoAssign) {
       toastInfo(`${found.name} is special type course. Please select a room`);
     }
+    setBooking({ ...booking, semester: found?.semester || 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [booking.courseId]);
 

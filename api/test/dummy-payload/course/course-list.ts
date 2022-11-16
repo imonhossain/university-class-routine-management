@@ -45,7 +45,7 @@ export const dummyCourseList: CreateCourseDto[] = [
   {
     code: 'CSE 1290',
     name: 'Software Development I (C Programming)',
-    credit: 1,
+    credit: 3,
     department: Department.CSE,
     semester: 2,
     isAutoAssign: true,
@@ -125,7 +125,7 @@ export const dummyCourseList: CreateCourseDto[] = [
   {
     code: 'CSE 2264',
     name: 'Algorithms Lab Work',
-    credit: 3,
+    credit: 1,
     department: Department.CSE,
     semester: 3,
     isAutoAssign: true,
@@ -133,7 +133,7 @@ export const dummyCourseList: CreateCourseDto[] = [
   {
     code: 'CSE 2265',
     name: 'Digital Logic Design Lab Work',
-    credit: 3,
+    credit: 1,
     department: Department.CSE,
     semester: 3,
     isAutoAssign: true,
@@ -149,7 +149,7 @@ export const dummyCourseList: CreateCourseDto[] = [
   {
     code: 'CSE 2367',
     name: 'Database Management Systems Lab Work',
-    credit: 3,
+    credit: 1,
     department: Department.CSE,
     semester: 3,
     isAutoAssign: true,

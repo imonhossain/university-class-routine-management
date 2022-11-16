@@ -1,6 +1,7 @@
 import { Card, CardBody, IconButton } from '@material-tailwind/react';
 import { deleteCourse } from 'actions/CourseAction';
 import NubTable from 'components/common/table/NubTable';
+import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
@@ -47,6 +48,13 @@ const CourseList: FC<Props> = ({ data }) => {
       {
         title: 'Name',
         dataIndex: 'name',
+        ...tableColumnTextFilterConfig<ICourse>(),
+        onFilter: (value: string, record: ICourse) => {
+          return record.name
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
       },
       {
         title: 'Credit',
@@ -55,6 +63,13 @@ const CourseList: FC<Props> = ({ data }) => {
       {
         title: 'Course Code',
         dataIndex: 'code',
+        ...tableColumnTextFilterConfig<ICourse>(),
+        onFilter: (value: string, record: ICourse) => {
+          return record.code
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
       },
       {
         title: 'Auto Assign',

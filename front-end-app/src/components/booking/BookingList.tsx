@@ -1,10 +1,12 @@
 import { Card, CardBody, IconButton } from '@material-tailwind/react';
 import { deleteBooking } from 'actions/BookingAction';
 import NubTable from 'components/common/table/NubTable';
+import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
 import IBooking from 'interfaces/Booking';
+import IBookingResponse from 'interfaces/BookingResponse';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useMutation } from 'react-query';
 import { toastSuccess } from 'services/ToasterServices';
@@ -47,10 +49,35 @@ const BookingList: FC<Props> = ({ data }) => {
       {
         title: 'Teacher Name',
         dataIndex: 'teacherName',
+        ...tableColumnTextFilterConfig<IBookingResponse>(),
+        onFilter: (value: string, record: IBookingResponse) => {
+          return record.teacherName
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
       },
       {
         title: 'Room Number',
         dataIndex: 'roomNumber',
+        ...tableColumnTextFilterConfig<IBookingResponse>(),
+        onFilter: (value: string, record: IBookingResponse) => {
+          return record.roomNumber
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
+      },
+      {
+        title: 'Course name',
+        dataIndex: 'courseName',
+        ...tableColumnTextFilterConfig<IBookingResponse>(),
+        onFilter: (value: string, record: IBookingResponse) => {
+          return record.courseName
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
       },
       {
         title: 'Student',
@@ -59,6 +86,13 @@ const BookingList: FC<Props> = ({ data }) => {
       {
         title: 'Semester',
         dataIndex: 'semester',
+        ...tableColumnTextFilterConfig<IBookingResponse>(),
+        onFilter: (value: string, record: IBookingResponse) => {
+          return record.semester
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
       },
       {
         title: 'Delete',
