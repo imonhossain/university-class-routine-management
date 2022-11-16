@@ -5,6 +5,7 @@
 @import url('./module/ant-extenstion.css');
 @import url('./module/utilities.css');
 @import url('./module/forms.css'); */
+@import url('./module/ant-extenstion.css');
 @import url('./module/font-awesome.css');
 
 .ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td {

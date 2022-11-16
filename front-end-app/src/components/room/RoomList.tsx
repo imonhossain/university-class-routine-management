@@ -2,6 +2,7 @@
 import { Card, CardBody, IconButton } from '@material-tailwind/react';
 import { deleteRoom } from 'actions/RoomAction';
 import NubTable from 'components/common/table/NubTable';
+import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
 import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
@@ -48,6 +49,13 @@ const RoomList: FC<Props> = ({ data }) => {
       {
         title: 'Room number',
         dataIndex: 'number',
+        ...tableColumnTextFilterConfig<IRoom>(),
+        onFilter: (value: string, record: IRoom) => {
+          return record.number
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
       },
       {
         title: 'Room Capacity',

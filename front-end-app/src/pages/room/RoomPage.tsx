@@ -30,6 +30,7 @@ const RoomPage = () => {
   const { isLoading: isSaving, mutate: addRoom } = useMutation(
     async () => {
       room.capacity = Number(room.capacity);
+      room.number = room.number.trim();
       return createRoom(room);
     },
     {

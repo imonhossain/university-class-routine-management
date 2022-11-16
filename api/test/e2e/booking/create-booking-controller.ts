@@ -244,7 +244,7 @@ describe('/v1/booking (POST)', () => {
     afterAll(async () => {
       await removeBookings(bookingIds);
     });
-    it.only('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
+    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
       const payload = dummyCreateBookingPayload();
       payload.courseId = '3e706e91-5b01-4420-838f-eb8424a5580c';
       payload.teacherId = '4c203021-1864-4d4e-af74-2e447314ddfd';
@@ -268,7 +268,7 @@ describe('/v1/booking (POST)', () => {
       // expect(result.body.timeSlotId).toEqual(payload.timeSlotId);
     });
   });
-  describe('Implement booking business logic', () => {
+  describe.only('Implement booking business logic', () => {
     let signInResponse: SignInUserDto;
     const email = 'admin@gmail.com';
     // let coursesIds: string[] = [];
@@ -276,7 +276,7 @@ describe('/v1/booking (POST)', () => {
     // let roomIds: string[] = [];
     beforeAll(async () => {
       signInResponse = await getUserSignInResponse(email);
-      // const courses = await createCourses(dummyCourseList);
+      const courses = await createCourses(dummyCourseList);
       // const teachers = await createTeachers(dummyTeacherList);
       // const timeSloats = await createTimeslots(dummyTimeslotList);
       // const rooms = await createRooms(dummyRoomList);
@@ -285,11 +285,11 @@ describe('/v1/booking (POST)', () => {
       // teacherIds = teachers.map((item: TeacherEntity) => item.id);
       // roomIds = rooms.map((item: RoomEntity) => item.id);
     });
-    // afterAll(async () => {
-    //   removeCourses(coursesIds);
-    //   // removeTeachers(teacherIds);
-    //   // removeRooms(roomIds);
-    // });
+    afterAll(async () => {
+      // removeCourses(coursesIds);
+      // removeTeachers(teacherIds);
+      // removeRooms(roomIds);
+    });
     it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
       expect(true).toEqual(true);
     });

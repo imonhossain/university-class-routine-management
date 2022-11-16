@@ -6,8 +6,10 @@ import {
   Input,
   Switch,
 } from '@material-tailwind/react';
+import { useAppContext } from 'context/appContext';
 import IRoom from 'interfaces/Room';
 import { Dispatch, FC, SetStateAction } from 'react';
+import { toastError } from 'services/ToasterServices';
 
 interface Props {
   room: IRoom;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
+  const appContext = useAppContext() as any;
   const onChange = (e: React.FormEvent<HTMLInputElement>) => {
     const event = e as unknown as any;
     setRoom({ ...room, [event.target.name]: event.target.value });
@@ -26,6 +29,16 @@ const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
     setRoom({ ...room, isAutoAssign: event?.target?.checked });
   };
   const isValidForm = room.capacity && room.number;
+  const onClickAddRoom = () => {
+    const found = appContext.rooms.find(
+      (item: IRoom) => item.number === room.number.trim(),
+    );
+    if (found) {
+      toastError('Room Number already exist. please change room number');
+    } else {
+      onSubmitForm();
+    }
+  };
   return (
     <Card className="">
       <h1 className="text-center">Room Form</h1>
@@ -57,7 +70,7 @@ const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
           <Button
             size="sm"
             type="button"
-            onClick={onSubmitForm}
+            onClick={onClickAddRoom}
             disabled={!isValidForm || isLoading}
           >
             Submit
