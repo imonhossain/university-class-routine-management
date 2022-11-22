@@ -24,12 +24,12 @@ const AppRoutes = () => {
               <Route path={RoutingPath.COURSE} element={<CoursePage />} />
               <Route path={RoutingPath.TEACHER} element={<TeacherPage />} />
               <Route path={RoutingPath.ROOM} element={<RoomPage />} />
-              <Route path={RoutingPath.BOOKING} element={<BookingPage />} />
             </Route>
             <Route element={<RedirectDashboard />}>
               <Route path={RoutingPath.LOGIN} element={<LoginPage />} />
             </Route>
             <Route path={RoutingPath.HOME} element={<DashboardPage />} />
+            <Route path={RoutingPath.BOOKING} element={<BookingPage />} />
             <Route
               path={RoutingPath.TEACHER_REPORT}
               element={<TeacherReportPage />}

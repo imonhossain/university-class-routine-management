@@ -8,12 +8,14 @@ import Section from 'enums/Section';
 import IBooking from 'interfaces/Booking';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
+import { useGetToken } from 'services/AuthenticationService';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultBooking } from '../../components/booking/BookingDefaultValue';
 
 const BookingPage = () => {
   const appContext = useAppContext() as any;
+  const isLogin = useGetToken();
 
   const [booking, setBooking] = useState<IBooking>(defaultBooking);
 
@@ -39,19 +41,21 @@ const BookingPage = () => {
     },
   );
   return (
-    <div className="max-w-screen-2xl mx-auto">
-      <div className="grid grid-cols-3 gap-4 mt-12">
-        <div className="col-span-2 ">
+    <div className="mx-auto">
+      <div className="grid grid-cols-4 gap-4 mt-12">
+        <div className={isLogin ? 'col-span-3' : 'col-span-4 '}>
           {appContext?.bookings && <BookingList data={appContext?.bookings} />}
         </div>
-        <div className="col-span-1">
-          <BookingForm
-            booking={booking}
-            setBooking={setBooking}
-            onSubmitForm={addBooking}
-            isLoading={isSaving}
-          />
-        </div>
+        {Boolean(isLogin) && (
+          <div className="col-span-1">
+            <BookingForm
+              booking={booking}
+              setBooking={setBooking}
+              onSubmitForm={addBooking}
+              isLoading={isSaving}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
