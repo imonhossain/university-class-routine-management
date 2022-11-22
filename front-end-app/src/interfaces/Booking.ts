@@ -15,5 +15,7 @@ interface IBooking {
   courseName?: string;
   isAutoAssign?: string;
   courseCode?: string;
+  startTime?: string;
+  endTime?: string;
 }
 export default IBooking;

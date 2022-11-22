@@ -7,16 +7,25 @@ import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
 import IBooking from 'interfaces/Booking';
 import IBookingResponse from 'interfaces/BookingResponse';
+import { ITimeSlot } from 'interfaces/TimeSlot';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useMutation } from 'react-query';
 import { toastSuccess } from 'services/ToasterServices';
-import { httpErrorDisplay } from 'services/UtilsService';
+import { getTimePeriodById, httpErrorDisplay } from 'services/UtilsService';
 
 interface Props {
   data: IBooking[];
 }
 
 const BookingList: FC<Props> = ({ data }) => {
+  data.forEach((item: IBooking) => {
+    const timeSlotList = item.timeSlotId.split(',');
+    const timeSlot: ITimeSlot = getTimePeriodById(timeSlotList[0]);
+    item.startTime = timeSlot.startTime;
+    item.endTime = getTimePeriodById(
+      timeSlotList[timeSlotList.length - 1],
+    ).endTime;
+  });
   const appContext = useAppContext() as any;
   const [bookingId, setBookingId] = useState<string>('');
   const { mutate: deleteMutate } = useMutation(
@@ -80,6 +89,29 @@ const BookingList: FC<Props> = ({ data }) => {
         },
       },
       {
+        title: 'Corse Code',
+        dataIndex: 'courseCode',
+        ...tableColumnTextFilterConfig<IBookingResponse>(),
+        onFilter: (value: string, record: IBookingResponse) => {
+          return record.courseCode
+            .toString()
+            .toLowerCase()
+            .includes(value.toString().toLowerCase());
+        },
+      },
+      {
+        title: 'Start Time',
+        dataIndex: 'startTime',
+      },
+      {
+        title: 'End Time',
+        dataIndex: 'endTime',
+      },
+      {
+        title: 'Credit',
+        dataIndex: 'courseCredit',
+      },
+      {
         title: 'Student',
         dataIndex: 'registerStudent',
       },
@@ -114,7 +146,7 @@ const BookingList: FC<Props> = ({ data }) => {
   );
 
   return (
-    <Card className="container">
+    <Card className="">
       <CardBody>
         <h1 className="text-left">Booking list</h1>
         <NubTable data={data} columns={columns} />
