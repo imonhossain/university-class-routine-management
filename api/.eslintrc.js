@@ -3,15 +3,12 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json',
     sourceType: 'module',
-    ecmaVersion: '2020',
+    ecmaVersion: 2020,
   },
-  plugins: ['@typescript-eslint', 'unicorn', 'prettier', 'node'],
+  plugins: ['@typescript-eslint', 'prettier'],
   extends: [
-    'airbnb-typescript/base',
-    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier',
-    'plugin:unicorn/recommended',
     'plugin:prettier/recommended',
   ],
   root: true,
@@ -19,24 +16,12 @@ module.exports = {
     node: true,
     jest: true,
   },
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
-    'import/no-relative-parent-imports': 'error',
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
-    'unicorn/filename-case': [
-      'error',
-      {
-        cases: {
-          pascalCase: true,
-          kebabCase: true,
-        },
-      },
-    ],
-    'unicorn/prevent-abbreviations': 'off',
-    'unicorn/no-null': 'off',
-    'unicorn/no-reduce': 'off',
-    'class-methods-use-this': ['error', { exceptMethods: ['map'] }],
+    'class-methods-use-this': 'off',
     complexity: ['error', 5],
     'max-params': ['error', 8],
     curly: 'error',
@@ -45,13 +30,6 @@ module.exports = {
     'no-implicit-coercion': 'error',
     'no-implied-eval': 'error',
     'no-invalid-this': 'error',
-    'class-methods-use-this': 'off',
-    'no-magic-numbers': [
-      'error',
-      {
-        ignore: [0, 1, -1],
-      },
-    ],
     'no-throw-literal': 'error',
     'no-unused-expressions': [
       'error',
@@ -86,12 +64,6 @@ module.exports = {
       },
     ],
     'no-duplicate-imports': 'error',
-    'node/no-process-env': 'error',
-    'node/callback-return': 'error',
-    'node/global-require': 'error',
-    'node/no-mixed-requires': 'error',
-    'node/no-new-require': 'error',
-    'node/no-sync': 'error',
     'prefer-arrow-callback': [
       'error',
       {
@@ -99,18 +71,12 @@ module.exports = {
         allowUnboundThis: true,
       },
     ],
-    'import/extensions': 'off',
-    'import/order': 'off',
-    "import/no-relative-parent-imports": "off",
-    "import/no-extraneous-dependencies": "off",
-    "no-magic-numbers": "off",
   },
   overrides: [
     {
       files: ['test/**/*.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
-        'no-magic-numbers': 'off',
       },
     },
     {
@@ -122,7 +88,6 @@ module.exports = {
     {
       files: ['seed-script.ts'],
       rules: {
-        'unicorn/no-process-exit': 'off',
         'no-console': 'off',
       },
     },

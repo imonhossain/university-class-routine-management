@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable node/no-process-env */
-/* eslint-disable unicorn/prefer-module */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('dotenv').config();
 import { CourseEntity } from '@/modules/course/CourseEntity';
 import { User } from '@/entities/User';
 import { BookingEntity } from '@/modules/booking/booking.entity';
 import { RoomEntity } from '@/modules/room/room.entity';
 import { TeacherEntity } from '@/modules/teacher/teacher.entity';
-import { ConnectionOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 import { TimeslotEntity } from '@/modules/timeslot/timeslot.entity';
 
-const TypeOrmConfig: ConnectionOptions = {
+const TypeOrmConfig: DataSourceOptions = {
   type: 'mysql',
   host: process.env.TYPEORM_HOST,
   port: Number(process.env.TYPEORM_PORT),
@@ -21,9 +20,6 @@ const TypeOrmConfig: ConnectionOptions = {
   debug: true,
   synchronize: false,
   migrations: process.env.typeorm === 'true' ? ['migrations/*.ts'] : [],
-  cli: {
-    migrationsDir: 'migrations',
-  },
 };
 
 export default TypeOrmConfig;
