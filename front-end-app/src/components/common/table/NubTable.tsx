@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Table, TablePaginationConfig } from 'antd';
+import { Table } from 'antd';
 
 interface Props {
   data: any[];
   columns: any[];
-  pagination?: boolean;
+  pagination?: boolean | object;
   rowKey?: string;
   className?: string;
 }
@@ -21,7 +21,7 @@ const NubTable: FC<Props> = ({
         dataSource={data}
         columns={columns}
         rowKey={rowKey}
-        pagination={pagination as TablePaginationConfig}
+        pagination={pagination === false ? false : undefined}
         className={className}
       />
     </div>

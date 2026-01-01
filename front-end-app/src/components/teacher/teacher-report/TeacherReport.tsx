@@ -1,4 +1,4 @@
-import { Card, CardBody } from '@material-tailwind/react';
+import { Card } from 'antd';
 import {
   BarElement,
   CategoryScale,
@@ -52,16 +52,14 @@ const TeacherReport: FC<Props> = ({ teacherData }) => {
 
   return (
     <Card className="container">
-      <CardBody>
-        <h1 className="text-left">Teacher Graph</h1>
-        <Bar
-          options={options}
-          data={data}
-          height={500}
-          width={700}
-          className="w-full ml-auto mr-auto"
-        />
-      </CardBody>
+      <h1 className="text-left">Teacher Graph</h1>
+      <Bar
+        options={options}
+        data={data}
+        height={500}
+        width={700}
+        className="w-full ml-auto mr-auto"
+      />
     </Card>
   );
 };
