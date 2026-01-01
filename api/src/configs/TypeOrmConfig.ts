@@ -6,7 +6,7 @@ import { User } from '@/entities/User';
 import { BookingEntity } from '@/modules/booking/booking.entity';
 import { RoomEntity } from '@/modules/room/room.entity';
 import { TeacherEntity } from '@/modules/teacher/teacher.entity';
-import { DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { TimeslotEntity } from '@/modules/timeslot/timeslot.entity';
 
 const TypeOrmConfig: DataSourceOptions = {
@@ -17,9 +17,15 @@ const TypeOrmConfig: DataSourceOptions = {
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
   entities: [User, CourseEntity, RoomEntity, TeacherEntity, BookingEntity, TimeslotEntity],
-  debug: true,
+  logging: true,
   synchronize: false,
   migrations: process.env.typeorm === 'true' ? ['migrations/*.ts'] : [],
+  extra: {
+    charset: 'utf8mb4_unicode_ci',
+  },
+  charset: 'utf8mb4',
 };
 
 export default TypeOrmConfig;
+
+export const AppDataSource = new DataSource(TypeOrmConfig);
