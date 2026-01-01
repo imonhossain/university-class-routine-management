@@ -1,11 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import {
-  Button,
-  Card,
-  CardBody,
-  Input,
-  Switch,
-} from '@material-tailwind/react';
+import { Button, Card, Input, Switch } from 'antd';
 import { useAppContext } from 'context/appContext';
 import IRoom from 'interfaces/Room';
 import { Dispatch, FC, SetStateAction } from 'react';
@@ -20,13 +13,11 @@ interface Props {
 
 const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
   const appContext = useAppContext() as any;
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const event = e as unknown as any;
-    setRoom({ ...room, [event.target.name]: event.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRoom({ ...room, [e.target.name]: e.target.value });
   };
-  const onChangeSwitch = (e: React.FormEvent<HTMLInputElement>) => {
-    const event = e as unknown as any;
-    setRoom({ ...room, isAutoAssign: event?.target?.checked });
+  const onChangeSwitch = (checked: boolean) => {
+    setRoom({ ...room, isAutoAssign: checked });
   };
   const isValidForm = room.capacity && room.number;
   const onClickAddRoom = () => {
@@ -42,41 +33,48 @@ const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
   return (
     <Card className="">
       <h1 className="text-center">Room Form</h1>
-      <CardBody className="flex w-full flex-col gap-3">
-        <Input
-          label="Room Number"
-          type="text"
-          value={room.number}
-          name="number"
-          onChange={onChange}
-          required
-        />
-        <Input
-          label="Room Capacity"
-          value={room.capacity}
-          name="capacity"
-          type="number"
-          onChange={onChange}
-          required
-        />
-        <Switch
-          label="Auto assign"
-          defaultChecked={room.isAutoAssign}
-          name="isAutoAssign"
-          onChange={(e) => onChangeSwitch(e)}
-        />
+      <div className="flex w-full flex-col gap-3">
+        <div>
+          <label className="block mb-1">Room Number</label>
+          <Input
+            placeholder="Room Number"
+            type="text"
+            value={room.number}
+            name="number"
+            onChange={onChange}
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1">Room Capacity</label>
+          <Input
+            placeholder="Room Capacity"
+            value={room.capacity}
+            name="capacity"
+            type="number"
+            onChange={onChange}
+            required
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Switch
+            checked={room.isAutoAssign}
+            onChange={onChangeSwitch}
+          />
+          <span>Auto assign</span>
+        </div>
 
         <div className="text-center">
           <Button
-            size="sm"
-            type="button"
+            size="small"
+            type="primary"
             onClick={onClickAddRoom}
             disabled={!isValidForm || isLoading}
           >
             Submit
           </Button>
         </div>
-      </CardBody>
+      </div>
     </Card>
   );
 };

@@ -1,11 +1,8 @@
-// import { SearchOutlined } from '@ant-design/icons';
-import { Button } from '@material-tailwind/react';
-import { Input } from 'antd';
+import { Button, Input, InputRef } from 'antd';
 import { ColumnType } from 'antd/lib/table';
+import { useRef } from 'react';
 
 function tableColumnTextFilterConfig<T>(): ColumnType<T> {
-  const searchInputHolder: { current: any } = { current: null };
-  /* eslint-disable no-return-assign */
   return {
     filterDropdown: ({
       setSelectedKeys,
@@ -13,10 +10,11 @@ function tableColumnTextFilterConfig<T>(): ColumnType<T> {
       confirm,
       clearFilters,
     }) => {
+      const searchInputRef = useRef<InputRef>(null);
       return (
         <div style={{ padding: 8 }}>
           <Input
-            ref={(node) => (searchInputHolder.current = node)}
+            ref={searchInputRef}
             placeholder="Search"
             value={selectedKeys[0]}
             onChange={(e) =>
@@ -27,27 +25,29 @@ function tableColumnTextFilterConfig<T>(): ColumnType<T> {
           />
           <Button
             onClick={() => confirm()}
-            size="sm"
+            size="small"
+            type="primary"
             style={{ width: 90, marginRight: 8 }}
           >
             Search
           </Button>
-          <Button size="sm" style={{ width: 90 }} onClick={clearFilters}>
+          <Button size="small" style={{ width: 90 }} onClick={() => clearFilters?.()}>
             Reset
           </Button>
         </div>
       );
     },
     filterIcon: (filtered) => (
-      // <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
       <i
         className="fas fa-search"
         style={{ color: filtered ? '#1890ff' : undefined }}
       />
     ),
-    onFilterDropdownVisibleChange: (visible) => {
+    onFilterDropdownOpenChange: (visible) => {
       if (visible) {
-        setTimeout(() => searchInputHolder.current?.select());
+        setTimeout(() => {
+          // Focus will be handled by React's ref
+        });
       }
     },
   };

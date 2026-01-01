@@ -7,7 +7,7 @@ import EntityName from 'enums/EntityName';
 import Section from 'enums/Section';
 import IBooking from 'interfaces/Booking';
 import { useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useGetToken } from 'services/AuthenticationService';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
@@ -19,27 +19,24 @@ const BookingPage = () => {
 
   const [booking, setBooking] = useState<IBooking>(defaultBooking);
 
-  const { isLoading: isSaving, mutate: addBooking } = useMutation(
-    async () => {
+  const { isPending: isSaving, mutate: addBooking } = useMutation({
+    mutationFn: async () => {
       booking.semester = Number(booking.semester);
       booking.registerStudent = Number(booking.registerStudent);
       booking.section = Section.A;
       return createBooking(booking);
     },
-    {
-      onSuccess: (response) => {
-        // setBooking(defaultBooking);
-        toastSuccess('Save Successfully');
-        appContext.dispatch({
-          type: actionTypes.ADD_BOOKING,
-          payload: response.data,
-        });
-      },
-      onError: (err) => {
-        httpErrorDisplay(err, EntityName.Booking);
-      },
+    onSuccess: (response) => {
+      toastSuccess('Save Successfully');
+      appContext.dispatch({
+        type: actionTypes.ADD_BOOKING,
+        payload: response.data,
+      });
     },
-  );
+    onError: (err: unknown) => {
+      httpErrorDisplay(err, EntityName.Booking);
+    },
+  });
   return (
     <div className="mx-auto">
       <div className="grid grid-cols-4 gap-4 mt-12">

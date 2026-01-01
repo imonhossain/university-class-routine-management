@@ -1,4 +1,4 @@
-import { Card, CardBody, IconButton } from '@material-tailwind/react';
+import { Button, Card } from 'antd';
 import { deleteCourse } from 'actions/CourseAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
@@ -7,7 +7,7 @@ import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
 import ICourse from 'interfaces/Course';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 
@@ -18,25 +18,23 @@ interface Props {
 const CourseList: FC<Props> = ({ data }) => {
   const appContext = useAppContext() as any;
   const [courseId, setCourseId] = useState<string>('');
-  const { mutate: deleteMutate } = useMutation(
-    async () => {
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: async () => {
       return deleteCourse(courseId);
     },
-    {
-      onSuccess: () => {
-        toastSuccess('Delete Successfully');
-        appContext.dispatch({
-          type: actionTypes.DELETE_COURSE,
-          payload: courseId,
-        });
-        setCourseId('');
-      },
-      onError: (err) => {
-        httpErrorDisplay(err, EntityName.Course);
-        setCourseId('');
-      },
+    onSuccess: () => {
+      toastSuccess('Delete Successfully');
+      appContext.dispatch({
+        type: actionTypes.DELETE_COURSE,
+        payload: courseId,
+      });
+      setCourseId('');
     },
-  );
+    onError: (err: unknown) => {
+      httpErrorDisplay(err, EntityName.Course);
+      setCourseId('');
+    },
+  });
   useEffect(() => {
     if (courseId) {
       deleteMutate();
@@ -80,14 +78,14 @@ const CourseList: FC<Props> = ({ data }) => {
         title: 'Delete',
         dataIndex: 'id',
         render: (id: string) => (
-          <IconButton
-            size="sm"
-            color="red"
+          <Button
+            size="small"
+            danger
             onClick={() => setCourseId(id)}
             disabled={id === courseId}
           >
             <i className="fas fa-times" />
-          </IconButton>
+          </Button>
         ),
       },
     ],
@@ -97,10 +95,8 @@ const CourseList: FC<Props> = ({ data }) => {
 
   return (
     <Card className="container">
-      <CardBody>
-        <h1 className="text-left">Course list</h1>
-        <NubTable data={data} columns={columns} />
-      </CardBody>
+      <h1 className="text-left">Course list</h1>
+      <NubTable data={data} columns={columns} />
     </Card>
   );
 };

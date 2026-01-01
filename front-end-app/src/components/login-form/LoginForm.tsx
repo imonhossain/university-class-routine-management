@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Input } from '@material-tailwind/react';
+import { Button, Card, Input } from 'antd';
 import UserPayload from 'interfaces/auth/UserPayload';
 import { FC, useState } from 'react';
 
@@ -12,9 +12,8 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
     email: '',
     password: '',
   });
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const event = e as unknown as any;
-    setForm({ ...form, [event.target.name]: event.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
   const onClickLogin = () => {
     onClickSubmit(form);
@@ -23,9 +22,10 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
   return (
     <Card className="w-96 ml-auto mr-auto mt-24">
       <h1 className="text-center">Login Form</h1>
-      <CardBody>
+      <div>
+        <label className="block mb-1">Email</label>
         <Input
-          label="Email"
+          placeholder="Email"
           type="email"
           value={form.email}
           name="email"
@@ -33,26 +33,26 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
           required
         />
         <div className="mb-3" />
-        <Input
-          label="Password"
+        <label className="block mb-1">Password</label>
+        <Input.Password
+          placeholder="Password"
           value={form.password}
           name="password"
-          type="password"
           onChange={onChange}
           required
         />
         <div className="mb-3" />
         <div className="text-center">
           <Button
-            size="sm"
-            type="button"
+            size="small"
+            type="primary"
             onClick={onClickLogin}
             disabled={!isValidForm || isLoading}
           >
             Login
           </Button>
         </div>
-      </CardBody>
+      </div>
     </Card>
   );
 };

@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/require-await */
-import { Card, CardBody, IconButton } from '@material-tailwind/react';
+import { Button, Card } from 'antd';
 import { deleteRoom } from 'actions/RoomAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
@@ -8,7 +7,7 @@ import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
 import IRoom from 'interfaces/Room';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 
@@ -19,25 +18,23 @@ interface Props {
 const RoomList: FC<Props> = ({ data }) => {
   const appContext = useAppContext() as any;
   const [roomId, setRoomId] = useState<string>('');
-  const { mutate: deleteMutate } = useMutation(
-    async () => {
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: async () => {
       return deleteRoom(roomId);
     },
-    {
-      onSuccess: () => {
-        toastSuccess('Delete Successfully');
-        appContext.dispatch({
-          type: actionTypes.DELETE_ROOM,
-          payload: roomId,
-        });
-        setRoomId('');
-      },
-      onError: (err) => {
-        httpErrorDisplay(err, EntityName.Room);
-        setRoomId('');
-      },
+    onSuccess: () => {
+      toastSuccess('Delete Successfully');
+      appContext.dispatch({
+        type: actionTypes.DELETE_ROOM,
+        payload: roomId,
+      });
+      setRoomId('');
     },
-  );
+    onError: (err: unknown) => {
+      httpErrorDisplay(err, EntityName.Room);
+      setRoomId('');
+    },
+  });
   useEffect(() => {
     if (roomId) {
       deleteMutate();
@@ -70,14 +67,14 @@ const RoomList: FC<Props> = ({ data }) => {
         title: 'Delete',
         dataIndex: 'id',
         render: (id: string) => (
-          <IconButton
-            size="sm"
-            color="red"
+          <Button
+            size="small"
+            danger
             onClick={() => setRoomId(id)}
             disabled={id === roomId}
           >
             <i className="fas fa-times" />
-          </IconButton>
+          </Button>
         ),
       },
     ],
@@ -87,10 +84,8 @@ const RoomList: FC<Props> = ({ data }) => {
 
   return (
     <Card className="container">
-      <CardBody>
-        <h1 className="text-left">Room list</h1>
-        <NubTable data={data} columns={columns} />
-      </CardBody>
+      <h1 className="text-left">Room list</h1>
+      <NubTable data={data} columns={columns} />
     </Card>
   );
 };
