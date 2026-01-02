@@ -1,4 +1,5 @@
-import { Button, Card } from 'antd';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
 import { deleteBooking } from 'actions/BookingAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
@@ -129,8 +130,8 @@ const BookingList: FC<Props> = ({ data }) => {
         dataIndex: 'id',
         render: (id: string) => (
           <Button
-            size="small"
-            danger
+            size="sm"
+            variant="destructive"
             onClick={() => setBookingId(id)}
             disabled={id === bookingId}
           >
@@ -144,9 +145,11 @@ const BookingList: FC<Props> = ({ data }) => {
   );
 
   return (
-    <Card className="">
-      <h1 className="text-left">Booking list</h1>
-      <NubTable data={data} columns={columns} />
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-left mb-4">Booking list</h1>
+        <NubTable data={data} columns={columns} />
+      </CardContent>
     </Card>
   );
 };

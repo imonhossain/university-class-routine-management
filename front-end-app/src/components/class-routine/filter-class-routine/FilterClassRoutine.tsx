@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button } from 'components/ui/button';
 import { getTeachers } from 'actions/TeacherAction';
 import CommonSelect from 'components/common/select/CommonSelect';
 import { SemesterConstant } from 'constants/SemesterConstant';
@@ -99,7 +99,7 @@ const FilterClassRoutine: FC<Props> = ({
           className={!Number(form.semester) ? 'pointer-events-none' : ''}
           filename={`${form.semester}-semester-routine.csv`}
         >
-          <Button size="small" disabled={!Number(form.semester)}>
+          <Button size="sm" disabled={!Number(form.semester)}>
             Download
           </Button>
         </CSVLink>
@@ -129,7 +129,7 @@ const FilterClassRoutine: FC<Props> = ({
           className={!form.teacherId ? 'pointer-events-none' : ''}
           filename="teacher-routine.csv"
         >
-          <Button size="small" disabled={!form.teacherId}>
+          <Button size="sm" disabled={!form.teacherId}>
             Download
           </Button>
         </CSVLink>

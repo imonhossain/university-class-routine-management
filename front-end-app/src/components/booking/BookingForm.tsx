@@ -1,4 +1,7 @@
-import { Button, Card, Input } from 'antd';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 import { getCourses } from 'actions/CourseAction';
 import { getRooms } from 'actions/RoomAction';
 import { getTeachers } from 'actions/TeacherAction';
@@ -110,80 +113,81 @@ const BookingForm: FC<Props> = ({
   };
 
   return (
-    <Card className="">
-      <h1 className="text-center">Booking Form</h1>
-      <div className="flex w-full flex-col gap-3">
-        <CommonSelect
-          label="Select a course"
-          onChange={(e: { id: string }) => handelChangeSelect('courseId', e?.id)}
-          getOptionLabel={(option: { name: string }) => option.name}
-          getOptionValue={(option: { id: string }) => option.id}
-          value={
-            courseList?.data.find(
-              (item: { id: string }) => item.id === booking.courseId,
-            ) as object
-          }
-          options={courseList?.data || []}
-        />
-        <CommonSelect
-          label="Select a teacher"
-          onChange={(e: { id: string }) => handelChangeSelect('teacherId', e?.id)}
-          getOptionLabel={(option: { name: string }) => option.name}
-          getOptionValue={(option: { id: string }) => option.id}
-          value={
-            teacherList?.data.find(
-              (item: { id: string }) => item.id === booking.teacherId,
-            ) as object
-          }
-          options={teacherList?.data || []}
-        />
-        <div>
-          <label className="block mb-1">Register Student</label>
-          <Input
-            placeholder="Register Student"
-            type="number"
-            value={booking.registerStudent}
-            name="registerStudent"
-            onChange={onChange}
-            required
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-center mb-4">Booking Form</h1>
+        <div className="flex w-full flex-col gap-3">
+          <CommonSelect
+            label="Select a course"
+            onChange={(e: { id: string }) => handelChangeSelect('courseId', e?.id)}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: string }) => option.id}
+            value={
+              courseList?.data.find(
+                (item: { id: string }) => item.id === booking.courseId,
+              ) as object
+            }
+            options={courseList?.data || []}
           />
+          <CommonSelect
+            label="Select a teacher"
+            onChange={(e: { id: string }) => handelChangeSelect('teacherId', e?.id)}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: string }) => option.id}
+            value={
+              teacherList?.data.find(
+                (item: { id: string }) => item.id === booking.teacherId,
+              ) as object
+            }
+            options={teacherList?.data || []}
+          />
+          <div>
+            <Label className="block mb-1">Register Student</Label>
+            <Input
+              placeholder="Register Student"
+              type="number"
+              value={booking.registerStudent}
+              name="registerStudent"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <CommonSelect
+            label="Select a semester"
+            onChange={(e: { id: number }) => handelChangeSelect('semester', String(e?.id))}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: number }) => option.id}
+            value={
+              SemesterConstant.find(
+                (item) => item.id === booking.semester,
+              ) as object
+            }
+            options={SemesterConstant}
+          />
+          <CommonSelect
+            label="Select a room (optional)"
+            onChange={(e: { id: string }) => handelChangeSelect('roomId', e?.id)}
+            getOptionLabel={(option: { number: string }) => option.number}
+            getOptionValue={(option: { id: string }) => option.id}
+            isClearable={true as boolean}
+            value={
+              roomList?.data.find(
+                (item: { id: string }) => item.id === booking?.roomId,
+              ) as object
+            }
+            options={roomList?.data || []}
+          />
+          <div className="text-center">
+            <Button
+              size="sm"
+              onClick={onClickSubmit}
+              disabled={!isValidForm || isLoading}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-        <CommonSelect
-          label="Select a semester"
-          onChange={(e: { id: number }) => handelChangeSelect('semester', String(e?.id))}
-          getOptionLabel={(option: { name: string }) => option.name}
-          getOptionValue={(option: { id: number }) => option.id}
-          value={
-            SemesterConstant.find(
-              (item) => item.id === booking.semester,
-            ) as object
-          }
-          options={SemesterConstant}
-        />
-        <CommonSelect
-          label="Select a room (optional)"
-          onChange={(e: { id: string }) => handelChangeSelect('roomId', e?.id)}
-          getOptionLabel={(option: { number: string }) => option.number}
-          getOptionValue={(option: { id: string }) => option.id}
-          isClearable={true as boolean}
-          value={
-            roomList?.data.find(
-              (item: { id: string }) => item.id === booking?.roomId,
-            ) as object
-          }
-          options={roomList?.data || []}
-        />
-        <div className="text-center">
-          <Button
-            size="small"
-            type="primary"
-            onClick={onClickSubmit}
-            disabled={!isValidForm || isLoading}
-          >
-            Submit
-          </Button>
-        </div>
-      </div>
+      </CardContent>
     </Card>
   );
 };

@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button } from 'components/ui/button';
 import RoutingPath from 'enums/RoutingPath';
 import { FC } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -34,9 +34,8 @@ const PublicHeader: FC = () => {
       <div className="container mx-auto flex items-center justify-between text-gray-900">
         <div className="hidden lg:block">{navList}</div>
         <Button
-          type="primary"
-          size="small"
-          className="hidden lg:inline-block"
+          size="sm"
+          className="hidden lg:inline-flex"
           onClick={onClickLogout}
         >
           Login

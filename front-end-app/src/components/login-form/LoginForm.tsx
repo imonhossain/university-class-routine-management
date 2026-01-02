@@ -1,4 +1,8 @@
-import { Button, Card, Input } from 'antd';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { PasswordInput } from 'components/ui/password-input';
+import { Label } from 'components/ui/label';
 import UserPayload from 'interfaces/auth/UserPayload';
 import { FC, useState } from 'react';
 
@@ -21,38 +25,39 @@ const LoginForm: FC<Props> = ({ isLoading = false, onClickSubmit }) => {
   const isValidForm = form.email && form.password;
   return (
     <Card className="w-96 ml-auto mr-auto mt-24">
-      <h1 className="text-center">Login Form</h1>
-      <div>
-        <label className="block mb-1">Email</label>
-        <Input
-          placeholder="Email"
-          type="email"
-          value={form.email}
-          name="email"
-          onChange={onChange}
-          required
-        />
-        <div className="mb-3" />
-        <label className="block mb-1">Password</label>
-        <Input.Password
-          placeholder="Password"
-          value={form.password}
-          name="password"
-          onChange={onChange}
-          required
-        />
-        <div className="mb-3" />
-        <div className="text-center">
-          <Button
-            size="small"
-            type="primary"
-            onClick={onClickLogin}
-            disabled={!isValidForm || isLoading}
-          >
-            Login
-          </Button>
+      <CardContent className="pt-6">
+        <h1 className="text-center mb-4">Login Form</h1>
+        <div>
+          <Label className="block mb-1">Email</Label>
+          <Input
+            placeholder="Email"
+            type="email"
+            value={form.email}
+            name="email"
+            onChange={onChange}
+            required
+          />
+          <div className="mb-3" />
+          <Label className="block mb-1">Password</Label>
+          <PasswordInput
+            placeholder="Password"
+            value={form.password}
+            name="password"
+            onChange={onChange}
+            required
+          />
+          <div className="mb-3" />
+          <div className="text-center">
+            <Button
+              size="sm"
+              onClick={onClickLogin}
+              disabled={!isValidForm || isLoading}
+            >
+              Login
+            </Button>
+          </div>
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 };

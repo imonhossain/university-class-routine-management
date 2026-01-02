@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react';
-import { Button } from 'antd';
+import { Button } from 'components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import RoutingPath from 'enums/RoutingPath';
 import { localStorageRemoveItem } from 'services/LocalStorageService';
@@ -67,9 +67,8 @@ const Header: FC = () => {
         </a>
         <div className="hidden lg:block">{navList}</div>
         <Button
-          type="primary"
-          size="small"
-          className="hidden lg:inline-block"
+          size="sm"
+          className="hidden lg:inline-flex"
           onClick={onClickLogout}
         >
           Logout
@@ -113,7 +112,7 @@ const Header: FC = () => {
       {openNav && (
         <div className="lg:hidden">
           {navList}
-          <Button type="primary" size="small" block className="mb-2" onClick={onClickLogout}>
+          <Button size="sm" className="w-full mb-2" onClick={onClickLogout}>
             Logout
           </Button>
         </div>
