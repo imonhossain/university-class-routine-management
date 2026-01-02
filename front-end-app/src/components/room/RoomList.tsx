@@ -1,4 +1,5 @@
-import { Button, Card } from 'antd';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
 import { deleteRoom } from 'actions/RoomAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
@@ -68,8 +69,8 @@ const RoomList: FC<Props> = ({ data }) => {
         dataIndex: 'id',
         render: (id: string) => (
           <Button
-            size="small"
-            danger
+            size="sm"
+            variant="destructive"
             onClick={() => setRoomId(id)}
             disabled={id === roomId}
           >
@@ -84,8 +85,10 @@ const RoomList: FC<Props> = ({ data }) => {
 
   return (
     <Card className="container">
-      <h1 className="text-left">Room list</h1>
-      <NubTable data={data} columns={columns} />
+      <CardContent className="pt-6">
+        <h1 className="text-left mb-4">Room list</h1>
+        <NubTable data={data} columns={columns} />
+      </CardContent>
     </Card>
   );
 };

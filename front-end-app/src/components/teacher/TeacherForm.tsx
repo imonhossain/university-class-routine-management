@@ -1,4 +1,7 @@
-import { Button, Card, Input } from 'antd';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 import ITeacher from 'interfaces/Teacher';
 import { Dispatch, FC, SetStateAction } from 'react';
 
@@ -20,54 +23,55 @@ const TeacherForm: FC<Props> = ({
   };
   const isValidForm = teacher.phone && teacher.name && teacher.email;
   return (
-    <Card className="">
-      <h1 className="text-center">Teacher Form</h1>
-      <div className="flex w-full flex-col gap-3">
-        <div>
-          <label className="block mb-1">Teacher Name</label>
-          <Input
-            placeholder="Teacher Name"
-            type="text"
-            value={teacher.name}
-            name="name"
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Teacher Email</label>
-          <Input
-            placeholder="Teacher Email"
-            value={teacher.email}
-            name="email"
-            type="email"
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Teacher Phone</label>
-          <Input
-            placeholder="Teacher Phone"
-            value={teacher.phone}
-            name="phone"
-            type="text"
-            onChange={onChange}
-            required
-          />
-        </div>
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-center mb-4">Teacher Form</h1>
+        <div className="flex w-full flex-col gap-3">
+          <div>
+            <Label className="block mb-1">Teacher Name</Label>
+            <Input
+              placeholder="Teacher Name"
+              type="text"
+              value={teacher.name}
+              name="name"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <div>
+            <Label className="block mb-1">Teacher Email</Label>
+            <Input
+              placeholder="Teacher Email"
+              value={teacher.email}
+              name="email"
+              type="email"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <div>
+            <Label className="block mb-1">Teacher Phone</Label>
+            <Input
+              placeholder="Teacher Phone"
+              value={teacher.phone}
+              name="phone"
+              type="text"
+              onChange={onChange}
+              required
+            />
+          </div>
 
-        <div className="text-center">
-          <Button
-            size="small"
-            type="primary"
-            onClick={onSubmitForm}
-            disabled={!isValidForm || isLoading}
-          >
-            Submit
-          </Button>
+          <div className="text-center">
+            <Button
+              size="sm"
+              onClick={onSubmitForm}
+              disabled={!isValidForm || isLoading}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-      </div>
+      </CardContent>
     </Card>
   );
 };

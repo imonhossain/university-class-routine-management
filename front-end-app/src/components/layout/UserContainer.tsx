@@ -25,7 +25,8 @@ const UserContainer: FC<{ children: React.ReactNode }> = ({ children }) => {
         payload: bookings,
       });
     }
-  }, [response, appContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [response?.data]);
 
   return (
     <div className="">
