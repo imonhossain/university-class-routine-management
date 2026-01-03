@@ -5,11 +5,19 @@ export class RoomEntity1664893117772 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE \`Room\` (\`id\` varchar(36) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`number\` varchar(255) NOT NULL, \`capacity\` int NOT NULL, \`isAutoAssign\` tinyint NOT NULL DEFAULT 1, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+      `CREATE TABLE "room" (
+        "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "number" varchar(255) NOT NULL,
+        "capacity" integer NOT NULL,
+        "isAutoAssign" boolean NOT NULL DEFAULT true,
+        CONSTRAINT "PK_room" PRIMARY KEY ("id")
+      )`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE \`Room\``);
+    await queryRunner.query(`DROP TABLE "room"`);
   }
 }

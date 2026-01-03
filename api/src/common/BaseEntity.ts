@@ -6,12 +6,12 @@ export class BaseEntity extends TypeOrmBaseEntity {
   @IsUUID()
   id: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
   @IsDate()
   @IsOptional()
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
   @IsDate()
   @IsOptional()
   updatedAt: Date;

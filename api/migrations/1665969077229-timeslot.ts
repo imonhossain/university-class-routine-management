@@ -5,11 +5,19 @@ export class Timeslot1665969077229 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE \`Timeslot\` (\`id\` varchar(36) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`startTime\` varchar(255) NOT NULL, \`endTime\` varchar(255) NOT NULL, \`dayGroup\` int NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+      `CREATE TABLE "timeslot" (
+        "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "startTime" varchar(255) NOT NULL,
+        "endTime" varchar(255) NOT NULL,
+        "dayGroup" integer NOT NULL,
+        CONSTRAINT "PK_timeslot" PRIMARY KEY ("id")
+      )`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP TABLE \`Timeslot\``);
+    await queryRunner.query(`DROP TABLE "timeslot"`);
   }
 }

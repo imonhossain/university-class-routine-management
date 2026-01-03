@@ -28,14 +28,20 @@ const CoursePage = () => {
         payload: courses.data,
       });
     }
-  }, [courses, appContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courses?.data]);
 
   const [course, setCourse] = useState<ICourse>(defaultCourse);
 
   const { isPending: isSaving, mutate: addCourse } = useMutation({
     mutationFn: async () => {
-      course.credit = Number(course.credit);
-      return createCourse(course);
+      const payload: ICourse = {
+        ...course,
+        credit: Number(course.credit),
+        semester: course.semester ? Number(course.semester) : undefined,
+        isAutoAssign: Boolean(course.isAutoAssign),
+      };
+      return createCourse(payload);
     },
     onSuccess: (response) => {
       setCourse(defaultCourse);

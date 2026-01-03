@@ -28,15 +28,20 @@ const RoomPage = () => {
         payload: rooms.data,
       });
     }
-  }, [rooms, appContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rooms?.data]);
 
   const [room, setRoom] = useState<IRoom>(defaultRoom);
 
   const { isPending: isSaving, mutate: addRoom } = useMutation({
     mutationFn: async () => {
-      room.capacity = Number(room.capacity);
-      room.number = room.number.trim();
-      return createRoom(room);
+      const payload: IRoom = {
+        ...room,
+        capacity: Number(room.capacity),
+        number: room.number.trim(),
+        isAutoAssign: Boolean(room.isAutoAssign),
+      };
+      return createRoom(payload);
     },
     onSuccess: (response) => {
       setRoom(defaultRoom);

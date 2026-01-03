@@ -28,7 +28,8 @@ const TeacherPage = () => {
         payload: teachers.data,
       });
     }
-  }, [teachers, appContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teachers?.data]);
 
   const [teacher, setTeacher] = useState<ITeacher>(defaultTeacher);
 

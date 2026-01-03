@@ -4,13 +4,30 @@ export class Initial1663915082054 implements MigrationInterface {
   name = 'initial1663915082054';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    // Create enum types
+    await queryRunner.query(`CREATE TYPE "user_role_enum" AS ENUM ('ADMIN', 'MANAGER')`);
+    await queryRunner.query(`CREATE TYPE "user_status_enum" AS ENUM ('ACTIVE', 'INACTIVE')`);
+
     await queryRunner.query(
-      `CREATE TABLE \`User\` (\`id\` varchar(36) NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`name\` varchar(255) NOT NULL, \`email\` varchar(320) NOT NULL, \`username\` varchar(255) NOT NULL, \`role\` enum ('ADMIN', 'MANAGER') NOT NULL DEFAULT 'ADMIN', \`status\` enum ('ACTIVE', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE', \`password\` text NOT NULL, UNIQUE INDEX \`IDX_4a257d2c9837248d70640b3e36\` (\`email\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`,
+      `CREATE TABLE "user" (
+        "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "name" varchar(255) NOT NULL,
+        "email" varchar(320) NOT NULL,
+        "username" varchar(255) NOT NULL,
+        "role" "user_role_enum" NOT NULL DEFAULT 'ADMIN',
+        "status" "user_status_enum" NOT NULL DEFAULT 'ACTIVE',
+        "password" text NOT NULL,
+        CONSTRAINT "UQ_user_email" UNIQUE ("email"),
+        CONSTRAINT "PK_user" PRIMARY KEY ("id")
+      )`,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`DROP INDEX \`IDX_4a257d2c9837248d70640b3e36\` ON \`User\``);
-    await queryRunner.query(`DROP TABLE \`User\``);
+    await queryRunner.query(`DROP TABLE "user"`);
+    await queryRunner.query(`DROP TYPE "user_status_enum"`);
+    await queryRunner.query(`DROP TYPE "user_role_enum"`);
   }
 }

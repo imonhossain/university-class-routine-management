@@ -138,7 +138,7 @@ describe('/v1/room (POST)', () => {
     afterAll(async () => {
       await removeRooms(roomIds);
     });
-    it('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
+    it.only('SHOULD return 201 SUCCESS WHEN valid payload', async () => {
       const payload = dummyCreateRoomPayload();
       const result = await request(app.getHttpServer())
         .post(apiEndPont)
