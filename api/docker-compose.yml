@@ -1,18 +1,18 @@
 version: '3.3'
 services:
-  auth-service-database:
-    container_name: auth-service-database
-    image: mysql:5.7
+  routine-database:
+    container_name: routine-database
+    image: postgres:16-alpine
     restart: always
     environment:
-      MYSQL_DATABASE: 'auth-service'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_ROOT_PASSWORD: 'password'
+      POSTGRES_DB: 'routine'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
     ports:
-      - '3008:3306'
+      - '5432:5432'
     volumes:
-      - ./init-script.sql:/docker-entrypoint-initdb.d/init-script.sql
-# Names our volume
+      - routine-db-data:/var/lib/postgresql/data
+
 volumes:
-  auth-service-db-data:
+  routine-db-data:
     driver: local

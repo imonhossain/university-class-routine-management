@@ -9,7 +9,7 @@ Before start please give some time to these reading material
 
 ###### Prerequisites
 
-- Install Node 14 LTS
+- Install Node 25 LTS
 
 - Install [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/)
 
@@ -54,7 +54,7 @@ Before start please give some time to these reading material
 
 | Email | Password | Role |
 | ------ | ------ | ------ |
-| admin@flarie.com | admin | ADMIN |
+| admin@gmail.com | admin | ADMIN |
 
 
 ## Change Log

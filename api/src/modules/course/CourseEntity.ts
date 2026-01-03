@@ -4,10 +4,10 @@ import Department from '@/enums/Department';
 import { IsInt, IsNumber, Max, Min } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
-@Entity({ name: 'Course' })
+@Entity({ name: 'course' })
 export class CourseEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
-  code;
+  code: string;
 
   @Column({ type: 'text' })
   name: string;
@@ -32,6 +32,6 @@ export class CourseEntity extends BaseEntity {
   @Max(12)
   semester: number;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ name: 'isAutoAssign', type: 'boolean', default: true })
   isAutoAssign: boolean;
 }

@@ -3,16 +3,16 @@ import { BaseEntity } from '@/common/BaseEntity';
 import { IsInt, IsNumber, Min } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
-@Entity({ name: 'Timeslot' })
+@Entity({ name: 'timeslot' })
 export class TimeslotEntity extends BaseEntity {
-  @Column({ type: 'varchar', length: 255 })
-  startTime;
+  @Column({ name: 'startTime', type: 'varchar', length: 255 })
+  startTime: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  endTime;
+  @Column({ name: 'endTime', type: 'varchar', length: 255 })
+  endTime: string;
 
   @IsNumber()
-  @Column()
+  @Column({ name: 'dayGroup' })
   @IsInt()
   @Min(1)
   dayGroup: number;

@@ -1,5 +1,4 @@
-/* eslint-disable eqeqeq */
-import { Button } from '@material-tailwind/react';
+import { Button } from 'components/ui/button';
 import { getTeachers } from 'actions/TeacherAction';
 import CommonSelect from 'components/common/select/CommonSelect';
 import { SemesterConstant } from 'constants/SemesterConstant';
@@ -8,7 +7,7 @@ import DayType from 'enums/DayType';
 import IBooking from 'interfaces/Booking';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
 import { CSVLink } from 'react-csv';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   convertBookingToRoutines,
   getFridayBooking,
@@ -28,7 +27,9 @@ const FilterClassRoutine: FC<Props> = ({
   setRoutinesSaturday,
 }) => {
   const appContext = useAppContext() as any;
-  const { data: teacherList } = useQuery('get-teachers', getTeachers, {
+  const { data: teacherList } = useQuery({
+    queryKey: ['get-teachers'],
+    queryFn: getTeachers,
     refetchOnWindowFocus: false,
   });
   const [form, setForm] = useState({
@@ -76,16 +77,14 @@ const FilterClassRoutine: FC<Props> = ({
         <div className="w-full">
           <CommonSelect
             label="Select Semester"
-            onChange={(e: any) => handelChangeSemester(e?.id as string)}
-            getOptionLabel={(option: any) => option.name}
-            getOptionValue={(option: any) => option.id}
-            // eslint-disable-next-line react/jsx-boolean-value
+            onChange={(e: { id: number }) => handelChangeSemester(String(e?.id))}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: number }) => option.id}
             isClearable={true}
             value={
               SemesterConstant.find(
                 (item) => item.id === form.semester,
-                // eslint-disable-next-line @typescript-eslint/ban-types
-              ) as Object
+              ) as object
             }
             options={SemesterConstant}
           />
@@ -109,16 +108,14 @@ const FilterClassRoutine: FC<Props> = ({
         <div className="w-full">
           <CommonSelect
             label="Select Teacher"
-            onChange={(e: any) => handelChangeTeacher(e?.id as string)}
-            getOptionLabel={(option: any) => option.name}
-            getOptionValue={(option: any) => option.id}
-            // eslint-disable-next-line react/jsx-boolean-value
+            onChange={(e: { id: string }) => handelChangeTeacher(e?.id)}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: string }) => option.id}
             isClearable={true}
             value={
               teacherList?.data.find(
-                (item) => item.id === form.teacherId,
-                // eslint-disable-next-line @typescript-eslint/ban-types
-              ) as Object
+                (item: { id: string }) => item.id === form.teacherId,
+              ) as object
             }
             options={teacherList?.data || []}
           />

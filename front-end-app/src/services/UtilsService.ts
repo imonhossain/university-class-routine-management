@@ -69,7 +69,7 @@ export const convertBookingToRoutines = (
   bookings: IBooking[],
   dayType: DayType,
 ): IRoutine[] => {
-  const hasMap = {};
+  const hasMap: Record<string, IRoutine[]> = {};
   for (const booking of bookings) {
     const routine = convertBookingToRoutine(booking);
     if (hasMap[booking.roomId]) {
@@ -81,8 +81,7 @@ export const convertBookingToRoutines = (
   }
   const list: IRoutine[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const [key, value] of Object.entries(hasMap)) {
+  for (const [, value] of Object.entries(hasMap)) {
     const temp = value as IRoutine[];
     const sortedList = temp.sort((a, b) => a.startId - b.startId);
     const finalList = [];
@@ -200,12 +199,13 @@ export const getTeacherWiseData = (
 export const teacherReportGraph = (
   bookings: IBooking[],
 ): ITeacherReportGraph[] => {
-  const hasMap = {};
+  const hasMap: Record<string, number> = {};
   for (const item of bookings) {
+    const credit = item.courseCredit || 0;
     if (hasMap[item.teacherId]) {
-      hasMap[item.teacherId] += item.courseCredit;
+      hasMap[item.teacherId] += credit;
     } else {
-      hasMap[item.teacherId] = item.courseCredit;
+      hasMap[item.teacherId] = credit;
     }
   }
   const list: ITeacherReportGraph[] = [];

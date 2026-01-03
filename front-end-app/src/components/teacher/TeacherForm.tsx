@@ -1,5 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Button, Card, CardBody, Input } from '@material-tailwind/react';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 import ITeacher from 'interfaces/Teacher';
 import { Dispatch, FC, SetStateAction } from 'react';
 
@@ -16,52 +18,60 @@ const TeacherForm: FC<Props> = ({
   onSubmitForm,
   isLoading,
 }) => {
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const event = e as unknown as any;
-    setTeacher({ ...teacher, [event.target.name]: event.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTeacher({ ...teacher, [e.target.name]: e.target.value });
   };
   const isValidForm = teacher.phone && teacher.name && teacher.email;
   return (
-    <Card className="">
-      <h1 className="text-center">Teacher Form</h1>
-      <CardBody className="flex w-full flex-col gap-3">
-        <Input
-          label="Teacher Name"
-          type="text"
-          value={teacher.name}
-          name="name"
-          onChange={onChange}
-          required
-        />
-        <Input
-          label="Teacher Email"
-          value={teacher.email}
-          name="email"
-          type="email"
-          onChange={onChange}
-          required
-        />
-        <Input
-          label="Teacher Phone"
-          value={teacher.phone}
-          name="phone"
-          type="text"
-          onChange={onChange}
-          required
-        />
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-center mb-4">Teacher Form</h1>
+        <div className="flex w-full flex-col gap-3">
+          <div>
+            <Label className="block mb-1">Teacher Name</Label>
+            <Input
+              placeholder="Teacher Name"
+              type="text"
+              value={teacher.name}
+              name="name"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <div>
+            <Label className="block mb-1">Teacher Email</Label>
+            <Input
+              placeholder="Teacher Email"
+              value={teacher.email}
+              name="email"
+              type="email"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <div>
+            <Label className="block mb-1">Teacher Phone</Label>
+            <Input
+              placeholder="Teacher Phone"
+              value={teacher.phone}
+              name="phone"
+              type="text"
+              onChange={onChange}
+              required
+            />
+          </div>
 
-        <div className="text-center">
-          <Button
-            size="sm"
-            type="button"
-            onClick={onSubmitForm}
-            disabled={!isValidForm || isLoading}
-          >
-            Submit
-          </Button>
+          <div className="text-center">
+            <Button
+              size="sm"
+              onClick={onSubmitForm}
+              disabled={!isValidForm || isLoading}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

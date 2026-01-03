@@ -8,45 +8,53 @@ import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
 import IRoom from 'interfaces/Room';
-import { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 
 const RoomPage = () => {
   const appContext = useAppContext() as any;
-  const { isLoading, isError, isSuccess } = useQuery('get-rooms', getRooms, {
+  const { isLoading, isError, isSuccess, data: rooms } = useQuery({
+    queryKey: ['get-rooms'],
+    queryFn: getRooms,
     refetchOnWindowFocus: false,
-    onSuccess(rooms) {
+  });
+
+  useEffect(() => {
+    if (rooms?.data) {
       appContext.dispatch({
         type: actionTypes.CACHE_ROOMS,
         payload: rooms.data,
       });
-    },
-  });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rooms?.data]);
 
   const [room, setRoom] = useState<IRoom>(defaultRoom);
 
-  const { isLoading: isSaving, mutate: addRoom } = useMutation(
-    async () => {
-      room.capacity = Number(room.capacity);
-      room.number = room.number.trim();
-      return createRoom(room);
+  const { isPending: isSaving, mutate: addRoom } = useMutation({
+    mutationFn: async () => {
+      const payload: IRoom = {
+        ...room,
+        capacity: Number(room.capacity),
+        number: room.number.trim(),
+        isAutoAssign: Boolean(room.isAutoAssign),
+      };
+      return createRoom(payload);
     },
-    {
-      onSuccess: (response) => {
-        setRoom(defaultRoom);
-        toastSuccess('Save Successfully');
-        appContext.dispatch({
-          type: actionTypes.ADD_ROOM,
-          payload: response.data,
-        });
-      },
-      onError: (err) => {
-        httpErrorDisplay(err, EntityName.Room);
-      },
+    onSuccess: (response) => {
+      setRoom(defaultRoom);
+      toastSuccess('Save Successfully');
+      appContext.dispatch({
+        type: actionTypes.ADD_ROOM,
+        payload: response.data,
+      });
     },
-  );
+    onError: (err: unknown) => {
+      httpErrorDisplay(err, EntityName.Room);
+    },
+  });
   return (
     <div className="max-w-screen-2xl mx-auto">
       <div className="grid grid-cols-3 gap-4 mt-4">

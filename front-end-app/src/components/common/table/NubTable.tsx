@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { Table, TablePaginationConfig } from 'antd';
+import { DataTable, Column } from 'components/ui/data-table';
 
 interface Props {
   data: any[];
-  columns: any[];
-  pagination?: boolean;
+  columns: Column<any>[];
+  pagination?: boolean | object;
   rowKey?: string;
   className?: string;
 }
@@ -17,11 +17,11 @@ const NubTable: FC<Props> = ({
 }) => {
   return (
     <div className="block w-full shadow-md">
-      <Table
-        dataSource={data}
+      <DataTable
+        data={data}
         columns={columns}
         rowKey={rowKey}
-        pagination={pagination as TablePaginationConfig}
+        pagination={pagination !== false}
         className={className}
       />
     </div>

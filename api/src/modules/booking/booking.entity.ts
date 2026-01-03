@@ -4,10 +4,10 @@ import Section from '@/enums/Section';
 import { IsInt, IsNumber, Max, Min } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
-@Entity({ name: 'Booking' })
+@Entity({ name: 'booking' })
 export class BookingEntity extends BaseEntity {
   @IsNumber()
-  @Column()
+  @Column({ name: 'registerStudent' })
   @IsInt()
   @Min(1)
   registerStudent: number;
@@ -25,15 +25,15 @@ export class BookingEntity extends BaseEntity {
   })
   section: Section;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'courseId', type: 'uuid' })
   courseId: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'teacherId', type: 'uuid' })
   teacherId: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'roomId', type: 'uuid' })
   roomId: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'timeSlotId', type: 'varchar', length: 255 })
   timeSlotId: string;
 }

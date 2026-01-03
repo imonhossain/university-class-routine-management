@@ -1,16 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
-import Select, { SingleValue } from 'react-select';
+import Select from 'react-select';
 
 type MenuPlacement = 'bottom' | 'top';
 
 interface Props {
-  options: Object[];
-  value: Object;
-  onChange: (option: SingleValue<Object>) => void;
-  getOptionLabel: (option: SingleValue<Object>) => string;
-  getOptionValue: (option: SingleValue<Object>) => string;
+  options: any[];
+  value: any;
+  onChange: (option: any) => void;
+  getOptionLabel: (option: any) => string;
+  getOptionValue: (option: any) => any;
   menuPlacement?: MenuPlacement;
   className?: string;
   label?: string;
@@ -38,7 +37,7 @@ const CommonSelect: FC<Props> = ({
         className={`flarie-select ${className}`}
         classNamePrefix="flarie"
         value={value}
-        onChange={(selected: SingleValue<Object>) => onChange(selected)}
+        onChange={(selected) => onChange(selected)}
         options={options}
         getOptionLabel={getOptionLabel}
         getOptionValue={getOptionValue}

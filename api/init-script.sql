@@ -1,2 +1,2 @@
-CREATE DATABASE IF NOT EXISTS 'auth-service';
-USE 'auth-service';
+CREATE DATABASE IF NOT EXISTS 'routine';
+USE 'routine';

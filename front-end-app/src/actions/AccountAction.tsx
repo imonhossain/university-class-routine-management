@@ -8,7 +8,7 @@ export const login = async (
   user: UserPayload,
 ): Promise<AxiosResponse<UserResponse>> => {
   return axios.post(
-    `${process.env.REACT_APP_SERVICE_API}/${ApiServicePath.SignIn}`,
+    `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.SignIn}`,
     user,
   );
 };

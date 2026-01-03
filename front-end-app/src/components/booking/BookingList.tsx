@@ -1,4 +1,5 @@
-import { Card, CardBody, IconButton } from '@material-tailwind/react';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
 import { deleteBooking } from 'actions/BookingAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
@@ -9,7 +10,7 @@ import IBooking from 'interfaces/Booking';
 import IBookingResponse from 'interfaces/BookingResponse';
 import { ITimeSlot } from 'interfaces/TimeSlot';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { getTimePeriodById, httpErrorDisplay } from 'services/UtilsService';
 
@@ -28,25 +29,23 @@ const BookingList: FC<Props> = ({ data }) => {
   });
   const appContext = useAppContext() as any;
   const [bookingId, setBookingId] = useState<string>('');
-  const { mutate: deleteMutate } = useMutation(
-    async () => {
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: async () => {
       return deleteBooking(bookingId);
     },
-    {
-      onSuccess: () => {
-        toastSuccess('Delete Successfully');
-        appContext.dispatch({
-          type: actionTypes.DELETE_BOOKING,
-          payload: bookingId,
-        });
-        setBookingId('');
-      },
-      onError: (err) => {
-        httpErrorDisplay(err, EntityName.Booking);
-        setBookingId('');
-      },
+    onSuccess: () => {
+      toastSuccess('Delete Successfully');
+      appContext.dispatch({
+        type: actionTypes.DELETE_BOOKING,
+        payload: bookingId,
+      });
+      setBookingId('');
     },
-  );
+    onError: (err: unknown) => {
+      httpErrorDisplay(err, EntityName.Booking);
+      setBookingId('');
+    },
+  });
   useEffect(() => {
     if (bookingId) {
       deleteMutate();
@@ -130,14 +129,14 @@ const BookingList: FC<Props> = ({ data }) => {
         title: 'Delete',
         dataIndex: 'id',
         render: (id: string) => (
-          <IconButton
+          <Button
             size="sm"
-            color="red"
+            variant="destructive"
             onClick={() => setBookingId(id)}
             disabled={id === bookingId}
           >
             <i className="fas fa-times" />
-          </IconButton>
+          </Button>
         ),
       },
     ],
@@ -146,11 +145,11 @@ const BookingList: FC<Props> = ({ data }) => {
   );
 
   return (
-    <Card className="">
-      <CardBody>
-        <h1 className="text-left">Booking list</h1>
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-left mb-4">Booking list</h1>
         <NubTable data={data} columns={columns} />
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

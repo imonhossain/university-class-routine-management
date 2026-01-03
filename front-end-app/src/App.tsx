@@ -1,5 +1,6 @@
 import 'App.css';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import 'react-toastify/dist/ReactToastify.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import AppRoutes from 'routes/AppRoutes';
 import { useGetToken } from 'services/AuthenticationService';
 import setAxiosConfig from 'services/AxiosConfig';

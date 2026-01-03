@@ -7,48 +7,48 @@ import actionTypes from 'context/actionTypes';
 import { useAppContext } from 'context/appContext';
 import EntityName from 'enums/EntityName';
 import ITeacher from 'interfaces/Teacher';
-import { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultTeacher } from '../../components/teacher/TeacherDefaultValue';
 
 const TeacherPage = () => {
   const appContext = useAppContext() as any;
-  const { isLoading, isError, isSuccess } = useQuery(
-    'get-teachers',
-    getTeachers,
-    {
-      refetchOnWindowFocus: false,
-      onSuccess(teachers) {
-        appContext.dispatch({
-          type: actionTypes.CACHE_TEACHERS,
-          payload: teachers.data,
-        });
-      },
-    },
-  );
+  const { isLoading, isError, isSuccess, data: teachers } = useQuery({
+    queryKey: ['get-teachers'],
+    queryFn: getTeachers,
+    refetchOnWindowFocus: false,
+  });
+
+  useEffect(() => {
+    if (teachers?.data) {
+      appContext.dispatch({
+        type: actionTypes.CACHE_TEACHERS,
+        payload: teachers.data,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teachers?.data]);
 
   const [teacher, setTeacher] = useState<ITeacher>(defaultTeacher);
 
-  const { isLoading: isSaving, mutate: addTeacher } = useMutation(
-    async () => {
+  const { isPending: isSaving, mutate: addTeacher } = useMutation({
+    mutationFn: async () => {
       return createTeacher(teacher);
     },
-    {
-      onSuccess: (response) => {
-        setTeacher(defaultTeacher);
-        toastSuccess('Save Successfully');
-        appContext.dispatch({
-          type: actionTypes.ADD_TEACHER,
-          payload: response.data,
-        });
-      },
-      onError: (err) => {
-        httpErrorDisplay(err, EntityName.Teacher);
-      },
+    onSuccess: (response) => {
+      setTeacher(defaultTeacher);
+      toastSuccess('Save Successfully');
+      appContext.dispatch({
+        type: actionTypes.ADD_TEACHER,
+        payload: response.data,
+      });
     },
-  );
+    onError: (err: unknown) => {
+      httpErrorDisplay(err, EntityName.Teacher);
+    },
+  });
   return (
     <div className="max-w-screen-2xl mx-auto">
       <div className="grid grid-cols-3 gap-4 mt-4">

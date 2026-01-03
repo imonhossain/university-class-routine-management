@@ -1,6 +1,7 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import { Button, Card, CardBody, Input } from '@material-tailwind/react';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { Label } from 'components/ui/label';
 import { getCourses } from 'actions/CourseAction';
 import { getRooms } from 'actions/RoomAction';
 import { getTeachers } from 'actions/TeacherAction';
@@ -10,7 +11,7 @@ import { useAppContext } from 'context/appContext';
 import IBooking from 'interfaces/Booking';
 import ICourse from 'interfaces/Course';
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { toastError, toastInfo, toastWarning } from 'services/ToasterServices';
 
 interface Props {
@@ -27,18 +28,23 @@ const BookingForm: FC<Props> = ({
   isLoading,
 }) => {
   const appContext = useAppContext() as any;
-  const { data: courseList } = useQuery('get-courses', getCourses, {
+  const { data: courseList } = useQuery({
+    queryKey: ['get-courses'],
+    queryFn: getCourses,
     refetchOnWindowFocus: false,
   });
-  const { data: teacherList } = useQuery('get-teachers', getTeachers, {
+  const { data: teacherList } = useQuery({
+    queryKey: ['get-teachers'],
+    queryFn: getTeachers,
     refetchOnWindowFocus: false,
   });
-  const { data: roomList } = useQuery('get-rooms', getRooms, {
+  const { data: roomList } = useQuery({
+    queryKey: ['get-rooms'],
+    queryFn: getRooms,
     refetchOnWindowFocus: false,
   });
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const event = e as unknown as any;
-    setBooking({ ...booking, [event.target.name]: event.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBooking({ ...booking, [e.target.name]: e.target.value });
   };
   const handelChangeSelect = (name: string, value: string) => {
     setBooking({ ...booking, [name]: value });
@@ -87,7 +93,7 @@ const BookingForm: FC<Props> = ({
   }, [booking.courseId, booking.teacherId]);
 
   const onClickSubmit = () => {
-    const room = roomList?.data.find((item) => item.id === booking.roomId);
+    const room = roomList?.data.find((item: { id: string; capacity: number }) => item.id === booking.roomId);
     if (room && room.capacity < Number(booking.registerStudent)) {
       toastError('Register student is greater than room capacity');
       return;
@@ -107,81 +113,81 @@ const BookingForm: FC<Props> = ({
   };
 
   return (
-    <Card className="">
-      <h1 className="text-center">Booking Form</h1>
-      <CardBody className="flex w-full flex-col gap-3">
-        <CommonSelect
-          label="Select a course"
-          onChange={(e: any) => handelChangeSelect('courseId', e?.id)}
-          getOptionLabel={(option: any) => option.name}
-          getOptionValue={(option: any) => option.id}
-          value={
-            courseList?.data.find(
-              (item) => item.id === booking.courseId,
-              // eslint-disable-next-line @typescript-eslint/ban-types
-            ) as Object
-          }
-          options={courseList?.data || []}
-        />
-        <CommonSelect
-          label="Select a teacher"
-          onChange={(e: any) => handelChangeSelect('teacherId', e?.id)}
-          getOptionLabel={(option: any) => option.name}
-          getOptionValue={(option: any) => option.id}
-          value={
-            teacherList?.data.find(
-              (item) => item.id === booking.teacherId,
-              // eslint-disable-next-line @typescript-eslint/ban-types
-            ) as Object
-          }
-          options={teacherList?.data || []}
-        />
-        <Input
-          label="Register Student"
-          type="number"
-          value={booking.registerStudent}
-          name="registerStudent"
-          onChange={onChange}
-          required
-        />
-        <CommonSelect
-          label="Select a semester"
-          onChange={(e: any) => handelChangeSelect('semester', e?.id)}
-          getOptionLabel={(option: any) => option.name}
-          getOptionValue={(option: any) => option.id}
-          value={
-            SemesterConstant.find(
-              (item) => item.id === booking.semester,
-              // eslint-disable-next-line @typescript-eslint/ban-types
-            ) as Object
-          }
-          options={SemesterConstant}
-        />
-        <CommonSelect
-          label="Select a room (optional)"
-          onChange={(e: any) => handelChangeSelect('roomId', e?.id)}
-          getOptionLabel={(option: any) => option.number}
-          getOptionValue={(option: any) => option.id}
-          isClearable={true as boolean}
-          value={
-            roomList?.data.find(
-              (item) => item.id === booking?.roomId,
-              // eslint-disable-next-line @typescript-eslint/ban-types
-            ) as Object
-          }
-          options={roomList?.data || []}
-        />
-        <div className="text-center">
-          <Button
-            size="sm"
-            type="button"
-            onClick={onClickSubmit}
-            disabled={!isValidForm || isLoading}
-          >
-            Submit
-          </Button>
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-center mb-4">Booking Form</h1>
+        <div className="flex w-full flex-col gap-3">
+          <CommonSelect
+            label="Select a course"
+            onChange={(e: { id: string }) => handelChangeSelect('courseId', e?.id)}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: string }) => option.id}
+            value={
+              courseList?.data.find(
+                (item: { id: string }) => item.id === booking.courseId,
+              ) as object
+            }
+            options={courseList?.data || []}
+          />
+          <CommonSelect
+            label="Select a teacher"
+            onChange={(e: { id: string }) => handelChangeSelect('teacherId', e?.id)}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: string }) => option.id}
+            value={
+              teacherList?.data.find(
+                (item: { id: string }) => item.id === booking.teacherId,
+              ) as object
+            }
+            options={teacherList?.data || []}
+          />
+          <div>
+            <Label className="block mb-1">Register Student</Label>
+            <Input
+              placeholder="Register Student"
+              type="number"
+              value={booking.registerStudent}
+              name="registerStudent"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <CommonSelect
+            label="Select a semester"
+            onChange={(e: { id: number }) => handelChangeSelect('semester', String(e?.id))}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: number }) => option.id}
+            value={
+              SemesterConstant.find(
+                (item) => item.id === booking.semester,
+              ) as object
+            }
+            options={SemesterConstant}
+          />
+          <CommonSelect
+            label="Select a room (optional)"
+            onChange={(e: { id: string }) => handelChangeSelect('roomId', e?.id)}
+            getOptionLabel={(option: { number: string }) => option.number}
+            getOptionValue={(option: { id: string }) => option.id}
+            isClearable={true as boolean}
+            value={
+              roomList?.data.find(
+                (item: { id: string }) => item.id === booking?.roomId,
+              ) as object
+            }
+            options={roomList?.data || []}
+          />
+          <div className="text-center">
+            <Button
+              size="sm"
+              onClick={onClickSubmit}
+              disabled={!isValidForm || isLoading}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

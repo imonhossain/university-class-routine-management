@@ -1,11 +1,5 @@
 import { useState, useEffect, FC } from 'react';
-import {
-  Navbar,
-  MobileNav,
-  Typography,
-  Button,
-  IconButton,
-} from '@material-tailwind/react';
+import { Button } from 'components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import RoutingPath from 'enums/RoutingPath';
 import { localStorageRemoveItem } from 'services/LocalStorageService';
@@ -27,66 +21,36 @@ const Header: FC = () => {
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+      <li className="p-1 font-normal text-gray-700">
         <Link to={RoutingPath.HOME} className="flex items-center">
           Home
         </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+      </li>
+      <li className="p-1 font-normal text-gray-700">
         <Link to={RoutingPath.COURSE} className="flex items-center">
           Course
         </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+      </li>
+      <li className="p-1 font-normal text-gray-700">
         <Link to={RoutingPath.TEACHER} className="flex items-center">
           Teacher
         </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+      </li>
+      <li className="p-1 font-normal text-gray-700">
         <Link to={RoutingPath.ROOM} className="flex items-center">
           Room
         </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+      </li>
+      <li className="p-1 font-normal text-gray-700">
         <Link to={RoutingPath.BOOKING} className="flex items-center">
           Booking
         </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
+      </li>
+      <li className="p-1 font-normal text-gray-700">
         <Link to={RoutingPath.TEACHER_REPORT} className="flex items-center">
           Teacher Report
         </Link>
-      </Typography>
+      </li>
     </ul>
   );
   const onClickLogout = () => {
@@ -96,29 +60,21 @@ const Header: FC = () => {
   };
 
   return (
-    <Navbar className="mx-auto py-2 px-0 lg:px-0 lg:py-4 max-w-[100%]">
-      <div className="container  mx-auto flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          href="#"
-          variant="small"
-          className="mr-4 cursor-pointer py-1.5 font-normal"
-        >
+    <nav className="mx-auto py-2 px-4 lg:px-8 lg:py-4 w-full bg-white shadow-md">
+      <div className="container mx-auto flex items-center justify-between text-gray-900">
+        <a href="#" className="mr-4 cursor-pointer py-1.5 font-normal text-sm">
           <span>Nub Class Management</span>
-        </Typography>
+        </a>
         <div className="hidden lg:block">{navList}</div>
         <Button
-          variant="gradient"
           size="sm"
-          className="hidden lg:inline-block"
+          className="hidden lg:inline-flex"
           onClick={onClickLogout}
         >
-          <span>Logout</span>
+          Logout
         </Button>
-        <IconButton
-          variant="text"
+        <button
           className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-          ripple={false}
           onClick={() => setOpenNav(!openNav)}
         >
           {openNav ? (
@@ -151,15 +107,17 @@ const Header: FC = () => {
               />
             </svg>
           )}
-        </IconButton>
+        </button>
       </div>
-      <MobileNav open={openNav}>
-        {navList}
-        <Button variant="gradient" size="sm" fullWidth className="mb-2">
-          <span>Logout</span>
-        </Button>
-      </MobileNav>
-    </Navbar>
+      {openNav && (
+        <div className="lg:hidden">
+          {navList}
+          <Button size="sm" className="w-full mb-2" onClick={onClickLogout}>
+            Logout
+          </Button>
+        </div>
+      )}
+    </nav>
   );
 };
 

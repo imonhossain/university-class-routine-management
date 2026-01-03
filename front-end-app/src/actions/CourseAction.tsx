@@ -8,21 +8,21 @@ export const createCourse = async (
   course: ICourse,
 ): Promise<AxiosResponse<UserResponse>> => {
   return axios.post(
-    `${process.env.REACT_APP_SERVICE_API}/${ApiServicePath.Course}`,
+    `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.Course}`,
     course,
   );
 };
 
 export const getCourses = async (): Promise<AxiosResponse<ICourse[]>> => {
   return axios.get(
-    `${process.env.REACT_APP_SERVICE_API}/${ApiServicePath.Course}`,
+    `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.Course}`,
   );
 };
 export const getCourse = async (
   id: string,
 ): Promise<AxiosResponse<UserResponse>> => {
   return axios.get(
-    `${process.env.REACT_APP_SERVICE_API}/${ApiServicePath.Course}/${id}`,
+    `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.Course}/${id}`,
   );
 };
 
@@ -30,7 +30,7 @@ export const updateCourse = async (
   id: string,
 ): Promise<AxiosResponse<UserResponse>> => {
   return axios.patch(
-    `${process.env.REACT_APP_SERVICE_API}/${ApiServicePath.Course}/${id}`,
+    `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.Course}/${id}`,
   );
 };
 
@@ -38,6 +38,6 @@ export const deleteCourse = async (
   id: string,
 ): Promise<AxiosResponse<UserResponse>> => {
   return axios.delete(
-    `${process.env.REACT_APP_SERVICE_API}/${ApiServicePath.Course}/${id}`,
+    `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.Course}/${id}`,
   );
 };

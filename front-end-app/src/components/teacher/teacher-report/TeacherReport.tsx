@@ -1,4 +1,4 @@
-import { Card, CardBody } from '@material-tailwind/react';
+import { Card, CardContent } from 'components/ui/card';
 import {
   BarElement,
   CategoryScale,
@@ -52,8 +52,8 @@ const TeacherReport: FC<Props> = ({ teacherData }) => {
 
   return (
     <Card className="container">
-      <CardBody>
-        <h1 className="text-left">Teacher Graph</h1>
+      <CardContent className="pt-6">
+        <h1 className="text-left mb-4">Teacher Graph</h1>
         <Bar
           options={options}
           data={data}
@@ -61,7 +61,7 @@ const TeacherReport: FC<Props> = ({ teacherData }) => {
           width={700}
           className="w-full ml-auto mr-auto"
         />
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

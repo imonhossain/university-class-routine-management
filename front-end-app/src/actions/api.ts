@@ -11,7 +11,7 @@ import {
 const axiosParams = {
   // Set different base URL based on the environment
   baseURL:
-    process.env.NODE_ENV === 'development'
+    import.meta.env.MODE === 'development'
       ? 'http://localhost:7010/rest/api-service'
       : '/',
 };
@@ -68,8 +68,8 @@ const withLogger = async <T>(promise: AxiosPromise<T>) =>
     Always log errors in dev environment
     if (process.env.NODE_ENV !== 'development') throw error      
   */
-    // Log error only if VUE_APP_DEBUG_API env is set to true
-    if (!process.env.REACT_APP_DEBUG_API) throw error;
+    // Log error only if VITE_DEBUG_API env is set to true
+    if (!import.meta.env.VITE_DEBUG_API) throw error;
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx

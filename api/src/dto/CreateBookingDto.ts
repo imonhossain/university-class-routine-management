@@ -1,6 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import Section from '@/enums/Section';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 
 export class CreateBookingDto {
@@ -10,6 +11,7 @@ export class CreateBookingDto {
 
   @ApiProperty()
   @IsNumber()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   @Max(12)
@@ -17,6 +19,7 @@ export class CreateBookingDto {
 
   @ApiProperty()
   @IsNumber()
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   registerStudent: number;

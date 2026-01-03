@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-import {
-  Button,
-  Card,
-  CardBody,
-  Input,
-  Switch,
-} from '@material-tailwind/react';
+import { Button } from 'components/ui/button';
+import { Card, CardContent } from 'components/ui/card';
+import { Input } from 'components/ui/input';
+import { Switch } from 'components/ui/switch';
+import { Label } from 'components/ui/label';
 import CommonSelect from 'components/common/select/CommonSelect';
 import { SemesterConstant } from 'constants/SemesterConstant';
 import ICourse from 'interfaces/Course';
@@ -24,78 +21,85 @@ const CourseForm: FC<Props> = ({
   onSubmitForm,
   isLoading,
 }) => {
-  const onChange = (e: React.FormEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const event = e as unknown as any;
-    setCourse({ ...course, [event.target.name]: event.target.value });
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCourse({ ...course, [e.target.name]: e.target.value });
   };
   const handelChangeSelect = (value: string) => {
     setCourse({ ...course, semester: Number(value) });
   };
-  const onChangeSwitch = (e: React.FormEvent<HTMLInputElement>) => {
-    const event = e as unknown as any;
-    setCourse({ ...course, isAutoAssign: event?.target?.checked });
+  const onChangeSwitch = (checked: boolean) => {
+    setCourse({ ...course, isAutoAssign: checked });
   };
   const isValidForm = course.code && course.name && course.credit;
   return (
-    <Card className="">
-      <h1 className="text-center">Course Form</h1>
-      <CardBody className="flex w-full flex-col gap-3">
-        <Input
-          label="Course Name"
-          type="text"
-          value={course.name}
-          name="name"
-          onChange={onChange}
-          required
-        />
-        <Input
-          label="Course Code"
-          value={course.code}
-          name="code"
-          type="text"
-          onChange={onChange}
-          required
-        />
-        <Input
-          label="Course Credit"
-          value={course.credit}
-          name="credit"
-          type="number"
-          max={4}
-          onChange={onChange}
-          required
-        />
-        <CommonSelect
-          label="Select Semester"
-          onChange={(e: any) => handelChangeSelect(e.id)}
-          getOptionLabel={(option: any) => option.name}
-          getOptionValue={(option: any) => option.id}
-          value={
-            SemesterConstant.find(
-              (item) => item.id === course.semester,
-              // eslint-disable-next-line @typescript-eslint/ban-types
-            ) as Object
-          }
-          options={SemesterConstant}
-        />
-        <Switch
-          label="Auto assign"
-          defaultChecked={course.isAutoAssign}
-          name="isAutoAssign"
-          onChange={(e) => onChangeSwitch(e)}
-        />
-        <div className="text-center">
-          <Button
-            size="sm"
-            type="button"
-            onClick={onSubmitForm}
-            disabled={!isValidForm || isLoading}
-          >
-            Submit
-          </Button>
+    <Card>
+      <CardContent className="pt-6">
+        <h1 className="text-center mb-4">Course Form</h1>
+        <div className="flex w-full flex-col gap-3">
+          <div>
+            <Label className="block mb-1">Course Name</Label>
+            <Input
+              placeholder="Course Name"
+              type="text"
+              value={course.name}
+              name="name"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <div>
+            <Label className="block mb-1">Course Code</Label>
+            <Input
+              placeholder="Course Code"
+              value={course.code}
+              name="code"
+              type="text"
+              onChange={onChange}
+              required
+            />
+          </div>
+          <div>
+            <Label className="block mb-1">Course Credit</Label>
+            <Input
+              placeholder="Course Credit"
+              value={course.credit}
+              name="credit"
+              type="number"
+              max={4}
+              onChange={onChange}
+              required
+            />
+          </div>
+          <CommonSelect
+            label="Select Semester"
+            onChange={(e: { id: number }) => handelChangeSelect(String(e.id))}
+            getOptionLabel={(option: { name: string }) => option.name}
+            getOptionValue={(option: { id: number }) => option.id}
+            value={
+              SemesterConstant.find(
+                (item) => item.id === course.semester,
+              ) as object
+            }
+            options={SemesterConstant}
+          />
+          <div className="flex items-center gap-2">
+            <Switch
+              checked={course.isAutoAssign}
+              onCheckedChange={onChangeSwitch}
+            />
+            <span>Auto assign</span>
+          </div>
+          <div className="text-center">
+            <Button
+              size="sm"
+              onClick={onSubmitForm}
+              disabled={!isValidForm || isLoading}
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };
