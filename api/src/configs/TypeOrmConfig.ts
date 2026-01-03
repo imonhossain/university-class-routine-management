@@ -10,7 +10,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { TimeslotEntity } from '@/modules/timeslot/timeslot.entity';
 
 const TypeOrmConfig: DataSourceOptions = {
-  type: 'mysql',
+  type: 'postgres',
   host: process.env.TYPEORM_HOST,
   port: Number(process.env.TYPEORM_PORT),
   username: process.env.TYPEORM_USERNAME,
@@ -19,11 +19,7 @@ const TypeOrmConfig: DataSourceOptions = {
   entities: [User, CourseEntity, RoomEntity, TeacherEntity, BookingEntity, TimeslotEntity],
   logging: true,
   synchronize: false,
-  migrations: process.env.typeorm === 'true' ? ['migrations/*.ts'] : [],
-  extra: {
-    charset: 'utf8mb4_unicode_ci',
-  },
-  charset: 'utf8mb4',
+  migrationsRun: false,
 };
 
 export default TypeOrmConfig;

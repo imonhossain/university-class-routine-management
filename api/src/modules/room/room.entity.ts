@@ -3,10 +3,10 @@ import { BaseEntity } from '@/common/BaseEntity';
 import { IsInt, IsNumber, Min } from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
-@Entity({ name: 'Room' })
+@Entity({ name: 'room' })
 export class RoomEntity extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
-  number;
+  number: string;
 
   @IsNumber()
   @Column()
@@ -14,6 +14,6 @@ export class RoomEntity extends BaseEntity {
   @Min(1)
   capacity: number;
 
-  @Column({ type: 'boolean', default: true })
+  @Column({ name: 'isAutoAssign', type: 'boolean', default: true })
   isAutoAssign: boolean;
 }

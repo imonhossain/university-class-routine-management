@@ -133,7 +133,7 @@ export class BookingService {
   }
 
   async getBooking(id: string): Promise<BookingEntity> {
-    const sql = `${this.getBookingSql()} AND Booking.id = '${id}'`;
+    const sql = `${this.getBookingSql()} WHERE booking.id = '${id}'`;
     try {
       return await this.bookingRepository.query(sql);
     } catch (error) {
@@ -152,15 +152,14 @@ export class BookingService {
   }
 
   getBookingSql(): string {
-    return `SELECT Booking.id, Booking.registerStudent, Booking.semester, Booking.timeSlotId, 
-    teacherId, roomId, courseId, Course.code courseCode, Course.credit courseCredit, 
-    Course.name courseName, Room.number roomNumber, 
-    Teacher.name teacherName FROM Booking
-    INNER JOIN Course
-    ON Booking.courseId = Course.id
-    INNER JOIN Room
-    ON Booking.roomId = Room.id
-    INNER JOIN Teacher
-    on Booking.teacherId = Teacher.id`;
+    return `SELECT booking.id, booking."registerStudent", booking.semester, booking."timeSlotId",
+    booking."teacherId", booking."roomId", booking."courseId",
+    course.code AS "courseCode", course.credit AS "courseCredit",
+    course.name AS "courseName", room.number AS "roomNumber",
+    teacher.name AS "teacherName"
+    FROM booking
+    INNER JOIN course ON booking."courseId" = course.id
+    INNER JOIN room ON booking."roomId" = room.id
+    INNER JOIN teacher ON booking."teacherId" = teacher.id`;
   }
 }

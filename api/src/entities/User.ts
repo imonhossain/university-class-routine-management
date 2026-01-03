@@ -5,7 +5,7 @@ import UserStatusType from '@/enums/UserStatusType';
 import * as bcrypt from 'bcrypt';
 import { BeforeInsert, BeforeUpdate, Column, Entity, Unique } from 'typeorm';
 
-@Entity({ name: 'User' })
+@Entity({ name: 'user' })
 @Unique(['email'])
 export class User extends BaseEntity {
   @Column({ type: 'varchar', length: 255 })
