@@ -3,8 +3,7 @@ import { Card, CardContent } from 'components/ui/card';
 import { deleteTeacher } from 'actions/TeacherAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useTeacherStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import ITeacher from 'interfaces/Teacher';
 import { FC, useEffect, useMemo, useState } from 'react';
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const TeacherList: FC<Props> = ({ data }) => {
-  const appContext = useAppContext() as any;
+  const deleteTeacherFromStore = useTeacherStore((state) => state.deleteTeacher);
   const [teacherId, setTeacherId] = useState<string>('');
   const { mutate: deleteMutate } = useMutation({
     mutationFn: async () => {
@@ -25,10 +24,7 @@ const TeacherList: FC<Props> = ({ data }) => {
     },
     onSuccess: () => {
       toastSuccess('Delete Successfully');
-      appContext.dispatch({
-        type: actionTypes.DELETE_TEACHER,
-        payload: teacherId,
-      });
+      deleteTeacherFromStore(teacherId);
       setTeacherId('');
     },
     onError: (err: unknown) => {

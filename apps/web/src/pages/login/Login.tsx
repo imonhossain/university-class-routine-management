@@ -1,7 +1,6 @@
 import { login } from 'actions/AccountAction';
 import LoginForm from 'components/login-form/LoginForm';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useUserStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import LocalStorageKey from 'enums/LocalStorageKey';
 import UserPayload from 'interfaces/auth/UserPayload';
@@ -15,7 +14,7 @@ import { httpErrorDisplay } from 'services/UtilsService';
 const LoginPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const userContext = useAppContext() as any;
+  const signIn = useUserStore((state) => state.signIn);
 
   const navigate = useNavigate();
 
@@ -23,10 +22,7 @@ const LoginPage = () => {
     const userContextPayload = { token: `Bearer ${data.token}`, user: data };
     setAxiosConfig(userContextPayload.token);
     localStorageSetItem(LocalStorageKey.AUTH, userContextPayload);
-    userContext.dispatch({
-      type: actionTypes.SIGN_IN,
-      payload: userContextPayload,
-    });
+    signIn(userContextPayload);
     navigate('/');
   };
 

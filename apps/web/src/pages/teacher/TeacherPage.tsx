@@ -3,8 +3,7 @@ import DataFetching from 'components/common/data-fetching/DataFetching';
 import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
 import TeacherForm from 'components/teacher/TeacherForm';
 import TeacherList from 'components/teacher/TeacherList';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useTeacherStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import ITeacher from 'interfaces/Teacher';
 import { useState, useEffect } from 'react';
@@ -14,22 +13,21 @@ import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultTeacher } from '../../components/teacher/TeacherDefaultValue';
 
 const TeacherPage = () => {
-  const appContext = useAppContext() as any;
-  const { isLoading, isError, isSuccess, data: teachers } = useQuery({
+  const teachers = useTeacherStore((state) => state.teachers);
+  const setTeachers = useTeacherStore((state) => state.setTeachers);
+  const addTeacherToStore = useTeacherStore((state) => state.addTeacher);
+
+  const { isLoading, isError, isSuccess, data: teachersData } = useQuery({
     queryKey: ['get-teachers'],
     queryFn: getTeachers,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (teachers?.data) {
-      appContext.dispatch({
-        type: actionTypes.CACHE_TEACHERS,
-        payload: teachers.data,
-      });
+    if (teachersData?.data) {
+      setTeachers(teachersData.data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [teachers?.data]);
+  }, [teachersData?.data, setTeachers]);
 
   const [teacher, setTeacher] = useState<ITeacher>(defaultTeacher);
 
@@ -40,10 +38,7 @@ const TeacherPage = () => {
     onSuccess: (response) => {
       setTeacher(defaultTeacher);
       toastSuccess('Save Successfully');
-      appContext.dispatch({
-        type: actionTypes.ADD_TEACHER,
-        payload: response.data,
-      });
+      addTeacherToStore(response.data);
     },
     onError: (err: unknown) => {
       httpErrorDisplay(err, EntityName.Teacher);
@@ -55,7 +50,7 @@ const TeacherPage = () => {
         <div className="col-span-2 ">
           {isError && <ErrorDisplay />}
           {isLoading && <DataFetching />}
-          {isSuccess && <TeacherList data={appContext?.teachers} />}
+          {isSuccess && <TeacherList data={teachers} />}
         </div>
         <div className="col-span-1">
           <TeacherForm

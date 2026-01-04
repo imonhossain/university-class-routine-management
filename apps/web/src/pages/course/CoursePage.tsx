@@ -3,8 +3,7 @@ import DataFetching from 'components/common/data-fetching/DataFetching';
 import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
 import CourseForm from 'components/course/CourseForm';
 import CourseList from 'components/course/CourseList';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useCourseStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import ICourse from 'interfaces/Course';
 import { useState, useEffect } from 'react';
@@ -14,22 +13,21 @@ import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultCourse } from '../../components/course/CourseDefaultValue';
 
 const CoursePage = () => {
-  const appContext = useAppContext() as any;
-  const { isLoading, isError, isSuccess, data: courses } = useQuery({
+  const courses = useCourseStore((state) => state.courses);
+  const setCourses = useCourseStore((state) => state.setCourses);
+  const addCourseToStore = useCourseStore((state) => state.addCourse);
+
+  const { isLoading, isError, isSuccess, data: coursesData } = useQuery({
     queryKey: ['get-courses'],
     queryFn: getCourses,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (courses?.data) {
-      appContext.dispatch({
-        type: actionTypes.CACHE_COURSES,
-        payload: courses.data,
-      });
+    if (coursesData?.data) {
+      setCourses(coursesData.data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courses?.data]);
+  }, [coursesData?.data, setCourses]);
 
   const [course, setCourse] = useState<ICourse>(defaultCourse);
 
@@ -46,10 +44,7 @@ const CoursePage = () => {
     onSuccess: (response) => {
       setCourse(defaultCourse);
       toastSuccess('Save Successfully');
-      appContext.dispatch({
-        type: actionTypes.ADD_COURSE,
-        payload: response.data,
-      });
+      addCourseToStore(response.data);
     },
     onError: (err: unknown) => {
       httpErrorDisplay(err, EntityName.Course);
@@ -61,7 +56,7 @@ const CoursePage = () => {
         <div className="col-span-2 ">
           {isError && <ErrorDisplay />}
           {isLoading && <DataFetching />}
-          {isSuccess && <CourseList data={appContext?.courses} />}
+          {isSuccess && <CourseList data={courses} />}
         </div>
         <div className="col-span-1">
           <CourseForm

@@ -70,7 +70,8 @@
     "tailwind-merge": "^2.6.0",
     "typeorm": "^0.3.20",
     "uuid": "^11.0.4",
-    "web-vitals": "^5.1.0"
+    "web-vitals": "^5.1.0",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.9",

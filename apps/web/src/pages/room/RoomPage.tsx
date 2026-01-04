@@ -4,8 +4,7 @@ import ErrorDisplay from 'components/common/error-display/ErrorDisplay';
 import { defaultRoom } from 'components/room/RoomDefaultValue';
 import RoomForm from 'components/room/RoomForm';
 import RoomList from 'components/room/RoomList';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useRoomStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import IRoom from 'interfaces/Room';
 import { useState, useEffect } from 'react';
@@ -14,22 +13,21 @@ import { toastSuccess } from 'services/ToasterServices';
 import { httpErrorDisplay } from 'services/UtilsService';
 
 const RoomPage = () => {
-  const appContext = useAppContext() as any;
-  const { isLoading, isError, isSuccess, data: rooms } = useQuery({
+  const rooms = useRoomStore((state) => state.rooms);
+  const setRooms = useRoomStore((state) => state.setRooms);
+  const addRoomToStore = useRoomStore((state) => state.addRoom);
+
+  const { isLoading, isError, isSuccess, data: roomsData } = useQuery({
     queryKey: ['get-rooms'],
     queryFn: getRooms,
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
-    if (rooms?.data) {
-      appContext.dispatch({
-        type: actionTypes.CACHE_ROOMS,
-        payload: rooms.data,
-      });
+    if (roomsData?.data) {
+      setRooms(roomsData.data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rooms?.data]);
+  }, [roomsData?.data, setRooms]);
 
   const [room, setRoom] = useState<IRoom>(defaultRoom);
 
@@ -46,10 +44,7 @@ const RoomPage = () => {
     onSuccess: (response) => {
       setRoom(defaultRoom);
       toastSuccess('Save Successfully');
-      appContext.dispatch({
-        type: actionTypes.ADD_ROOM,
-        payload: response.data,
-      });
+      addRoomToStore(response.data);
     },
     onError: (err: unknown) => {
       httpErrorDisplay(err, EntityName.Room);
@@ -61,7 +56,7 @@ const RoomPage = () => {
         <div className="col-span-2 ">
           {isError && <ErrorDisplay />}
           {isLoading && <DataFetching />}
-          {isSuccess && <RoomList data={appContext?.rooms} />}
+          {isSuccess && <RoomList data={rooms} />}
         </div>
         <div className="col-span-1">
           <RoomForm

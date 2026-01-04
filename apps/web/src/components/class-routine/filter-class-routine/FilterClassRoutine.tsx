@@ -2,7 +2,7 @@ import { Button } from 'components/ui/button';
 import { getTeachers } from 'actions/TeacherAction';
 import CommonSelect from 'components/common/select/CommonSelect';
 import { SemesterConstant } from 'constants/SemesterConstant';
-import { useAppContext } from 'context/appContext';
+import { useBookingStore } from 'stores';
 import DayType from 'enums/DayType';
 import IBooking from 'interfaces/Booking';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
@@ -26,7 +26,7 @@ const FilterClassRoutine: FC<Props> = ({
   setRoutinesFriday,
   setRoutinesSaturday,
 }) => {
-  const appContext = useAppContext() as any;
+  const bookings = useBookingStore((state) => state.bookings);
   const { data: teacherList } = useQuery({
     queryKey: ['get-teachers'],
     queryFn: getTeachers,
@@ -37,35 +37,35 @@ const FilterClassRoutine: FC<Props> = ({
     semester: 0,
   });
 
-  const applyFilter = (bookings: IBooking[]): void => {
+  const applyFilter = (filteredBookings: IBooking[]): void => {
     setRoutinesFriday(
-      convertBookingToRoutines(getFridayBooking(bookings), DayType.FRIDAY),
+      convertBookingToRoutines(getFridayBooking(filteredBookings), DayType.FRIDAY),
     );
     setRoutinesSaturday(
-      convertBookingToRoutines(getSaturDayBooking(bookings), DayType.SATURDAY),
+      convertBookingToRoutines(getSaturDayBooking(filteredBookings), DayType.SATURDAY),
     );
   };
 
   const handelChangeSemester = (value: string) => {
     const semester = Number(value);
-    const bookings = JSON.parse(JSON.stringify(appContext?.bookings));
+    const bookingData = JSON.parse(JSON.stringify(bookings));
     const filterBookings: IBooking[] = semester
-      ? bookings.filter((item: IBooking) => item.semester === semester)
-      : bookings;
+      ? bookingData.filter((item: IBooking) => item.semester === semester)
+      : bookingData;
     applyFilter(filterBookings);
     setForm({ teacherId: '', semester });
   };
 
   const handelChangeTeacher = (value: string) => {
-    const bookings = JSON.parse(JSON.stringify(appContext?.bookings));
+    const bookingData = JSON.parse(JSON.stringify(bookings));
     const filterBookings: IBooking[] = value
-      ? bookings.filter((item: IBooking) => item.teacherId === value)
-      : bookings;
+      ? bookingData.filter((item: IBooking) => item.teacherId === value)
+      : bookingData;
     applyFilter(filterBookings);
     setForm({ semester: 0, teacherId: value });
   };
 
-  const dataWithSerial: any[] = appContext?.bookings as unknown as any[];
+  const dataWithSerial: any[] = bookings as unknown as any[];
   dataWithSerial.forEach((item: any, index: number) => {
     item.number = index + 1;
   });
@@ -93,7 +93,7 @@ const FilterClassRoutine: FC<Props> = ({
         <CSVLink
           data={getSemesterWiseData(
             Number(form.semester),
-            appContext?.bookings as IBooking[],
+            bookings as IBooking[],
           )}
           headers={SemesterWiseHeaders}
           className={!Number(form.semester) ? 'pointer-events-none' : ''}
@@ -123,7 +123,7 @@ const FilterClassRoutine: FC<Props> = ({
         <CSVLink
           data={getTeacherWiseData(
             form.teacherId,
-            appContext?.bookings as IBooking[],
+            bookings as IBooking[],
           )}
           headers={SemesterWiseHeaders}
           className={!form.teacherId ? 'pointer-events-none' : ''}

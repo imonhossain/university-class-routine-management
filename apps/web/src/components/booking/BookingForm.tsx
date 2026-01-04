@@ -7,7 +7,7 @@ import { getRooms } from 'actions/RoomAction';
 import { getTeachers } from 'actions/TeacherAction';
 import CommonSelect from 'components/common/select/CommonSelect';
 import { SemesterConstant } from 'constants/SemesterConstant';
-import { useAppContext } from 'context/appContext';
+import { useBookingStore } from 'stores';
 import IBooking from 'interfaces/Booking';
 import ICourse from 'interfaces/Course';
 import { Dispatch, FC, SetStateAction, useEffect } from 'react';
@@ -27,7 +27,7 @@ const BookingForm: FC<Props> = ({
   onSubmitForm,
   isLoading,
 }) => {
-  const appContext = useAppContext() as any;
+  const bookings = useBookingStore((state) => state.bookings);
   const { data: courseList } = useQuery({
     queryKey: ['get-courses'],
     queryFn: getCourses,
@@ -77,7 +77,7 @@ const BookingForm: FC<Props> = ({
       (item: ICourse) => item.id === booking.courseId,
     );
     let totalCredit = 0;
-    const totalBookings: IBooking[] = appContext?.bookings || [];
+    const totalBookings: IBooking[] = bookings || [];
     for (const item of totalBookings) {
       if (item.teacherId === booking.teacherId) {
         totalCredit += Number(item.courseCredit) || 0;
@@ -98,7 +98,7 @@ const BookingForm: FC<Props> = ({
       toastError('Register student is greater than room capacity');
       return;
     }
-    const found = appContext?.bookings?.find(
+    const found = bookings?.find(
       (item: IBooking) =>
         item.courseId === booking.courseId &&
         item.semester === Number(booking.semester),

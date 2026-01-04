@@ -1,8 +1,7 @@
 import { createBooking } from 'actions/BookingAction';
 import BookingForm from 'components/booking/BookingForm';
 import BookingList from 'components/booking/BookingList';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useBookingStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import { Section } from 'enums/Section';
 import IBooking from 'interfaces/Booking';
@@ -14,7 +13,8 @@ import { httpErrorDisplay } from 'services/UtilsService';
 import { defaultBooking } from '../../components/booking/BookingDefaultValue';
 
 const BookingPage = () => {
-  const appContext = useAppContext() as any;
+  const bookings = useBookingStore((state) => state.bookings);
+  const addBookingToStore = useBookingStore((state) => state.addBooking);
   const isLogin = useGetToken();
 
   const [booking, setBooking] = useState<IBooking>(defaultBooking);
@@ -28,10 +28,7 @@ const BookingPage = () => {
     },
     onSuccess: (response) => {
       toastSuccess('Save Successfully');
-      appContext.dispatch({
-        type: actionTypes.ADD_BOOKING,
-        payload: response.data,
-      });
+      addBookingToStore(response.data);
     },
     onError: (err: unknown) => {
       httpErrorDisplay(err, EntityName.Booking);
@@ -41,7 +38,7 @@ const BookingPage = () => {
     <div className="mx-auto">
       <div className="grid grid-cols-4 gap-4 mt-12">
         <div className={isLogin ? 'col-span-3' : 'col-span-4 '}>
-          {appContext?.bookings && <BookingList data={appContext?.bookings} />}
+          {bookings && <BookingList data={bookings} />}
         </div>
         {Boolean(isLogin) && (
           <div className="col-span-1">
