@@ -1,11 +1,16 @@
-# compiled output
+# Compiled output
 /dist
-/node_modules
-/api/dist
-/api/node_modules
-/portal/dist
-/portal/node_modules
-/portal-backup
+/tmp
+/out-tsc
+node_modules
+
+# Dependencies
+/.pnp
+.pnp.js
+
+# Nx
+.nx/cache
+.nx/workspace-data
 
 # Logs
 logs
@@ -16,13 +21,17 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Environment
 .env
+.env.local
+.env.*.local
 
 # OS
 .DS_Store
+Thumbs.db
 
 # Tests
-/api/coverage
+/coverage
 /.nyc_output
 
 # IDEs and editors
@@ -40,3 +49,6 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Build
+*.tsbuildinfo
