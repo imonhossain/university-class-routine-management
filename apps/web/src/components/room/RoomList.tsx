@@ -3,8 +3,7 @@ import { Card, CardContent } from 'components/ui/card';
 import { deleteRoom } from 'actions/RoomAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useRoomStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import IRoom from 'interfaces/Room';
 import { FC, useEffect, useMemo, useState } from 'react';
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const RoomList: FC<Props> = ({ data }) => {
-  const appContext = useAppContext() as any;
+  const deleteRoomFromStore = useRoomStore((state) => state.deleteRoom);
   const [roomId, setRoomId] = useState<string>('');
   const { mutate: deleteMutate } = useMutation({
     mutationFn: async () => {
@@ -25,10 +24,7 @@ const RoomList: FC<Props> = ({ data }) => {
     },
     onSuccess: () => {
       toastSuccess('Delete Successfully');
-      appContext.dispatch({
-        type: actionTypes.DELETE_ROOM,
-        payload: roomId,
-      });
+      deleteRoomFromStore(roomId);
       setRoomId('');
     },
     onError: (err: unknown) => {

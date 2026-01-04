@@ -3,7 +3,7 @@ import { Card, CardContent } from 'components/ui/card';
 import { Input } from 'components/ui/input';
 import { Switch } from 'components/ui/switch';
 import { Label } from 'components/ui/label';
-import { useAppContext } from 'context/appContext';
+import { useRoomStore } from 'stores';
 import IRoom from 'interfaces/Room';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { toastError } from 'services/ToasterServices';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
-  const appContext = useAppContext() as any;
+  const rooms = useRoomStore((state) => state.rooms);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoom({ ...room, [e.target.name]: e.target.value });
   };
@@ -25,7 +25,7 @@ const RoomForm: FC<Props> = ({ room, setRoom, onSubmitForm, isLoading }) => {
   };
   const isValidForm = room.capacity && room.number;
   const onClickAddRoom = () => {
-    const found = appContext.rooms.find(
+    const found = rooms.find(
       (item: IRoom) => item.number === room.number.trim(),
     );
     if (found) {

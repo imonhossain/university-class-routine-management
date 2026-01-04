@@ -6,7 +6,7 @@ import ICourse from 'interfaces/Course';
 
 export const createCourse = async (
   course: ICourse,
-): Promise<AxiosResponse<UserResponse>> => {
+): Promise<AxiosResponse<ICourse>> => {
   return axios.post(
     `${import.meta.env.VITE_SERVICE_API}/${ApiServicePath.Course}`,
     course,

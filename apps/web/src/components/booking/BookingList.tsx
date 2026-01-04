@@ -3,8 +3,7 @@ import { Card, CardContent } from 'components/ui/card';
 import { deleteBooking } from 'actions/BookingAction';
 import NubTable from 'components/common/table/NubTable';
 import tableColumnTextFilterConfig from 'components/common/table/tableUtils';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useBookingStore } from 'stores';
 import EntityName from 'enums/EntityName';
 import IBooking from 'interfaces/Booking';
 import IBookingResponse from 'interfaces/BookingResponse';
@@ -27,7 +26,7 @@ const BookingList: FC<Props> = ({ data }) => {
       timeSlotList[timeSlotList.length - 1],
     ).endTime;
   });
-  const appContext = useAppContext() as any;
+  const deleteBookingFromStore = useBookingStore((state) => state.deleteBooking);
   const [bookingId, setBookingId] = useState<string>('');
   const { mutate: deleteMutate } = useMutation({
     mutationFn: async () => {
@@ -35,10 +34,7 @@ const BookingList: FC<Props> = ({ data }) => {
     },
     onSuccess: () => {
       toastSuccess('Delete Successfully');
-      appContext.dispatch({
-        type: actionTypes.DELETE_BOOKING,
-        payload: bookingId,
-      });
+      deleteBookingFromStore(bookingId);
       setBookingId('');
     },
     onError: (err: unknown) => {

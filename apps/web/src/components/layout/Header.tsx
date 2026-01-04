@@ -4,12 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import RoutingPath from 'enums/RoutingPath';
 import { localStorageRemoveItem } from 'services/LocalStorageService';
 import LocalStorageKey from 'enums/LocalStorageKey';
-import actionTypes from 'context/actionTypes';
-import { useAppContext } from 'context/appContext';
+import { useUserStore } from 'stores';
 
 const Header: FC = () => {
   const [openNav, setOpenNav] = useState(false);
-  const userContext = useAppContext() as any;
+  const signOut = useUserStore((state) => state.signOut);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const Header: FC = () => {
   );
   const onClickLogout = () => {
     localStorageRemoveItem(LocalStorageKey.AUTH);
-    userContext.dispatch({ type: actionTypes.SIGN_OUT });
+    signOut();
     navigate(RoutingPath.LOGIN);
   };
 
