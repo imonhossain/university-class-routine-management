@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateTeacherPayload } from '@test/dummy-payload/teacher/dummy-create-teacher-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createTeacher } from '@test/util/teacher-util';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('/v1/teacher/:id (DELETE)', () => {
   let app: INestApplication;
@@ -20,11 +20,10 @@ describe('/v1/teacher/:id (DELETE)', () => {
     app = moduleFixture.createNestApplication();
     const configService = app.get(ConfigService);
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
+    await configApp(app);
     teacher = await createTeacher(dummyCreateTeacherPayload());
     apiEndPont = `${serviceApiPrefix}/teacher/`;
     apiEndPont = apiEndPont + teacher.id;
-    await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();

@@ -8,7 +8,7 @@ import { dummyCreateTeacherPayload } from '@test/dummy-payload/teacher/dummy-cre
 import { dummyUpdateTeacherPayload } from '@test/dummy-payload/teacher/dummy-update-teacher-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createTeacher, removeTeacher } from '@test/util/teacher-util';
-import * as request from 'supertest';
+import request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
 describe('/v1/teacher/:id (PATCH)', () => {
@@ -24,7 +24,6 @@ describe('/v1/teacher/:id (PATCH)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/teacher/`;
     await configApp(app);
-    await app.init();
     teacher = await createTeacher(dummyCreateTeacherPayload());
     apiEndPont = apiEndPont + teacher.id;
   });
