@@ -3,10 +3,9 @@ export default {
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.json' }],
+    '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  collectCoverage: true,
   coverageDirectory: './coverage',
   collectCoverageFrom: ['src/**/*.ts', '!src/main.ts', '!test/**/*'],
   maxWorkers: 1,
@@ -16,6 +15,4 @@ export default {
   },
   setupFiles: ['<rootDir>/test/jest-init.ts'],
   testMatch: ['<rootDir>/test/e2e/**/*.{ts,js}'],
-  testTimeout: 30000,
-  verbose: true,
 };

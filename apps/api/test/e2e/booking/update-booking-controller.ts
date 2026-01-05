@@ -8,7 +8,7 @@ import { dummyCreateBookingPayload } from '@test/dummy-payload/booking/dummy-cre
 import { dummyUpdateBookingPayload } from '@test/dummy-payload/booking/dummy-update-booking-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createBooking, removeBooking } from '@test/util/booking-util';
-import * as request from 'supertest';
+import request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
 describe('/v1/booking/:id (PATCH)', () => {
@@ -24,7 +24,6 @@ describe('/v1/booking/:id (PATCH)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/booking/`;
     await configApp(app);
-    await app.init();
     booking = await createBooking(dummyCreateBookingPayload());
     apiEndPont = apiEndPont + booking.id;
   });

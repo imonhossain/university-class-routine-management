@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { configApp } from '@test/util/app-util';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('/auth/sign-in (POST)', () => {
   let app: INestApplication;
@@ -20,7 +20,6 @@ describe('/auth/sign-in (POST)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/auth/sign-in`;
     await configApp(app);
-    await app.init();
   });
 
   afterAll(async () => {

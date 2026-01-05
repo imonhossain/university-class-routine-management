@@ -2,20 +2,34 @@ import { SignInUserDto } from '@/dto/SignInUserDto';
 import { User } from '@/entities/User';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { getRepository } from 'typeorm';
-import * as jwt from 'jsonwebtoken';
+import { DataSource } from 'typeorm';
+import jwt from 'jsonwebtoken';
 import { expiresIn } from '@/common/Constant';
+
+let dataSource: DataSource | null = null;
+
+export function getDataSource(): DataSource {
+  if (!dataSource) {
+    throw new Error('DataSource not initialized. Call configApp first.');
+  }
+  return dataSource;
+}
 
 export async function configApp(app: INestApplication): Promise<void> {
   const configService = app.get(ConfigService);
   app.setGlobalPrefix(configService.get('SERVICE_API_PREFIX'));
   app.useGlobalPipes(new ValidationPipe());
-
-  await app.listen(configService.get('PORT'));
+  dataSource = app.get(DataSource);
+  await app.init();
 }
 
 export async function getUserSignInResponse(email: string): Promise<SignInUserDto> {
-  const user = await getRepository(User).findOne({
+  if (!dataSource) {
+    throw new Error('DataSource not initialized. Call configApp first.');
+  }
+
+  const userRepository = dataSource.getRepository(User);
+  const user = await userRepository.findOne({
     where: { email },
   });
 

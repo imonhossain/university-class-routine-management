@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateRoomPayload } from '@test/dummy-payload/room/dummy-create-room-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createRoom, removeRooms } from '@test/util/room-util';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('/v1/room (GET)', () => {
   let app: INestApplication;
@@ -20,7 +20,6 @@ describe('/v1/room (GET)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/room`;
     await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();

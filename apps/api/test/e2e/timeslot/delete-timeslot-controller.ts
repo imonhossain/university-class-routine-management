@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateTimeslotPayload } from '@test/dummy-payload/timeslot/dummy-create-timeslot-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createTimeslot } from '@test/util/timeslot-util';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('/v1/timeslot/:id (DELETE)', () => {
   let app: INestApplication;
@@ -20,11 +20,10 @@ describe('/v1/timeslot/:id (DELETE)', () => {
     app = moduleFixture.createNestApplication();
     const configService = app.get(ConfigService);
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
+    await configApp(app);
     timeslot = await createTimeslot(dummyCreateTimeslotPayload());
     apiEndPont = `${serviceApiPrefix}/timeslot/`;
     apiEndPont = apiEndPont + timeslot.id;
-    await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();
