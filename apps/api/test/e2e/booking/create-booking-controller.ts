@@ -1,24 +1,15 @@
 import { AppModule } from '@/app.module';
 import { SignInUserDto } from '@/dto/SignInUserDto';
 import { Section } from '@/enums';
-import { CourseEntity } from '@/modules/course/CourseEntity';
-import { RoomEntity } from '@/modules/room/room.entity';
-import { TeacherEntity } from '@/modules/teacher/teacher.entity';
 import { INestApplication } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateBookingPayload } from '@test/dummy-payload/booking/dummy-create-booking-payload';
 import { dummyCourseList } from '@test/dummy-payload/course/course-list';
-import { dummyRoomList } from '@test/dummy-payload/room/room-list';
-import { dummyTeacherList } from '@test/dummy-payload/teacher/teacher-list';
-import { dummyTimeslotList } from '@test/dummy-payload/timeslot/timeslot-list';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { removeBookings } from '@test/util/booking-util';
-import { createCourses, removeCourses } from '@test/util/course-util';
-import { createRooms, removeRooms } from '@test/util/room-util';
-import { createTeachers, removeTeachers } from '@test/util/teacher-util';
-import { createTimeslots } from '@test/util/timeslot-util';
-import * as request from 'supertest';
+import { createCourses } from '@test/util/course-util';
+import request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
 describe('/v1/booking (POST)', () => {
@@ -33,7 +24,6 @@ describe('/v1/booking (POST)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/booking`;
     await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();

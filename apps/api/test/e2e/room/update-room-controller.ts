@@ -8,7 +8,7 @@ import { dummyCreateRoomPayload } from '@test/dummy-payload/room/dummy-create-ro
 import { dummyUpdateRoomPayload } from '@test/dummy-payload/room/dummy-update-room-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createRoom, removeRoom } from '@test/util/room-util';
-import * as request from 'supertest';
+import request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
 describe('/v1/room/:id (PATCH)', () => {
@@ -24,7 +24,6 @@ describe('/v1/room/:id (PATCH)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/room/`;
     await configApp(app);
-    await app.init();
     room = await createRoom(dummyCreateRoomPayload());
     apiEndPont = apiEndPont + room.id;
   });

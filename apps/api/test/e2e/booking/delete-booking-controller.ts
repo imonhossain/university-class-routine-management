@@ -7,7 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateBookingPayload } from '@test/dummy-payload/booking/dummy-create-booking-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createBooking } from '@test/util/booking-util';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('/v1/booking/:id (DELETE)', () => {
   let app: INestApplication;
@@ -20,11 +20,10 @@ describe('/v1/booking/:id (DELETE)', () => {
     app = moduleFixture.createNestApplication();
     const configService = app.get(ConfigService);
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
+    await configApp(app);
     booking = await createBooking(dummyCreateBookingPayload());
     apiEndPont = `${serviceApiPrefix}/booking/`;
     apiEndPont = apiEndPont + booking.id;
-    await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();

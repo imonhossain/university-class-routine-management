@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateTimeslotPayload } from '@test/dummy-payload/timeslot/dummy-create-timeslot-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createTimeslot, removeTimeslots } from '@test/util/timeslot-util';
-import * as request from 'supertest';
+import request from 'supertest';
 
 describe('/v1/timeslot (GET)', () => {
   let app: INestApplication;
@@ -20,7 +20,6 @@ describe('/v1/timeslot (GET)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/timeslot`;
     await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();

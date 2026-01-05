@@ -8,7 +8,7 @@ import { dummyCreateTimeslotPayload } from '@test/dummy-payload/timeslot/dummy-c
 import { dummyUpdateTimeslotPayload } from '@test/dummy-payload/timeslot/dummy-update-timeslot-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { createTimeslot, removeTimeslot } from '@test/util/timeslot-util';
-import * as request from 'supertest';
+import request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
 describe('/v1/timeslot/:id (PATCH)', () => {
@@ -24,7 +24,6 @@ describe('/v1/timeslot/:id (PATCH)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/timeslot/`;
     await configApp(app);
-    await app.init();
     timeslot = await createTimeslot(dummyCreateTimeslotPayload());
     apiEndPont = apiEndPont + timeslot.id;
   });
@@ -48,80 +47,7 @@ describe('/v1/timeslot/:id (PATCH)', () => {
         .expect(401);
     });
   });
-  describe('INVALID PAYLOAD', () => {
-    const email = 'admin@gmail.com';
-    let signInResponse: SignInUserDto;
-
-    beforeAll(async () => {
-      signInResponse = await getUserSignInResponse(email);
-    });
-
-    // it('SHOULD return 400 BAD REQUEST WHEN name is empty', async () => {
-    //   const payload = dummyCreateTimeslotPayload();
-    //   delete payload.name;
-    //   const result = await request(app.getHttpServer())
-    //     .patch(apiEndPont)
-    //     .send(payload)
-    //     .set('Authorization', `Bearer ${signInResponse.token}`)
-    //     .expect(400);
-    //   expect(JSON.stringify(result.error).includes('name must be a string')).toBe(true);
-    // });
-
-    // it('SHOULD return 400 BAD REQUEST WHEN name is not string', async () => {
-    //   const payload = dummyCreateTimeslotPayload() as ObjectLiteral;
-    //   payload.name = 123;
-    //   const result = await request(app.getHttpServer())
-    //     .patch(apiEndPont)
-    //     .send(payload)
-    //     .set('Authorization', `Bearer ${signInResponse.token}`)
-    //     .expect(400);
-    //   expect(JSON.stringify(result.error).includes('name must be a string')).toBe(true);
-    // });
-
-    // it('SHOULD return 400 BAD REQUEST WHEN phone is empty', async () => {
-    //   const payload = dummyCreateTimeslotPayload();
-    //   delete payload.phone;
-    //   const result = await request(app.getHttpServer())
-    //     .patch(apiEndPont)
-    //     .send(payload)
-    //     .set('Authorization', `Bearer ${signInResponse.token}`)
-    //     .expect(400);
-    //   expect(JSON.stringify(result.error).includes('phone must be a string')).toBe(true);
-    // });
-
-    // it('SHOULD return 400 BAD REQUEST WHEN phone is not string', async () => {
-    //   const payload = dummyCreateTimeslotPayload() as ObjectLiteral;
-    //   payload.phone = 123;
-    //   const result = await request(app.getHttpServer())
-    //     .patch(apiEndPont)
-    //     .send(payload)
-    //     .set('Authorization', `Bearer ${signInResponse.token}`)
-    //     .expect(400);
-    //   expect(JSON.stringify(result.error).includes('phone must be a string')).toBe(true);
-    // });
-
-    // it('SHOULD return 400 BAD REQUEST WHEN email is empty', async () => {
-    //   const payload = dummyCreateTimeslotPayload();
-    //   delete payload.email;
-    //   const result = await request(app.getHttpServer())
-    //     .patch(apiEndPont)
-    //     .send(payload)
-    //     .set('Authorization', `Bearer ${signInResponse.token}`)
-    //     .expect(400);
-    //   expect(JSON.stringify(result.error).includes('email must be a string')).toBe(true);
-    // });
-
-    // it('SHOULD return 400 BAD REQUEST WHEN email is not string', async () => {
-    //   const payload = dummyCreateTimeslotPayload() as ObjectLiteral;
-    //   payload.email = 123;
-    //   const result = await request(app.getHttpServer())
-    //     .patch(apiEndPont)
-    //     .send(payload)
-    //     .set('Authorization', `Bearer ${signInResponse.token}`)
-    //     .expect(400);
-    //   expect(JSON.stringify(result.error).includes('email must be a string')).toBe(true);
-    // });
-  });
+  // INVALID PAYLOAD tests are skipped - no validation tests defined
 
   describe('VALID PAYLOAD', () => {
     let signInResponse: SignInUserDto;

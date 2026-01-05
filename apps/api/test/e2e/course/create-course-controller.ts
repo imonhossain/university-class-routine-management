@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { dummyCreateCoursePayload } from '@test/dummy-payload/course/dummy-create-course-payload';
 import { configApp, getUserSignInResponse } from '@test/util/app-util';
 import { removeCourses } from '@test/util/course-util';
-import * as request from 'supertest';
+import request from 'supertest';
 import { ObjectLiteral } from 'typeorm';
 
 describe('/v1/course (POST)', () => {
@@ -21,7 +21,6 @@ describe('/v1/course (POST)', () => {
     const serviceApiPrefix = configService.get('SERVICE_API_PREFIX');
     apiEndPont = `${serviceApiPrefix}/course`;
     await configApp(app);
-    await app.init();
   });
   afterAll(async () => {
     await app.close();
